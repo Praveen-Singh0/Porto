@@ -1,0 +1,247 @@
+
+.img_parent {
+  margin-right: 0;
+  border-radius: 50%;
+  transition: all 0.5s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.imgCard {
+  height: 100%;
+  transition: all 0.5s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.img_content {
+  text-align: center;
+  padding: 200px 0px 0px 10px;
+  transform: translate3d(0, 0, 26px);
+}
+
+.img_content .title {
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.img_content .text {
+  display: block;
+  color: rgba(225, 225, 225, 0.765);
+  font-size: 12px;
+}
+
+.bottom {
+  top: 105%;
+  transform-style: preserve-3d;
+  position: absolute;
+  bottom: 0px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  transform: translate3d(0, 0, 20px);
+}
+
+.bottom .view-more {
+  display: flex;
+  align-items: center;
+  width: 40%;
+  transition: all 0.2s ease-in-out;
+}
+
+.bottom .view-more:hover {
+  transform: translate3d(0, 0, 10px);
+}
+
+.bottom .view-more .view-more-button {
+  background: none;
+  border: none;
+  color: #00c37b;
+  font-weight: bolder;
+  font-size: 12px;
+}
+
+.bottom .view-more .svg {
+  fill: none;
+  stroke: #00c37b;
+  stroke-width: 3px;
+  max-height: 15px;
+}
+
+.bottom .social-buttons-container {
+  display: flex;
+  gap: 10px;
+  transform-style: preserve-3d;
+}
+
+.bottom .social-buttons-container .social-button {
+  width: 30px;
+  aspect-ratio: 1;
+  padding: 7px;
+  background: rgb(246, 208, 243);
+  border-radius: 50%;
+  border: none;
+  display: grid;
+  box-shadow: rgba(5, 71, 17, 0.5) 0px 7px 5px -5px;
+}
+
+.bottom .social-buttons-container .social-button:first-child {
+  transition: transform 0.2s ease-in-out 0.4s, box-shadow 0.2s ease-in-out 0.4s;
+}
+
+.bottom .social-buttons-container .social-button:nth-child(2) {
+  transition: transform 0.2s ease-in-out 0.6s, box-shadow 0.2s ease-in-out 0.6s;
+}
+
+.bottom .social-buttons-container .social-button:nth-child(3) {
+  transition: transform 0.2s ease-in-out 0.8s, box-shadow 0.2s ease-in-out 0.8s;
+}
+
+.bottom .social-buttons-container .social-button .svg {
+  width: 15px;
+  fill: #00894d;
+}
+
+.bottom .social-buttons-container .social-button:hover {
+  background: rgb(169, 169, 169);
+}
+
+.bottom .social-buttons-container .social-button:hover .svg {
+  fill: white;
+}
+
+.bottom .social-buttons-container .social-button:active {
+  background: rgb(255, 234, 0);
+}
+
+.bottom .social-buttons-container .social-button:active .svg {
+  fill: black;
+}
+
+/* .container{
+  border: solid red;
+} */
+
+
+
+.img_logo {
+  position: absolute;
+  right: 0px;
+  top: 0;
+  transform-style: preserve-3d;
+}
+
+.img_logo .circle {
+  display: block;
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  top: 0;
+  right: 0;
+  box-shadow: rgba(100, 100, 111, 0.2) -10px 10px 20px 0px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(0px);
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.5s ease-in-out;
+}
+
+.img_logo .circle1 {
+  width: 170px;
+  transform: translate3d(0, 0, 20px);
+  top: 8px;
+  right: 8px;
+}
+
+.img_logo .circle2 {
+  width: 140px;
+  transform: translate3d(0, 0, 40px);
+  top: 10px;
+  right: 10px;
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  transition-delay: 0.4s;
+}
+
+.img_logo .circle3 {
+  width: 110px;
+  transform: translate3d(0, 0, 60px);
+  top: 17px;
+  right: 17px;
+  transition-delay: 0.8s;
+}
+
+.img_logo .circle4 {
+  width: 80px;
+  transform: translate3d(0, 0, 80px);
+  top: 23px;
+  right: 23px;
+  transition-delay: 1.2s;
+}
+
+.img_logo .circle5 {
+  width: 50px;
+  transform: translate3d(0, 0, 100px);
+  top: 30px;
+  right: 30px;
+  display: grid;
+  transition-delay: 1.6s;
+}
+
+.img_logo .circle5 .svg {
+  width: 20px;
+  fill: white;
+}
+
+.img_parent:hover {
+  transform: rotate3d(1, 1, 0, 30deg);
+}
+
+.img_parent:hover .imgCard .bottom .social-buttons-container .social-button {
+  transform: translate3d(0, 0, 50px);
+  box-shadow: rgba(5, 71, 17, 0.2) -5px 20px 10px 0px;
+}
+
+.img_parent:hover .imgCard .img_logo .circle2 {
+  transform: translate3d(0, 0, 60px);
+}
+
+.img_parent:hover .imgCard .img_logo .circle3 {
+  transform: translate3d(0, 0, 80px);
+}
+
+.img_parent:hover .imgCard .img_logo .circle4 {
+  transform: translate3d(0, 0, 100px);
+}
+
+.img_parent:hover .imgCard .img_logo .circle5 {
+  transform: translate3d(0, 0, 120px);
+}
+
+.bg-colors {
+  background-color: #ffffff;
+  background-image: linear-gradient(300deg, #ffffff 20%, #ffffff 10%, #F8D8EB 100%);
+}
+.bg-colors-3 {
+  background-color: #ffffff;
+  background-image: linear-gradient(300deg, #5dc4dc 20%, #cb94e6 40%, #f8888f 100%);
+
+}
+.bg-colors-2 {
+  background-color: #ffffff;
+  background-image: linear-gradient(100deg, #ffffff 40%, #ffffff 10%, #F8D8EB 100%);
+}
+ 
+.seccion{
+  text-transform: uppercase;
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  transform: rotate(270deg);
+  -webkit-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  transform-origin: 0 0;
+  top: 60%;
+}

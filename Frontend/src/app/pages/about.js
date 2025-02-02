@@ -12,4 +12,4 @@ const about = ()=>{
     <h1>About section {name}</h1>
   )
 }
-export default about
+export default about 
