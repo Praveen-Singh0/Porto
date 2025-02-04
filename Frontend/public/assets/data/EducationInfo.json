@@ -1,0 +1,58 @@
+{
+  "educationCards": [
+    {
+      "id": 1,
+      "link": "https://tulas.edu.in/about/",
+      "collageImage": "Tulas",
+      "collageName": "Tula's Institute Dehradun",
+      "course": "MCA (Master of computer application)",
+      "duration": "Year 2021-2023",
+      "bgColor": "bg-colors",
+      "Subjects": [
+        {
+          "id": 1,
+          "name": "Data Structure"
+        },
+        {
+          "id": 2,
+          "name": "Operating System"
+        },
+        {
+          "id": 3,
+          "name": "Micro-processor"
+        },
+        {
+          "id": 4,
+          "name": "Artificial intelligence"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "link": "https://www.sdsuv.ac.in/Index.aspx",
+      "collageImage": "ShreeDev",
+      "collageName": "Shree Dev Suman University",
+      "course": "BCA (Bachelor of computer application )",
+      "duration": "Year 2019-2021",
+      "bgColor": "bg-colors-2",
+      "Subjects": [
+        {
+          "id": 1,
+          "name": "Computer fundamentals"
+        },
+        {
+          "id": 2,
+          "name": "Business communication"
+        },
+        {
+          "id": 3,
+          "name": "Mathematics"
+        },
+        {
+          "id": 4,
+          "name": "Computer networks"
+        }
+      ]
+    }
+  ]
+}
