@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image"; // Import Next.js Image component
-import { AiOutlineCaretRight } from "react-icons/ai";
+import { AiOutlineCaretRight, BsArrowRightCircleFill } from "react-icons/ai";
+
 import { useRef, useState, useEffect } from "react";
 import "../../../public/assets/style/Caro.scss";
 import cards from "../../../public/assets/data/Projects.js";
@@ -78,20 +79,17 @@ const ProjectSection = () => {
   };
 
   return (
-    <section className="relative p-6">
-      <h1 className="text-center text-3xl font-bold mb-4">
-        Project <span className="text-red-700">Section</span>
-      </h1>
-
-      <div className="relative z-30 bg-clip-border text-gray-900 flex h-full min-h-[200px] w-full flex-col justify-center rounded bg-colors-3 blur-2xl"></div>
-
-      <div className="relative z-30 px-0 pt-0 pb-0 -mt-40 lg:px-0 xl:px-0">
-        <div className="grid gap-8">
-          <div className="carousel" ref={carouselRef}>
-            <button onClick={scrollToLast} className="hover:text-pink-500 sm:block text-4xl">
+    <>
+    <h1 className="text-center text-3xl font-bold mb-4">
+    Project <span className="text-red-700">Section</span>
+  </h1>
+    <section style={{ maxWidth: "100%",  }} className="">
+      <div className=" z-30 px-0 pt-0 pb-0  lg:px-0 xl:px-0">
+        <div className="flex">
+        <button onClick={scrollToLast} className="hover:text-pink-500 sm:block text-4xl">
               <AiOutlineCaretRight />
             </button>
-
+          <div className="carousel " ref={carouselRef}>
             {cards.map((card, index) => (
               <Card key={index} dataImage={card.image} header={card.header} link={card.html_url} />
             ))}
@@ -99,6 +97,7 @@ const ProjectSection = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

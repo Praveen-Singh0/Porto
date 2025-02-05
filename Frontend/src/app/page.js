@@ -1,5 +1,4 @@
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import About from "./pages/about";
 import EducationSection from "./pages/education";
 import ProjectSection from "./pages/projects";
@@ -8,6 +7,7 @@ import Image from "next/image";
 import AnimatedText from "./components/animatedText";
 import GradientBackground from "./utils/gradientBackground";
 import SkillsSection from "./pages/SkillsSection";
+import ContactSection from "./pages/contact";
 
 
 
@@ -17,7 +17,6 @@ export default function Home() {
   return (
     <>
       <GradientBackground />
-      <Header />
       <div className="pt-10 lg:px-6">
         <div className="mt-12">
           <div className="relative isolate px-4 sm:px-5 lg:px-8">
@@ -33,12 +32,12 @@ export default function Home() {
                   <h1 className="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">Praveen Singh </h1>
                   <div style={{ display: "flex", justifyContent: "center" }} className="mt-2">
                     <h1 className="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl fontX-large">Experience In </h1>
-                    <div class="content__container">
-                      <ul class="content__container__list">
-                        <li class="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">Fronend</li>
-                        <li class="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">Backend</li>
-                        <li class="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">MERN Stack</li>
-                        <li class="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">FullStack</li>
+                    <div className="content__container">
+                      <ul className="content__container__list">
+                        <li className="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">Fronend</li>
+                        <li className="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">Backend</li>
+                        <li className="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">MERN Stack</li>
+                        <li className="content__container__list__item text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">FullStack</li>
                       </ul>
                     </div>
                   </div>
@@ -99,22 +98,13 @@ export default function Home() {
             </div>
           </div>
         </div>
+ 
 
         <About/>
         <EducationSection/>
         <SkillsSection/>
         <ProjectSection/>
-
-
-
-
-
-
-
-
-
-  
-      
+        <ContactSection/>
 
       </div>
     </>
