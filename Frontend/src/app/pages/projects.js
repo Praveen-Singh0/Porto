@@ -54,10 +54,10 @@ const Card = ({ dataImage, header, link }) => {
         <div className="card" style={cardStyle}>
           <div className="card-bg borders" style={cardBgTransform}>
             <Image
-              src={dataImage} // Pass the correct src
+              src={dataImage}
               alt={header}
-              layout="fill" // Cover the entire div
-              objectFit="cover" // Ensures it covers the space properly
+              layout="fill"
+              objectFit="cover"
             />
           </div>
         </div>
@@ -74,7 +74,11 @@ const ProjectSection = () => {
 
   const scrollToLast = () => {
     if (carouselRef.current) {
-      carouselRef.current.lastElementChild.scrollIntoView({ behavior: "smooth" });
+      const scrollAmount = carouselRef.current.scrollWidth - carouselRef.current.clientWidth;
+      carouselRef.current.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
     }
   };
 

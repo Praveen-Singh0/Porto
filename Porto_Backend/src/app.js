@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 app.use(cors({
-  origin: `http://localhost:3000`,
+  origin: 'http://localhost:3000',
   methods: ["GET", "POST", "PUT"], // ADD DELETE METHOD 
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 import skillRouter from './routers/skills.route.js'
 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
   res.send("HELLO")
 })
 

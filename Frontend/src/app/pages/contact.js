@@ -1,7 +1,7 @@
 "use client"
 import { AiFillLinkedin, AiFillGithub, AiFillTwitterCircle, AiFillInstagram, AiOutlineGlobal } from "react-icons/ai";
 import { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
+// import emailjs from '@emailjs/browser';
 
 const ContactSection = () => {
 
@@ -20,12 +20,12 @@ const ContactSection = () => {
     e.preventDefault();
     setLoading(true)
 
-    emailjs.sendForm(
-      'service_oboepa1',
-      'template_n4py97d',
-      form.current,
-      'z3yHvHl0u4wruKCT2'
-    )
+    // emailjs.sendForm(
+    //   'service_oboepa1',
+    //   'template_n4py97d',
+    //   form.current,
+    //   'z3yHvHl0u4wruKCT2'
+    // )
       .then(
         () => {
           setLoading(false)

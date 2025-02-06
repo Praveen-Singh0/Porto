@@ -3,10 +3,14 @@ import { AiFillHtml5, AiFillGithub, AiOutlineJavaScript, AiFillApi, AiFillAndroi
 import { BiLogoTailwindCss, BiLogoNodejs } from "react-icons/bi";
 import { BsFiletypeCss, BsBootstrap } from "react-icons/bs";
 import { FaReact } from "react-icons/fa";
-import { AiOutlinePauseCircle } from "react-icons/ai";
 import ExperienceSection from "./Experience";
 
+import { skillsServices } from "../services/skills.services";
+
 const SkillsSection = () => {
+
+  const { skills, loading, error, deleteSkill, } = skillsServices();
+
   return (
     <>
       <div className="mt-20 mb-10 hidden  sm:block flex justify-between mx-48 pl-20">
@@ -31,132 +35,29 @@ const SkillsSection = () => {
             }}></div>
         </div>
 
-        <div className="relative mx-auto grid">
-          <ul role="list" className="divide-y divide-y-reverse divide-red-800 grid gap-x-8 sm:grid-cols-4 w-full  xl:col-span-4">
-            <li>
-              <div className="sm:pt-8 sm:mb-4 flex items-center gap-x-6 ">
-                <FaReact className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className=" mt-4 text-xl font-semibold tracking-tight text-gray-900">React.js</h3>
-                  <p className=" text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className=" sm:pt-8 sm:mb-4 flex items-center gap-x-6">
-                <AiFillGithub className="mt-3 text-4xl border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Github</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★☆☆</p>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className=" sm:pt-8 sm:mb-4 flex items-center gap-x-6">
-                <AiFillGithub className="mt-3 text-4xl border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Github</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★☆☆</p>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className=" sm:pt-8 sm:mb-4 flex items-center gap-x-6">
-                <AiFillGithub className="mt-3 text-4xl border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Github</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★☆☆</p>
-                </div>
-              </div>
-            </li>
+        <div className="relative mx-auto grid px-8">
+          <ul role="list" className="mb-8 divide-y divide-y-reverse divide-red-800 grid gap-x-8 sm:grid-cols-4 w-full  xl:col-span-4">
+            {skills.length > 0 ? (
+              skills?.map((skill) => (
+                <li key={skill._id}>
+                  <div className="sm:pt-6 sm:mb-4 flex items-center gap-x-6 ">
+                    <FaReact className="mt-3 text-4xl   border-gray-900" />  {/* uploaded icon url */}
+                    <div>
+                      <h3 className=" mt-4 text-xl font-semibold tracking-tight text-gray-900">{skill.name}</h3>
+                      <p className=" text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
+                    </div>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <li>no skills</li>
+            )}
 
-            <li>
-              <div className="sm:pt-8 flex items-center gap-x-6">
-                <AiFillHtml5 className="mt-3 text-4xl border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">HTML</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <BsFiletypeCss className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">CSS</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <BiLogoTailwindCss className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Tailwind</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★☆☆</p>
-                </div>
-              </div>
-            </li>
-
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <BsBootstrap className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Bootstrap</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★☆☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <AiOutlineAntDesign className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Ant Design</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★☆☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <AiOutlineJavaScript className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Javascript</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <AiFillApi className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">API</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <BiLogoNodejs className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Nodejs</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
-            <li className="">
-              <div className="m-2 flex items-center gap-x-6">
-                <AiFillAndroid className="mt-3 text-4xl   border-gray-900" />
-                <div>
-                  <h3 className="mt-4 text-xl font-semibold tracking-tight text-gray-900">Andriod</h3>
-                  <p className="text-sm/6 text-amber-500 font-semibold font text-xl">★★★★☆</p>
-                </div>
-              </div>
-            </li>
           </ul>
 
-          <ExperienceSection/>
+          <ExperienceSection />
 
-         
+
         </div>
 
 
