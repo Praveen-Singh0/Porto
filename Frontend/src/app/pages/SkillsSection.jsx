@@ -50,7 +50,9 @@ const SkillsSection = () => {
                 </li>
               ))
             ) : (
-              <li>no skills</li>
+              <ul role="list" className="shadow-lg mb-8 divide-y divide-y-reverse divide-red-800 grid gap-x-8 w-full  xl:col-span-4">
+              <li style={{textAlign: "center",}}>no skills added</li>
+              </ul>
             )}
 
           </ul>

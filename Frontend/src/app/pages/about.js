@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const about = () => {
   return (
-    <div className="shadow-lg mt-16 mx-auto px-4 py-12 max-w-7xl">
+    <div className="mt-16 mx-auto px-4 py-12 max-w-7xl">
       <h1 className="text-center text-3xl font-bold mb-6">
         About <span className="text-red-500">Section</span>
       </h1>
@@ -22,7 +22,7 @@ const about = () => {
           </p>
         </div>
       </div>
-      <div className="relative mt-[-20px] mx-auto w-full max-w-6xl  p-6 sm:p-8">
+      <div className="shadow-lg relative mt-[-20px] mx-auto w-full max-w-6xl  p-6 sm:p-8">
         {/* polygon */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }} className="absolute blur-3xl  inset-x-0 bottom-0 -z-10 hidden sm:block">
           <div
