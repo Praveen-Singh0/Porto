@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image"; // Import Next.js Image component
+import Image from "next/legacy/image"; // Import Next.js Image component
 import { AiOutlineCaretRight, BsArrowRightCircleFill } from "react-icons/ai";
 
 import { useRef, useState, useEffect } from "react";

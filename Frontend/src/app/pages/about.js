@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 const about = () => {
   return (
@@ -11,7 +11,6 @@ const about = () => {
           src="/assets/img/aboutSection.jpg"
           alt="A descriptive text"
           layout="fill"
-          objectFit="cover"
           className="rounded-lg"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white opacity-80 rounded-lg"></div>

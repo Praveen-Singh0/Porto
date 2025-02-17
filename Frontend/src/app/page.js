@@ -3,7 +3,7 @@ import About from "./pages/about";
 import EducationSection from "./pages/education";
 import ProjectSection from "./pages/projects";
 import { AiOutlineClose, AiFillLinkedin, AiFillGithub, AiOutlineJavaScript } from 'react-icons/ai';
-import Image from "next/image";
+import Image from "next/legacy/image";
 import AnimatedText from "./components/animatedText";
 import GradientBackground from "./utils/gradientBackground";
 import SkillsSection from "./pages/SkillsSection";
@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <>
       <GradientBackground />
-      <div className="pt-10 lg:px-6">
+      <div className="pt-0 lg:px-0">
         <div className="mt-12">
           <div className="relative isolate px-4 sm:px-5 lg:px-8">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mx-auto max-w-7xl ">
@@ -71,9 +71,9 @@ export default function Home() {
                       src="/assets/img/Profile.JPG"
                       alt="Avatar"
                       width={500}
-                      height={300}
+                      height={500}
                       priority
-                      className="rounded-full avatar"
+                      className="rounded-full"
                     />
 
                     <span className="circle circle2"></span>
