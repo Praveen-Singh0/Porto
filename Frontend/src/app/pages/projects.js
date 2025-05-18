@@ -84,23 +84,25 @@ const ProjectSection = () => {
 
   return (
     <>
-    <h1 className="text-center text-3xl font-bold mb-4">
-    Project <span className="text-red-700">Section</span>
-  </h1>
-    <section style={{ maxWidth: "100%",  }} className="">
-      <div className=" z-30 px-0 pt-0 pb-0  lg:px-0 xl:px-0">
-        <div className="flex">
-        <button onClick={scrollToLast} className="hover:text-pink-500 sm:block text-4xl">
+      <h1 className="text-center text-4xl font-bold mb-8 relative">
+        Project <span className="text-pink-500">Section</span>
+        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
+      </h1>
+
+      <section style={{ maxWidth: "100%", }} className="">
+        <div className=" z-30 px-0 pt-0 pb-0  lg:px-0 xl:px-0">
+          <div className="flex">
+            <button onClick={scrollToLast} className="hover:text-pink-500 sm:block text-4xl">
               <AiOutlineCaretRight />
             </button>
-          <div className="carousel " ref={carouselRef}>
-            {cards.map((card, index) => (
-              <Card key={index} dataImage={card.image} header={card.header} link={card.html_url} />
-            ))}
+            <div className="carousel " ref={carouselRef}>
+              {cards.map((card, index) => (
+                <Card key={index} dataImage={card.image} header={card.header} link={card.html_url} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
     </>
   );
 };

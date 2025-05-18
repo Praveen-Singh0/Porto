@@ -20,12 +20,12 @@ const ContactSection = () => {
     e.preventDefault();
     setLoading(true)
 
-    // emailjs.sendForm(
-    //   'service_oboepa1',
-    //   'template_n4py97d',
-    //   form.current,
-    //   'z3yHvHl0u4wruKCT2'
-    // )
+      // emailjs.sendForm(
+      //   'service_oboepa1',
+      //   'template_n4py97d',
+      //   form.current,
+      //   'z3yHvHl0u4wruKCT2'
+      // )
       .then(
         () => {
           setLoading(false)
@@ -42,12 +42,13 @@ const ContactSection = () => {
   return (
 
     <>
-      <div className="sm:pl-12 pl-4 relative">
-        <h1 className="text-center text-3xl mt-12 font-bold">
-          Lets Talk about my <span className="text-red-500">projects</span>
+      <div className="sm:pl-12 mt-12 pt-8 mb-4 px-4 pb-12 relative">
+        <h1 className="text-center text-4xl font-bold mb-8 relative">
+          Lets Talk about my <span className="text-pink-500">myself</span>
+          <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
         </h1>
 
-        <div className="flex flex-col lg:flex-row items-center sm:p-10 rounded-lg  ">
+        <div className="flex flex-col lg:flex-row justify-center items-center sm:p-10 rounded-lg max-w-7xl mx-auto">
 
           {/* polygon */}
           <div className="absolute blur-3xl inset-x-0 bottom-0 flex justify-center">
@@ -60,7 +61,7 @@ const ContactSection = () => {
           </div>
 
           {/* Left Section - Form */}
-          <div className="relative rounded-xl shadow-xl py-4 px-4 sm:px-12 mr-2 sm:w-1/2 w-full">
+          <div className="relative rounded-xl shadow-xl py-4 px-4 sm:px-4 mr-2 sm:w-1/2 w-full">
             <form ref={form} onSubmit={sendEmail} className="mx-auto">
               <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
                 <div>
@@ -155,7 +156,7 @@ const ContactSection = () => {
               <div>
                 <h3 className="text-2xl pt-1 font-semibold text-indigo-600">Connect On Social-Sites</h3>
                 <p className="text-gray-700 mt-4">
-                Feel free to connect with me on social media. I’m not very active there, but I’ll do my best to respond!
+                  Feel free to connect with me on social media. I’m not very active there, but I’ll do my best to respond!
                 </p>
                 <div className="mt-6 flex items-center">
                   <img

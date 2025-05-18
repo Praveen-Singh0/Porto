@@ -5,12 +5,16 @@ import { AiOutlinePauseCircle } from "react-icons/ai";
 const ExperienceSection = () => {
   return (
     <>
-      <h1 className="mt-8 sm:hidden text-center text-3xl font-bold">
-        Experience <span className="text-red-500">Section</span>
+      <h1 className="text-center text-4xl font-bold mb-8 relative sm:hidden">
+        Experience <span className="text-pink-500">Section</span>
+        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
       </h1>
-      <div className="mt-4 shadow-lg mx-2 w-full ">
+
+
+
+      <div className="mt-4 shadow-lg w-full ">
         <h2 className="pl-2 mt-4 font-semibold text-indigo-600">{`Tech Matys`} <i className="text-sm">(April-September 2024)</i></h2>
-        <div style={{padding: "0px 1rem"}}>
+        <div style={{ padding: "0px 1rem" }}>
           <p className="mt-2  text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
             <AiOutlinePauseCircle className="inline mr-2 " />
             Jr. Software Developer</p>
@@ -52,7 +56,7 @@ const ExperienceSection = () => {
       </div>
       <div className="mt-4 shadow-lg w-full ">
         <h2 className="pl-2 mt-4 font-semibold text-indigo-600">{`Tech Matys`} <i className="text-sm">(April-September 2024)</i></h2>
-        <div style={{padding: "0px 1rem"}}>
+        <div style={{ padding: "0px 1rem" }}>
           <p className="mt-2  text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
             <AiOutlinePauseCircle className="inline mr-2 " />
             Jr. Software Developer</p>

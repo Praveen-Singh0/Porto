@@ -4,7 +4,6 @@ import EducationSection from "./pages/education";
 import ProjectSection from "./pages/projects";
 import { AiOutlineClose, AiFillLinkedin, AiFillGithub, AiOutlineJavaScript } from 'react-icons/ai';
 import Image from "next/legacy/image";
-import AnimatedText from "./components/animatedText";
 import GradientBackground from "./utils/gradientBackground";
 import SkillsSection from "./pages/SkillsSection";
 import ContactSection from "./pages/contact";
@@ -79,7 +78,7 @@ export default function Home() {
                     <span className="circle circle2"></span>
                     <span className="circle circle3"></span>
                     <span className="circle circle4"></span>
-                    <span className="circle circle5">
+                    <span className="circle circle5" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                       <AiOutlineJavaScript />
                     </span>
                   </div>
@@ -106,13 +105,13 @@ export default function Home() {
             </div>
           </div>
         </div>
- 
 
-        <About/>
-        <EducationSection/>
-        <SkillsSection/>
-        <ProjectSection/>
-        <ContactSection/>
+
+        <About />
+        <EducationSection />
+        <SkillsSection />
+        <ProjectSection />
+        <ContactSection />
 
       </div>
     </>

@@ -14,16 +14,20 @@ const SkillsSection = () => {
   return (
     <>
       <div className="mt-20 mb-10 hidden  sm:block flex justify-between mx-48 pl-20">
-        <h1 className="text-center text-3xl font-bold">
-          Skills & Experience <span className="text-red-500">Section</span>
+        <h1 className="text-center text-4xl font-bold mb-8 relative">
+          Skills & Experience <span className="text-pink-500">Section</span>
+          <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
         </h1>
       </div>
 
       <div className="my-12 sm:flex px-6 relative  ">
 
-        <h1 className="mb-4 sm:hidden text-center text-3xl font-bold">
-          Skill <span className="text-red-500">Section</span>
+        <h1 className=" sm:hidden text-center text-4xl font-bold mb-8 relative">
+          Skills <span className="text-pink-500">Section</span>
+          <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
         </h1>
+
+
 
 
         <div className="absolute z-0 blur-3xl inset-x-0 bottom-0 flex justify-center">
@@ -35,7 +39,7 @@ const SkillsSection = () => {
             }}></div>
         </div>
 
-        <div className="relative mx-auto grid px-8">
+        <div className="relative mx-auto grid">
           <ul role="list" className="mb-8 divide-y divide-y-reverse divide-red-800 grid gap-x-8 sm:grid-cols-4 w-full  xl:col-span-4">
             {skills.length > 0 ? (
               skills?.map((skill) => (
@@ -51,7 +55,7 @@ const SkillsSection = () => {
               ))
             ) : (
               <ul role="list" className="shadow-lg mb-8 divide-y divide-y-reverse divide-red-800 grid gap-x-8 w-full  xl:col-span-4">
-              <li style={{textAlign: "center",}}>no skills added</li>
+                <li style={{ textAlign: "center", }}>no skills added</li>
               </ul>
             )}
 

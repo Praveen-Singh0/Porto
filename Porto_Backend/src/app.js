@@ -9,7 +9,7 @@ app.use(cors({
   origin: 'http://localhost:3000',
   methods: ["GET", "POST", "PUT"], // ADD DELETE METHOD 
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
+  credentials: true, 
 }))
 
 app.use(express.json({ limit: "16kb" }))
