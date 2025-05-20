@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const LoginPage = () => {
   return (
@@ -13,10 +14,12 @@ const LoginPage = () => {
       <div className="w-full max-w-[950px] bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col md:flex-row">
           <div className="hidden md:block w-full md:w-[1000px]">
-            <img 
+            <Image 
               src="/assets/img/loginIllustration.jpg" 
               alt="Login illustration" 
               className="w-full h-full object-cover"
+              width={200}
+              height={200}
             />
           </div>
           

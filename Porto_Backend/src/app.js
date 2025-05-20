@@ -18,12 +18,14 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 import skillRouter from './routers/skills.route.js'
+import AuthRoutes from './routers/auth.rouets.js'
 
 app.get('/', (req, res) => {
   res.send("HELLO")
 })
 
 app.use("/api", skillRouter)
+app.use("/api", AuthRoutes)
 // http//:localhost:3000/api/skill/create
 
 
