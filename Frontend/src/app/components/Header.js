@@ -1,12 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import LoginModal from "./LoginModal";
+import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
+
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+
+    
   useEffect(() => {
     const handleScroll = () => {
       setIsVisible(window.scrollY > 100);
@@ -34,7 +41,17 @@ const Header = () => {
     { name: 'Contact', current: false }
   ];
 
-  
+  console.log("isLoggedIn header", isLoggedIn )
+
+  const HandleLogin = () => {
+    if (isLoggedIn) {
+      router.push("/admin-dashboard");
+    } else {
+      setIsModalOpen(true);
+    }
+  }
+
+
 
   return (
     <header className={`sticky p-1 transition-all duration-500 ease-in-out z-50 
@@ -63,11 +80,13 @@ const Header = () => {
           </div>
           <div className="flex items-center lg:order-2">
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={HandleLogin}
               className="text-gray-800 dark:text-white bg-gray-50 hover:bg-pink-300 focus:ring-3 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-yellow-300"
             >
               Log in
             </button>
+
+
 
             <div className="relative">
               <img className="w-10 h-10 rounded-full" src="/assets/img/avatar.jpg" alt="Avatar" />
@@ -93,6 +112,7 @@ const Header = () => {
       </nav>
 
       <LoginModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+
     </header>
   );
 };

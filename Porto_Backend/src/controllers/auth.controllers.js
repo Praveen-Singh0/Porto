@@ -7,44 +7,91 @@ import jwt from 'jsonwebtoken';
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
 // Helper function to generate JWT
-const generateToken = (userId) => {
+const generateAccessToken = (userId) => { //async 
   return jwt.sign({ id: userId }, ACCESS_TOKEN_SECRET, {
-    expiresIn: '1d', // or any time you prefer
+    expiresIn: '1m',
   });
 };
+
+const generateRefreshToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: '2m',
+  });
+};
+
+
+const refreshAccessToken = asyncHandler(async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  console.log("refreshToken REFRESH:", refreshToken)
+
+  if (!refreshToken) {
+    throw new ApiError(401, "Refresh token missing");
+  }
+ 
+  try {
+    // Verify refresh token
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    // Generate new access token
+    const newAccessToken = generateAccessToken(decoded.id);
+
+    // Set new access token in cookie
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      // maxAge: 15 * 60 * 1000,
+      maxAge: 60 * 1000, // 1 minute
+
+    });
+
+    return res.status(200).json(
+      new ApiResponse(200, "Access token refreshed")
+    );
+
+  } catch (err) {
+    throw new ApiError(403, "Invalid or expired refresh token");
+  }
+});
+
+
 
 
 const LoginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    throw new ApiError(400, "Email and password are required");
-  }
+  if (!email || !password) throw new ApiError(400, "Email and password are required");
 
   const user = await User.findOne({ email });
-  if (!user) {
+  if (!user || !(await user.comparePassword(password))) {
     throw new ApiError(401, "Invalid credentials");
   }
 
-  // Compare passwords
-  const isPasswordMatch = await user.comparePassword(password);
-  if (!isPasswordMatch) {
-    throw new ApiError(401, "Invalid credentials");
-  }
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken(user._id);
 
-  // Generate JWT
-  const token = generateToken(user._id);
-
-  // Set token in httpOnly cookie
-  res.cookie("accessToken", token, {
+  
+  // Set both tokens in secure cookies
+  res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // send only over https in prod
-    sameSite: "Strict", // protect from CSRF
-    // sameSite: "Lax"
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+    // maxAge: 15 * 60 * 1000,
+    maxAge: 60 * 1000, // 1 minute
   });
 
-  // Respond with success
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+    // maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 2 * 60 * 1000 // 2 minutes
+  });
+
+  console.log("accessToken LOGIN :", accessToken)
+  console.log("refreshToken LOGIN :", refreshToken)
+
   return res.status(200).json(
     new ApiResponse(200, "Login successful", {
       email: user.email,
@@ -54,16 +101,25 @@ const LoginUser = asyncHandler(async (req, res) => {
 });
 
 
-// const logoutUser = asyncHandler(async (req, res) => {
-//   res.clearCookie("accessToken", {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production",
-//     sameSite: "Strict"
-//   });
 
-//   return res.status(200).json(new ApiResponse(200, "Logged out successfully"));
-// });
+const logoutUser = asyncHandler(async (req, res) => {
 
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+  });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
+  });
+
+  console.log("req.cookies.accessToken LOGOUT:", req.cookies.accessToken);
+  console.log("req.cookies.refreshToken LOGOUT:", req.cookies.refreshToken);
+
+  return res.status(200).json(new ApiResponse(200, "Logged out successfully"));
+});
 
 
 
@@ -91,4 +147,4 @@ const createUser = asyncHandler(async (req, res) => {
 
 })
 
-export { createUser, LoginUser }
+export { createUser, LoginUser, logoutUser, refreshAccessToken }

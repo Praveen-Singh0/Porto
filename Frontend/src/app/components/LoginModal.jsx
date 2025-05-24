@@ -3,8 +3,20 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import axiosInstance from "../utils/axiosInstance";
+import { useRouter } from 'next/navigation';
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "../context/AuthContext";
+
+
 
 const LoginModal = ({ isOpen, setIsModalOpen }) => {
+  const router = useRouter();
+  const { toast } = useToast()
+
+  const { setIsLoggedIn } = useAuth();
+
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
@@ -12,12 +24,12 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
 
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let hasError = false;
 
-    if(!email){
+    if (!email) {
       hasError = true
     } else {
       hasError = false
@@ -30,8 +42,40 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
     }
 
     if (!hasError) {
-      console.log('Email:', email, 'Password:', password);
-      // submit logic here
+      try {
+        const res = await axiosInstance.post('/login', { email, password });
+        console.log("response : ", res.data);
+        setIsLoggedIn(true)
+        setIsModalOpen(false);
+        router.push('/admin-dashboard');
+      } catch (error) {
+        const errorMessage = error?.response?.data?.message;
+        const statusCode = error?.response?.status;
+
+        if (statusCode === 401) {
+          toast({
+            title: "Invalid Credentials",
+            description: "Please check your email or password.",
+            variant: "destructive",
+          });
+        } else if (!error.response) {
+          toast({
+            title: "Server Error",
+            description: "Something went wrong, the server is not responding.",
+            variant: "destructive",
+          });
+        } else {
+          // Generic fallback
+          toast({
+            title: "Login Failed",
+            description: errorMessage || "An unexpected error occurred.",
+            variant: "destructive",
+          });
+        }
+
+        console.error("Login error:", error);
+      }
+
     }
   };
 
