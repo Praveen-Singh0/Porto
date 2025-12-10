@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
       setLoading(false);
     } catch (error) {
-      handleApiError(error);
+      // handleApiError(error);
       setIsLoggedIn(false);
     } finally {
     setLoading(false);
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    refreshLogin();
+    // refreshLogin();
   }, []);
 
   return (

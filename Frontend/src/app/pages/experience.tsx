@@ -1,5 +1,6 @@
 
 'use client'
+import React from "react";
 import { AiOutlinePauseCircle } from "react-icons/ai";
 
 const ExperienceSection = () => {

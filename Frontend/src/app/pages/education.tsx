@@ -1,63 +1,42 @@
 'use client'
 
-import { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import EducationInfo from '../../../public/assets/data/EducationInfo.json';
+import { ScrollStackContainer } from '../components/ScrollStack';
 
 const { educationCards } = EducationInfo;
 
-const imageMapping = {
+const imageMapping: Record<string, string> = {
   'ShreeDev': '/assets/img/shreeDevS.png',
   'Tulas': '/assets/img/Tulas.jpg'
 };
 
 const EducationSection = () => {
-  const [activeIndex, setActiveIndex] = useState(1);
-  
   return (
-    <div className="mt-16 mx-auto px-4 py-16 max-w-7xl relative overflow-hidden">
+    <div className="mt-16 mx-auto  max-w-7xl relative">
       {/* Pink background decorations */}
       <div className="absolute top-40 left-20 -z-10 opacity-10">
         <div className="w-72 h-72 rounded-full bg-pink-400 blur-3xl"></div>
       </div>
-      <div className="absolute bottom-20 right-20 -z-10 opacity-10">
+      <div className="absolute right-20 -z-10 opacity-10">
         <div className="w-64 h-64 rounded-full bg-pink-600 blur-3xl"></div>
       </div>
       
       {/* Section title */}
-      <h1 className="text-center text-4xl font-bold mb-16 relative">
+      <h1 className="text-center text-4xl font-bold  relative">
         Education <span className="text-pink-500">Journey</span>
-        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
+        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 "></div>
       </h1>
       
-      {/* Timeline navigation */}
-      <div className="flex justify-center mb-12">
-        <div className="flex space-x-1 bg-gray-100 p-1 rounded-full">
-          {educationCards.map((card, index) => (
-            <button
-              key={card.id}
-              onClick={() => setActiveIndex(index)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeIndex === index 
-                  ? "bg-pink-500 text-white shadow-md" 
-                  : "text-gray-600 hover:bg-pink-100"
-              }`}
-            >
-              {card.collageName}
-            </button>
-          ))}
-        </div>
-      </div>
-      
-      {/* Education cards with modern design */}
-      <div className="relative">
+      {/* Scroll Stack Cards */}
+      <ScrollStackContainer className="mt-20 ">
         {educationCards.map((card, index) => (
           <div 
             key={card.id}
-            className={`transition-all duration-500 ${"opacity-100 translate-y-0" 
-            }`}
+            className="mb-8"
           >
-            <div className="mb-8 bg-white rounded-3xl overflow-hidden shadow-xl border border-pink-50">
+            <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-pink-50 hover:shadow-2xl transition-shadow duration-300">
               <div className="flex flex-col lg:flex-row">
                 {/* Left side with image */}
                 <div className="lg:w-2/5 relative">
@@ -127,26 +106,7 @@ const EducationSection = () => {
             </div>
           </div>
         ))}
-      </div>
-      
-      {/* Education steps timeline (mobile friendly) */}
-      <div className="mt-16 px-4">
-        <div className="relative border-l-2 border-pink-200 pl-8 ml-4 space-y-10">
-          {educationCards.map((card, index) => (
-            <div key={card.id} className="relative">
-              {/* Timeline dot */}
-              <div className={`absolute w-6 h-6 rounded-full ${activeIndex === index ? 'bg-pink-500' : 'bg-pink-200'} left-[-35px] top-0 border-4 border-white`}></div>
-              
-              {/* Timeline content (mobile) */}
-              <div className="md:hidden">
-                <span className="text-xs font-medium text-pink-500">{card.duration}</span>
-                <h3 className="text-lg font-bold">{card.collageName}</h3>
-                <p className="text-gray-600">{card.course}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      </ScrollStackContainer>
     </div>
   );
 };

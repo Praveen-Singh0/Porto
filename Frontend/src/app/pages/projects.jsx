@@ -84,7 +84,7 @@ const ProjectSection = () => {
 
   return (
     <>
-      <h1 className="text-center text-4xl font-bold mb-8 relative">
+      <h1 className="mt-12 text-center text-4xl font-bold mb-8 relative">
         Project <span className="text-pink-500">Section</span>
         <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
       </h1>

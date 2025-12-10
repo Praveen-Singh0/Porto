@@ -22,7 +22,7 @@ const page = () => {
       }
     };
 
-    logoutUser();
+    // logoutUser();
   }, []);
 
   return <p>Logging you out...</p>;

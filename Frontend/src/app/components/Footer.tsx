@@ -1,6 +1,9 @@
+import SplashCursor from "./SplashCursor";
 const Footer = () => {
   return (
     <footer className="relative overflow-hidden bg-gradient-to-br from-gray-600 via-indigo-950 to-black text-white">
+
+      <SplashCursor/>
       {/* Animated gradient blobs - modern design trend */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute -left-20 top-20 h-72 w-72 animate-pulse rounded-full bg-purple-600 blur-3xl"></div>

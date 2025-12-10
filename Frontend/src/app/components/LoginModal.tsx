@@ -1,39 +1,34 @@
 "use client";
+
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import axiosInstance from "../utils/axiosInstance";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "../context/AuthContext";
 
+interface LoginModalProps {
+  isOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
+}
 
-
-const LoginModal = ({ isOpen, setIsModalOpen }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
   const router = useRouter();
-  const { toast } = useToast()
-
+  const { toast } = useToast();
   const { setIsLoggedIn } = useAuth();
 
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let hasError = false;
 
-    if (!email) {
-      hasError = true
-    } else {
-      hasError = false
-    }
+    if (!email) hasError = true;
     if (!password) {
       setPasswordError(true);
       hasError = true;
@@ -43,12 +38,11 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
 
     if (!hasError) {
       try {
-        const res = await axiosInstance.post('/login', { email, password });
-        console.log("response : ", res.data);
-        setIsLoggedIn(true)
-        setIsModalOpen(false);
-        router.push('/admin-dashboard');
-      } catch (error) {
+        // const res = await axiosInstance.post('/login', { email, password });
+        // setIsLoggedIn(true);
+        // setIsModalOpen(false);
+        // router.push('/admin-dashboard');
+      } catch (error: any) {
         const errorMessage = error?.response?.data?.message;
         const statusCode = error?.response?.status;
 
@@ -61,29 +55,26 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
         } else if (!error.response) {
           toast({
             title: "Server Error",
-            description: "Something went wrong, the server is not responding.",
+            description: "Server is not responding.",
             variant: "destructive",
           });
         } else {
-          // Generic fallback
           toast({
             title: "Login Failed",
-            description: errorMessage || "An unexpected error occurred.",
+            description: errorMessage || "Unexpected error occurred.",
             variant: "destructive",
           });
         }
-
-        console.error("Login error:", error);
+        console.error("Login Error:", error);
       }
-
     }
   };
 
   const onClose = () => {
     setIsModalOpen(false);
-    setPasswordError(false)
-    setPassword('')
-  }
+    setPasswordError(false);
+    setPassword("");
+  };
 
   if (!isOpen) return null;
 
@@ -92,21 +83,21 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 20
-        }}
+        transition={{ type: "spring", stiffness: 150, damping: 20 }}
         className="max-w-[950px] bg-white rounded-lg shadow-lg overflow-hidden relative"
       >
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
@@ -137,7 +128,7 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
                   placeholder="your email sir.."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full px-3 py-2 border rounded-lg border-gray-300 focus:ring-blue-100 focus:outline-none focus:ring-1`}
+                  className="w-full px-3 py-2 border rounded-lg border-gray-300 focus:ring-blue-100 focus:outline-none focus:ring-1"
                 />
               </div>
 
@@ -149,9 +140,11 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
                     placeholder="your password sir.."
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${passwordError ? "border-red-500" : "border-gray-300 focus:ring-blue-100"
-                      }`}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                      passwordError ? "border-red-500" : "border-gray-300 focus:ring-blue-100"
+                    }`}
                   />
+
                   <button
                     type="button"
                     className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
@@ -164,17 +157,23 @@ const LoginModal = ({ isOpen, setIsModalOpen }) => {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="remember"
-                    className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
-                  />
-                  <label htmlFor="remember" className="ml-2 text-sm text-gray-600">Remember me</label>
+                  <input type="checkbox" id="remember" className="w-4 h-4 rounded border-gray-300" />
+                  <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
+                    Remember me
+                  </label>
                 </div>
-                <a href="#" className="text-sm text-blue-500 hover:underline">Forgot password?</a>
+                <a href="#" className="text-sm text-blue-500 hover:underline">
+                  Forgot password?
+                </a>
               </div>
 
-              <button disabled={email === ''} type="submit" className={`w-full  text-white py-2 px-4 rounded-lg transition-colors ${password !== '' & email !== '' ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-200'}`}>
+              <button
+                disabled={!email}
+                type="submit"
+                className={`w-full text-white py-2 px-4 rounded-lg transition-colors ${
+                  password && email ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-200"
+                }`}
+              >
                 Sign in to your account
               </button>
 
