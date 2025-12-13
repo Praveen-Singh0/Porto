@@ -5,9 +5,9 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -15,20 +15,14 @@ const Header = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 100);
-    };
-
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
 
-    window.addEventListener("scroll", handleScroll);
     return () => {
       document.body.style.overflow = "auto";
-      window.removeEventListener("scroll", handleScroll);
     };
   }, [isModalOpen]);
 
@@ -36,8 +30,9 @@ const Header = () => {
     { name: "Home", current: true },
     { name: "About", current: false },
     { name: "Education", current: false },
-    { name: "Experience", current: false },
+    { name: "Skills", current: false },
     { name: "Projects", current: false },
+    { name: "Experience", current: false },
     { name: "Contact", current: false },
   ];
 
@@ -53,15 +48,14 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky p-1 transition-all duration-500 ease-in-out z-50 
-      ${isVisible ? "top-0 bg-white" : "-top-28 bg-transparent"}`}
+      className={` p-1 transition-all duration-500 ease-in-out z-50 top-0 bg-transparent`}
     >
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <nav className="border-gray-200 lg:px-6 py-2.5 dark:bg-gray-800">
+        <nav className="border-gray-200 lg:px-6 py-2.5 ">
           <div className="flex flex-wrap justify-between mx-auto max-w-screen-xl">
             <a href="#" className="flex items-center">
               <Image
@@ -81,11 +75,11 @@ const Header = () => {
                   <li key={index}>
                     <a
                       href={`#${item.name.toLowerCase()}`}
-                      className={`block py-2 pr-4 pl-3 rounded lg:bg-transparent lg:p-0 
+                      className={`block py-2 pr-4 pl-3 rounded lg:bg-transparent lg:p-0 transition-colors duration-200
             ${
               item.current
-                ? "text-blue-700"
-                : "text-gray-700 hover:text-blue-500"
+                ? "text-blue-700 dark:text-blue-400"
+                : "text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
             }`}
                     >
                       {item.name}
@@ -94,17 +88,20 @@ const Header = () => {
                 ))}
               </ul>
             </div>
-            <div className="flex items-center lg:order-2">
+            <div className="flex items-center lg:order-2 gap-3">
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               <button
                 onClick={HandleLogin}
-                className="text-gray-800 dark:text-white bg-gray-50 hover:bg-pink-300 focus:ring-3 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-yellow-300"
+                className="text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-800 hover:bg-pink-300 dark:hover:bg-pink-600 focus:ring-3 focus:ring-gray-300 dark:focus:ring-gray-600 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 transition-colors duration-200"
               >
                 Log in
               </button>
 
               <div className="relative">
                 <img
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-700"
                   src="/assets/img/avatar.jpg"
                   alt="Avatar"
                 />
@@ -113,7 +110,7 @@ const Header = () => {
 
               <button
                 onClick={() => setOpen(!open)}
-                className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none"
+                className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 dark:text-gray-400 rounded-lg lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-200"
                 aria-expanded={open}
               >
                 <span className="sr-only">Open main menu</span>

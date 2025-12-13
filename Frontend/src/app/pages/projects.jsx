@@ -4,7 +4,7 @@ import { AiOutlineCaretRight, BsArrowRightCircleFill } from "react-icons/ai";
 
 import { useRef, useState, useEffect } from "react";
 import "../../../public/assets/style/Caro.scss";
-import cards from "../../../public/assets/data/Projects.js";
+import cards from "../../../public/assets/data/Projects.json";
 
 const Card = ({ dataImage, header, link }) => {
   const cardRef = useRef(null);
@@ -61,7 +61,7 @@ const Card = ({ dataImage, header, link }) => {
             />
           </div>
         </div>
-        <div className="text-center text-xl text-gray-900">
+        <div className="text-center text-lg text-gray-900 dark:text-gray-100 font-mono font-semibold mt-6">
           <h1>{header}</h1>
         </div>
       </a>
@@ -84,7 +84,7 @@ const ProjectSection = () => {
 
   return (
     <>
-      <h1 className="mt-12 text-center text-4xl font-bold mb-8 relative">
+      <h1 className="mt-12 text-center font-bold mb-8 relative text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100">
         Project <span className="text-pink-500">Section</span>
         <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
       </h1>

@@ -1,103 +1,168 @@
-
-'use client'
+"use client";
 import React from "react";
-import { AiOutlinePauseCircle } from "react-icons/ai";
+import { motion } from "framer-motion";
+import { FaServer, FaCode } from "react-icons/fa";
+import { ScrollStackContainer } from "../components/ScrollStack";
+import ExperienceInfo from "../../../public/assets/data/ExperienceInfo.json";
 
+const { experiences } = ExperienceInfo;
+
+const iconMap = {
+  FaServer: FaServer,
+  FaCode: FaCode,
+};
+ 
 const ExperienceSection = () => {
   return (
-    <>
-      <h1 className="text-center text-4xl font-bold mb-8 relative sm:hidden">
-        Experience <span className="text-pink-500">Section</span>
-        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
-      </h1>
-
-
-
-      <div className="mt-4 shadow-lg w-full ">
-        <h2 className="pl-2 mt-4 font-semibold text-indigo-600">{`Tech Matys`} <i className="text-sm">(April-September 2024)</i></h2>
-        <div style={{ padding: "0px 1rem" }}>
-          <p className="mt-2  text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
-            <AiOutlinePauseCircle className="inline mr-2 " />
-            Jr. Software Developer</p>
-          <p className="mt-3  text-gray-600">
-            As a Junior Software Developer, I focused on creating responsive, user-friendly interfaces using React and Ant Design, enhancing the efficiency and performance of web applications.
-          </p>
-          <dl className="mt-5  max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
-            <div className="relative pl-9">
-              <dt className="inline font-semibold text-gray-900">
-                <svg className="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fillRule="evenodd" d="M5.5 17a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 15 17H5.5Zm3.75-2.75a.75.75 0 0 0 1.5 0V9.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0l-3.25 3.5a.75.75 0 1 0 1.1 1.02l1.95-2.1v4.59Z" clipRule="evenodd" />
-                </svg>
-                Student Information System (SIS): Played a crucial role in developing a comprehensive Student Information System.
-              </dt>
-            </div>
-            <div className="relative pl-9">
-              <dt className="inline font-semibold text-gray-900">
-                <svg className="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
-                </svg>
-                API Integration & CRUD Operations: </dt>
-              <dd className="inline">
-                Integrated APIs to fetch and manage data, performing Create, Read, Update, and Delete (CRUD) operations efficiently.
-              </dd>
-            </div>
-            <div className="relative pr-1 pl-9 pb-6">
-              <dt className="inline font-semibold text-gray-900">
-                <svg className="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path d="M4.632 3.533A2 2 0 0 1 6.577 2h6.846a2 2 0 0 1 1.945 1.533l1.976 8.234A3.489 3.489 0 0 0 16 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234Z" />
-                  <path fillRule="evenodd" d="M4 13a2 2 0 1 0 0 4h12a2 2 0 1 0 0-4H4Zm11.24 2a.75.75 0 0 1 .75-.75H16a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75h-.01a.75.75 0 0 1-.75-.75V15Zm-2.25-.75a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 0 0 .75-.75V15a.75.75 0 0 0-.75-.75h-.01Z" clipRule="evenodd" />
-                </svg>
-                Learning Management System (LMS) Implementation: </dt>
-              <dd className="inline">
-                Utilized Moodle to develop features for online learning management.
-              </dd>
-            </div>
-          </dl>
-        </div>
+    <div className="mt-16 mx-auto max-w-7xl relative">
+      {/* Pink background decorations */}
+      <div className="absolute top-40 left-20 -z-10 opacity-10">
+        <div className="w-72 h-72 rounded-full bg-pink-400 blur-3xl"></div>
       </div>
-      <div className="mt-4 shadow-lg w-full ">
-        <h2 className="pl-2 mt-4 font-semibold text-indigo-600">{`Tech Matys`} <i className="text-sm">(April-September 2024)</i></h2>
-        <div style={{ padding: "0px 1rem" }}>
-          <p className="mt-2  text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
-            <AiOutlinePauseCircle className="inline mr-2 " />
-            Jr. Software Developer</p>
-          <p className="mt-3  text-gray-600">
-            As a Junior Software Developer, I focused on creating responsive, user-friendly interfaces using React and Ant Design, enhancing the efficiency and performance of web applications.
-          </p>
-          <dl className="mt-5  max-w-xl space-y-8 text-base/7 text-gray-600 lg:max-w-none">
-            <div className="relative pl-9">
-              <dt className="inline font-semibold text-gray-900">
-                <svg className="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fillRule="evenodd" d="M5.5 17a4.5 4.5 0 0 1-1.44-8.765 4.5 4.5 0 0 1 8.302-3.046 3.5 3.5 0 0 1 4.504 4.272A4 4 0 0 1 15 17H5.5Zm3.75-2.75a.75.75 0 0 0 1.5 0V9.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0l-3.25 3.5a.75.75 0 1 0 1.1 1.02l1.95-2.1v4.59Z" clipRule="evenodd" />
-                </svg>
-                Student Information System (SIS): Played a crucial role in developing a comprehensive Student Information System.
-              </dt>
-            </div>
-            <div className="relative pl-9">
-              <dt className="inline font-semibold text-gray-900">
-                <svg className="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fillRule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clipRule="evenodd" />
-                </svg>
-                API Integration & CRUD Operations: </dt>
-              <dd className="inline">
-                Integrated APIs to fetch and manage data, performing Create, Read, Update, and Delete (CRUD) operations efficiently.
-              </dd>
-            </div>
-            <div className="relative pr-1 pl-9 pb-6">
-              <dt className="inline font-semibold text-gray-900">
-                <svg className="absolute left-1 top-1 size-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path d="M4.632 3.533A2 2 0 0 1 6.577 2h6.846a2 2 0 0 1 1.945 1.533l1.976 8.234A3.489 3.489 0 0 0 16 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234Z" />
-                  <path fillRule="evenodd" d="M4 13a2 2 0 1 0 0 4h12a2 2 0 1 0 0-4H4Zm11.24 2a.75.75 0 0 1 .75-.75H16a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75h-.01a.75.75 0 0 1-.75-.75V15Zm-2.25-.75a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 0 0 .75-.75V15a.75.75 0 0 0-.75-.75h-.01Z" clipRule="evenodd" />
-                </svg>
-                Learning Management System (LMS) Implementation: </dt>
-              <dd className="inline">
-                Utilized Moodle to develop features for online learning management.
-              </dd>
-            </div>
-          </dl>
-        </div>
+      <div className="absolute right-20 -z-10 opacity-10">
+        <div className="w-64 h-64 rounded-full bg-pink-600 blur-3xl"></div>
       </div>
-    </>
+
+
+         <div className="pointer-events-none blur-2xl absolute inset-x-0 top-24 -z-10 flex justify-center opacity-40">
+        <div
+          className="w-[32rem] sm:w-[64rem] aspect-[1155/678] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] blur-3xl"
+          style={{
+            clipPath:
+              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+          }}
+          aria-hidden
+        />
+      </div>
+
+      {/* Section Title */}
+      <motion.h1
+        className="text-center font-bold  relative text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 "
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Work <span className="text-pink-500">Experience</span>
+        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2"></div>
+      </motion.h1>
+
+      {/* Scroll Stack Container */}
+      <ScrollStackContainer className="mt-10">
+        {experiences.map((exp, index) => {
+          const Icon = iconMap[exp.icon] || FaCode;
+
+          return (
+            <div key={exp.id} className="mb-8">
+<div className="
+  bg-white dark:bg-gray-800
+  rounded-bl-3xl rounded-tr-3xl
+  overflow-hidden shadow-xl
+  border border-pink-50 dark:border-gray-700
+  hover:shadow-2xl transition-shadow duration-300
+">
+                <div className="flex flex-col">
+                  {/* Header Section */}
+                  <div className="p-6 md:p-8 border-b border-gray-100 dark:border-gray-700">
+                    <div className="flex items-start gap-6">
+                      {/* Icon */}
+                      <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center shadow-lg">
+                        <Icon className="text-white text-2xl" />
+                      </div>
+
+                      {/* Title & Company Info */}
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                              {exp.title}
+                            </h2>
+                            <h3
+                              className="text-xl md:text-2xl font-semibold mb-3"
+                              style={{ color: exp.color }}
+                            >
+                              {exp.company}
+                            </h3>
+                          </div>
+                          {/* Card Number Badge */}
+                          <div className="hidden md:flex w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-pink-600 items-center justify-center text-white font-bold text-lg shadow-lg">
+                            {index + 1}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-400">
+                          <span className="flex items-center gap-1">
+                            📍 {exp.location}
+                          </span>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            📅 {exp.duration}
+                          </span>
+                          <span>•</span>
+                          <span className="px-3 py-1 bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400 rounded-full font-medium">
+                            {exp.type}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="p-6 md:p-8">
+                    <div className="grid md:grid-cols-1 gap-6">
+                      {/* Responsibilities */}
+                      <div>
+                        <h4
+                          className="font-bold text-gray-800 dark:text-gray-200 mb-4"
+                          style={{ fontSize: "1.4rem" }}
+                        >
+                          Key Responsibilities
+                        </h4>
+
+                        <ul className="space-y-3">
+                          {exp.responsibilities.map((resp, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
+                            >
+                              <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">
+                                •
+                              </span>
+                              <span className="flex-1 leading-relaxed text-md">
+                                {resp}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Technologies */}
+                      <div>
+                        <h4
+                          className=" text-lg font-bold text-gray-800 dark:text-gray-200 mb-4"
+                        >
+                          Technologies Used
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {exp.technologies.map((tech, idx) => (
+                            <span
+                              key={idx}
+                              className="px-3 py-2 bg-gradient-to-br from-pink-50 dark:from-gray-700 to-white dark:to-gray-800 border border-pink-100 dark:border-gray-600 rounded-lg text-center shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-pink-600 dark:text-pink-400 text-sm font-medium"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </ScrollStackContainer>
+    </div>
   );
 };
+
 export default ExperienceSection;

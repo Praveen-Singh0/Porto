@@ -185,7 +185,7 @@ const SkillsSection = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-pink-50 py-12 md:py-16 lg:py-14">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 md:py-16 lg:py-14">
       {/* Animated background blobs */}
       <motion.div 
         variants={blobVariants}
@@ -214,18 +214,18 @@ const SkillsSection = () => {
           animate="visible"
         >
           <motion.div 
-            className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-pink-50 rounded-full border border-pink-100"
+            className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-100 dark:border-pink-800"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <span className="text-pink-600 font-semibold text-xs md:text-sm tracking-wide">EXPERTISE</span>
+            <span className="text-pink-600 dark:text-pink-400 font-semibold text-xs md:text-sm tracking-wide">EXPERTISE</span>
           </motion.div>
           
           <motion.h1 
-            className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 px-4"
+            className="text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
@@ -234,7 +234,7 @@ const SkillsSection = () => {
           </motion.h1>
           
           <motion.p 
-            className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg px-4"
+            className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base md:text-lg px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
@@ -250,7 +250,7 @@ const SkillsSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 min-w-min">
+          <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 min-w-min">
             {categories.map((category, index) => (
               <motion.button
                 key={category}
@@ -258,7 +258,7 @@ const SkillsSection = () => {
                 className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap ${
                   filter === category 
                     ? "text-white" 
-                    : "text-gray-600 hover:text-gray-900"
+                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -295,7 +295,7 @@ const SkillsSection = () => {
                 <motion.div
                   key={skill.id}
                   variants={cardVariants}
-                  className="relative bg-white/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 shadow-lg border border-gray-100 overflow-hidden"
+                  className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
                   initial="rest"
                   whileHover="hover"
                   animate="rest"
@@ -341,12 +341,12 @@ const SkillsSection = () => {
                     
                     {/* Category badge - Hidden on mobile, visible on md+ */}
                     <motion.span 
-                      className="hidden md:block absolute -top-2 -right-2 px-2 py-1 bg-pink-100 text-pink-600 text-xs font-semibold rounded-full"
+                      className="hidden md:block absolute -top-2 -right-2 px-2 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 text-xs font-semibold rounded-full"
                       variants={badgeVariants}
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ 
-                        delay: 0.7 + index * 0.05,
+                        delay: 0.2 + index * 0.05,
                         type: "spring",
                         stiffness: 200
                       }}
@@ -357,9 +357,9 @@ const SkillsSection = () => {
 
                   {/* Skill name - Smaller text on mobile */}
                   <motion.h3 
-                    className="text-sm md:text-base lg:text-xl font-bold text-gray-800 mb-2 md:mb-3 relative z-10 leading-tight"
+                    className="text-sm md:text-base lg:text-xl font-bold text-gray-700 dark:text-gray-100 mb-2 md:mb-3 relative z-10 leading-tight"
                     variants={{
-                      rest: { color: "#1f2937" },
+                      
                       hover: { 
                         color: "#ec4899",
                         x: 5,
@@ -374,7 +374,7 @@ const SkillsSection = () => {
                   <div className="space-y-1 md:space-y-2 relative z-10">
                     <div className="flex justify-between items-center">
                       <motion.span 
-                        className="text-xs md:text-sm text-gray-500 font-medium"
+                        className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium"
                         variants={{
                           rest: { x: 0 },
                           hover: { x: 3, transition: { duration: 0.2 } }
@@ -393,7 +393,7 @@ const SkillsSection = () => {
                     </div>
                     
                     {/* Progress bar container */}
-                    <div className="w-full h-1.5 md:h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 md:h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                       <motion.div
                         className="h-full rounded-full relative"
                         style={{
@@ -472,7 +472,7 @@ const SkillsSection = () => {
               key={stat.label}
               custom={index}
               variants={statVariants}
-              className="bg-white/60 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-5 lg:p-6 text-center shadow-lg border border-gray-100"
+              className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-5 lg:p-6 text-center shadow-lg border border-gray-100 dark:border-gray-700"
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 20px 25px -5px rgba(236, 72, 153, 0.2)",
@@ -495,7 +495,7 @@ const SkillsSection = () => {
                 {stat.icon}
               </motion.div>
               <motion.div 
-                className="text-2xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-0.5 md:mb-1"
+                className="text-2xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-0.5 md:mb-1"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ 
@@ -507,7 +507,7 @@ const SkillsSection = () => {
                 {stat.value}
               </motion.div>
               <motion.div 
-                className="text-xs md:text-sm text-gray-600 font-medium"
+                className="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.4 + index * 0.1 }}

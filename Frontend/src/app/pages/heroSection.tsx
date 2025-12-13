@@ -1,6 +1,7 @@
 "use client";
 
 import React, {useState, useEffect} from "react";
+import Header from "../components/Header";
 import {
   AiOutlineClose,
   AiFillLinkedin,
@@ -28,6 +29,8 @@ const TopPage = () => {
 
 
   return (
+    <>
+    <Header/>
     <div className="mt-12 p-0 md:p-12">
       <div className="relative isolate px-4 sm:px-5 lg:px-8">
         <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mx-auto max-w-7xl">
@@ -36,7 +39,7 @@ const TopPage = () => {
 
             {/* 1️⃣ FIRST DIV */}
             <motion.div {...fadeUp(0.1)} className="sm:flex sm:justify-center">
-              <div className="relative rounded-full px-3 py-1 text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+              <div className="relative rounded-full px-3 py-1 text-sm text-gray-700 dark:text-gray-100 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                 Connect me on LinkedIn.{" "}
                 <a
                   target="_blank"
@@ -49,12 +52,12 @@ const TopPage = () => {
               </div>
             </motion.div>
 
-            <div className="py-6 text-center">
+            <div className="py-6 text-center ">
 
               {/* 2️⃣ H1 NAME */}
               <motion.h1
                 {...fadeUp(0.25)}
-                className="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl"
+                className="text-balance text-4xl font-semibold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl"
               >
                 Praveen Singh
               </motion.h1>
@@ -63,22 +66,22 @@ const TopPage = () => {
                 {...fadeUp(0.4)}
                 className="mt-2 md:ml-12 block md:flex -centjustifyer"
               >
-                <h1 className="text-balance text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl fontX-large">
+                <h1 className="text-balance text-4xl font-semibold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl fontX-large">
                   Experience In{" "}
                 </h1>
 
-                <div className="content__container mt-2 md:mt-0">
+                <div className="content__container mt-2 md:mt-0 ">
                   <ul className="content__container__list text-center md:text-start">
-                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 sm:text-6xl">
+                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl">
                       Frontend
                     </li>
-                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 sm:text-6xl">
+                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl">
                       Backend
                     </li>
-                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 sm:text-6xl">
+                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl">
                       MERN-Stack
                     </li>
-                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 sm:text-6xl">
+                    <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl">
                       FullStack
                     </li>
                   </ul>
@@ -88,7 +91,7 @@ const TopPage = () => {
               {/* 4️⃣ PARAGRAPH */}
               <motion.p
                 {...fadeUp(0.55)}
-                className="mt-8 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8"
+                className="mt-8 text-pretty text-lg font-medium text-gray-500 dark:text-gray-100 sm:text-xl/8"
               >
                  {bioContent}
               </motion.p>
@@ -105,7 +108,7 @@ const TopPage = () => {
                 >
                   Hire Me
                 </a>
-                <a href="#" className="text-sm/6 font-semibold text-gray-900">
+                <a href="#" className="text-sm/6 font-semibold text-gray-900 dark:text-gray-100">
                   Learn more <span aria-hidden="true">→</span>
                 </a>
               </motion.div>
@@ -182,6 +185,7 @@ const TopPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -25,7 +25,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     let hasError = false;
 
     if (!email) hasError = true;
@@ -34,39 +33,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
       hasError = true;
     } else {
       setPasswordError(false);
-    }
-
-    if (!hasError) {
-      try {
-        // const res = await axiosInstance.post('/login', { email, password });
-        // setIsLoggedIn(true);
-        // setIsModalOpen(false);
-        // router.push('/admin-dashboard');
-      } catch (error: any) {
-        const errorMessage = error?.response?.data?.message;
-        const statusCode = error?.response?.status;
-
-        if (statusCode === 401) {
-          toast({
-            title: "Invalid Credentials",
-            description: "Please check your email or password.",
-            variant: "destructive",
-          });
-        } else if (!error.response) {
-          toast({
-            title: "Server Error",
-            description: "Server is not responding.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Login Failed",
-            description: errorMessage || "Unexpected error occurred.",
-            variant: "destructive",
-          });
-        }
-        console.error("Login Error:", error);
-      }
     }
   };
 
@@ -79,16 +45,17 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex justify-center items-center z-50">
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 150, damping: 20 }}
-        className="max-w-[950px] bg-white rounded-lg shadow-lg overflow-hidden relative"
+        className="max-w-[950px] bg-white dark:bg-gray-900 text-black dark:text-gray-100 rounded-lg shadow-lg overflow-hidden relative"
       >
+        {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 transition-colors"
+          className="absolute top-4 right-4 p-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -102,6 +69,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
         </button>
 
         <div className="flex flex-col md:flex-row">
+          {/* IMAGE PANEL */}
           <div className="hidden md:block w-full md:w-[1000px]">
             <Image
               src="/assets/img/loginIllustration.jpg"
@@ -112,42 +80,57 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
             />
           </div>
 
+          {/* RIGHT PANEL */}
           <div className="w-full p-6 md:p-8">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
               </div>
-              <span className="text-xl font-semibold">Flowbite</span>
+              <span className="text-xl font-semibold dark:text-gray-100">Flowbite</span>
             </div>
 
+            {/* FORM */}
             <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* EMAIL */}
               <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
+                <label className="block text-sm font-medium mb-2 dark:text-gray-200">Email</label>
                 <input
                   type="email"
                   placeholder="your email sir.."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-lg border-gray-300 focus:ring-blue-100 focus:outline-none focus:ring-1"
+                  className="w-full px-3 py-2 border rounded-lg 
+                             border-gray-300 dark:border-gray-600
+                             bg-white dark:bg-gray-800
+                             text-black dark:text-gray-100
+                             focus:ring-blue-100 dark:focus:ring-blue-500
+                             focus:outline-none focus:ring-1"
                 />
               </div>
 
+              {/* PASSWORD */}
               <div>
-                <label className="block text-sm font-medium mb-2">Password</label>
+                <label className="block text-sm font-medium mb-2 dark:text-gray-200">Password</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="your password sir.."
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                      passwordError ? "border-red-500" : "border-gray-300 focus:ring-blue-100"
-                    }`}
+                    className={`w-full px-3 py-2 border rounded-lg 
+                      bg-white dark:bg-gray-800 
+                      text-black dark:text-gray-100 
+                      focus:outline-none focus:ring-2 
+                      ${
+                        passwordError
+                          ? "border-red-500 focus:ring-red-300"
+                          : "border-gray-300 dark:border-gray-600 focus:ring-blue-100 dark:focus:ring-blue-500"
+                      }`}
                   />
 
                   <button
                     type="button"
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"
                     onClick={() => setShowPassword((prev) => !prev)}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -155,48 +138,63 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
                 </div>
               </div>
 
+              {/* REMEMBER + FORGOT */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <input type="checkbox" id="remember" className="w-4 h-4 rounded border-gray-300" />
-                  <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    className="w-4 h-4 rounded border-gray-300 dark:bg-gray-800 dark:border-gray-600"
+                  />
+                  <label htmlFor="remember" className="ml-2 text-sm text-gray-600 dark:text-gray-300">
                     Remember me
                   </label>
                 </div>
-                <a href="#" className="text-sm text-blue-500 hover:underline">
+
+                <a href="#" className="text-sm text-blue-500 dark:text-blue-400 hover:underline">
                   Forgot password?
                 </a>
               </div>
 
+              {/* BUTTON */}
               <button
                 disabled={!email}
                 type="submit"
-                className={`w-full text-white py-2 px-4 rounded-lg transition-colors ${
-                  password && email ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-200"
-                }`}
+                className={`w-full text-white py-2 px-4 rounded-lg transition-colors
+                ${password && email ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-200 dark:bg-gray-700"}`}
               >
                 Sign in to your account
               </button>
 
+              {/* DIVIDER */}
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
+                  <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">or</span>
+                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-300">or</span>
                 </div>
               </div>
 
+              {/* SOCIAL BUTTONS */}
               <div className="flex">
                 <button
                   type="button"
-                  className="w-1/2 mr-2 border rounded-lg py-2 px-4 flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+                  className="w-1/2 mr-2 border rounded-lg py-2 px-4 flex items-center justify-center gap-2 
+                             bg-white dark:bg-gray-900 
+                             border-gray-300 dark:border-gray-700
+                             hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                   <img src="/assets/img/googleIcon.png" alt="Google logo" className="w-5 h-5" />
                   Google
                 </button>
+
                 <button
                   type="button"
-                  className="w-1/2 border rounded-lg py-2 px-4 flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+                  className="w-1/2 border rounded-lg py-2 px-4 flex items-center justify-center gap-2 
+                             bg-white dark:bg-gray-900 
+                             border-gray-300 dark:border-gray-700
+                             hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                   <img src="/assets/img/appleIcon.png" alt="Apple logo" className="w-5 h-5" />
                   Apple

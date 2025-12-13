@@ -39,20 +39,13 @@ const techLogos = [
 
 const About = () => {
   // State to track which responsibilities sections are open (mobile only)
-  const [openResponsibilities, setOpenResponsibilities] = useState({});
   const [myBio, setMyBio] = useState('')
 
   useEffect(()=>{
     setMyBio(aboutMeBio.bio)
   }, [])
 
-  const toggleResponsibilities = (expId: any) => {
-    setOpenResponsibilities(prev => ({
-      ...prev,
-      [expId]: !prev[expId]
-    }));
-  };
-
+  
   return (
     <motion.div
       className="mt-16 mx-auto px-4 py-16 max-w-7xl relative overflow-hidden"
@@ -62,7 +55,9 @@ const About = () => {
     >
       {/* Title */}
       <motion.h1
-        className="text-center text-4xl font-bold mb-8 relative"
+        className="text-center font-bold mb-8 relative
+        text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 px-4
+        "
       >
         About <span className="text-pink-500">Me</span>
         <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
@@ -70,7 +65,7 @@ const About = () => {
 
       {/* Main card */}
       <motion.div
-        className="relative rounded-3xl backdrop-blur-sm bg-white/70 border border-pink-100 shadow-xl p-8 mb-16"
+        className="relative rounded-3xl backdrop-blur-sm bg-white/70 dark:bg-gray-800/70 border border-pink-100 dark:border-gray-700 shadow-xl p-8 mb-16"
       >
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Profile Image */}
@@ -91,11 +86,11 @@ const About = () => {
           <motion.div className="flex-1">
             <motion.h2  className="text-3xl font-bold mb-3">
               <span className="text-pink-500">Praveen Singh</span>
-              <span className="text-gray-700"> / Developer</span>
+              <span className="text-gray-700 dark:text-gray-100"> / FullStack</span>
             </motion.h2>
 
             <motion.p
-              className="text-gray-600 mb-6 text-lg leading-relaxed"
+              className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed"
             >
              {myBio}
             </motion.p>
@@ -166,10 +161,10 @@ const About = () => {
           <motion.div
             key={item.title}
             
-            className="bg-white border border-pink-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow"
+            className="bg-white dark:bg-gray-800 border border-pink-100 dark:border-gray-700 p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow"
           >
-            <h3 className="text-pink-500 font-medium mb-2">{item.title}</h3>
-            <p className="text-gray-800 font-semibold">{item.value}</p>
+            <h3 className="text-pink-500 dark:text-pink-400 font-medium mb-2">{item.title}</h3>
+            <p className="text-gray-800 dark:text-gray-200 font-semibold">{item.value}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -177,9 +172,9 @@ const About = () => {
       {/* Documents */}
       <motion.div
         
-        className="bg-white border border-pink-100 rounded-3xl p-8 shadow-lg"
+        className="bg-white dark:bg-gray-800 border border-pink-100 dark:border-gray-700 rounded-3xl p-8 shadow-lg"
       >
-        <h3 className="text-2xl font-bold text-gray-800 mb-6">Documents</h3>
+        <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Documents</h3>
 
         {[
           {
@@ -190,9 +185,9 @@ const About = () => {
           <motion.div
             
             key={doc.file}
-            className="flex items-center justify-between p-4 border border-pink-100 rounded-lg hover:bg-pink-50 transition-colors mb-4"
+            className="flex items-center justify-between p-4 border border-pink-100 rounded-lg  transition-colors mb-4"
           >
-            <span className="font-medium text-gray-700 truncate">
+            <span className="font-medium text-gray-700 dark:text-gray-100 truncate">
               {doc.file}
             </span>
             <a

@@ -2,6 +2,33 @@
   "experiences": [
     {
       "id": 1,
+      "title": "Junior Software Developer",
+      "company": "Tech Matys",
+      "location": "Dehradun",
+      "duration": "February 2024 - November 2024",
+      "period": "10 Months",
+      "type": "Full-time",
+      "responsibilities": [
+        "Led the front-end design improvements for Student Management System (SIS) using React and Ant Design for a responsive and intuitive user experience",
+        "Developed and integrated API functionalities to perform API operations, ensuring seamless data flow between front-end and back-end systems",
+        "Implemented Learning Management System (LMS) features using Moodle, managing user roles and permissions for teachers and students",
+        "Designed and developed modules for creating grades, courses, classrooms, and student submission forms",
+        "Efficiently saved and managed data through RESTful API integrations"
+      ],
+      "technologies": [
+        "React",
+        "Ant Design",
+        "Moodle",
+        "RESTful APIs",
+        "JavaScript",
+        "User Authentication",
+        "Role Management"
+      ],
+      "color": "#8b5cf6",
+      "icon": "FaCode"
+    },
+    {
+      "id": 2,
       "title": "MERN Stack Developer",
       "company": "Farebulk Travels PVT LTD",
       "location": "Dehradun",
@@ -31,33 +58,6 @@
       ],
       "color": "#ec4899",
       "icon": "FaServer"
-    },
-    {
-      "id": 2,
-      "title": "Junior Software Developer",
-      "company": "Tech Matys",
-      "location": "Dehradun",
-      "duration": "February 2024 - November 2024",
-      "period": "10 Months",
-      "type": "Full-time",
-      "responsibilities": [
-        "Led the front-end design improvements for Student Management System (SIS) using React and Ant Design for a responsive and intuitive user experience",
-        "Developed and integrated API functionalities to perform API operations, ensuring seamless data flow between front-end and back-end systems",
-        "Implemented Learning Management System (LMS) features using Moodle, managing user roles and permissions for teachers and students",
-        "Designed and developed modules for creating grades, courses, classrooms, and student submission forms",
-        "Efficiently saved and managed data through RESTful API integrations"
-      ],
-      "technologies": [
-        "React",
-        "Ant Design",
-        "Moodle",
-        "RESTful APIs",
-        "JavaScript",
-        "User Authentication",
-        "Role Management"
-      ],
-      "color": "#8b5cf6",
-      "icon": "FaCode"
     }
   ]
 }
