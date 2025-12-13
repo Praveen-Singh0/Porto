@@ -30,39 +30,17 @@ export default function MajorProjects() {
   return (
     <section className="major-projects-section">
 
-    {/* soft background glow */}
-{/* soft background glow */}
-<div className="pointer-events-none blur-3xl absolute inset-0 -z-10 flex items-center justify-center opacity-40">
-  <div
-    className="
-      w-[60rem] sm:w-[90rem]
-      aspect-[1200/700]
-      bg-gradient-to-tr from-[#ff80b5] to-[#9089fc]
-      blur-[140px]
-    "
-    style={{
-      clipPath: `
-        polygon(
-          5% 20%,
-          25% 5%,
-          50% 0%,
-          75% 8%,
-          95% 25%,
-          100% 50%,
-          92% 75%,
-          75% 95%,
-          50% 100%,
-          25% 92%,
-          8% 75%,
-          0% 50%
-        )
-      `,
-    }}
-    aria-hidden
-  />
-</div>
-
-
+      {/* soft background glow */}
+      <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center opacity-40 blur-3xl">
+        <div
+          aria-hidden
+          className="w-[60rem] sm:w-[90rem] aspect-[1200/700] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] blur-[140px]"
+          style={{
+            clipPath:
+              "polygon(5% 20%,25% 5%,50% 0%,75% 8%,95% 25%,100% 50%,92% 75%,75% 95%,50% 100%,25% 92%,8% 75%,0% 50%)",
+          }}
+        />
+      </div>
 
       {/* Section Header */}
       <motion.div
@@ -80,7 +58,7 @@ export default function MajorProjects() {
         </p>
         <div className="title-underline" />
       </motion.div>
-      
+
       {/* Projects Grid */}
       <motion.div
         className="projects-grid"

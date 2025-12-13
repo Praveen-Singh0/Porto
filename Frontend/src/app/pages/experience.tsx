@@ -11,7 +11,7 @@ const iconMap = {
   FaServer: FaServer,
   FaCode: FaCode,
 };
- 
+
 const ExperienceSection = () => {
   return (
     <div className="mt-16 mx-auto max-w-7xl relative">
@@ -23,8 +23,7 @@ const ExperienceSection = () => {
         <div className="w-64 h-64 rounded-full bg-pink-600 blur-3xl"></div>
       </div>
 
-
-         <div className="pointer-events-none blur-2xl absolute inset-x-0 top-24 -z-10 flex justify-center opacity-40">
+      <div className="pointer-events-none blur-2xl absolute inset-x-0 top-24 -z-10 flex justify-center opacity-40">
         <div
           className="w-[32rem] sm:w-[64rem] aspect-[1155/678] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] blur-3xl"
           style={{
@@ -53,13 +52,7 @@ const ExperienceSection = () => {
 
           return (
             <div key={exp.id} className="mb-8">
-<div className="
-  bg-white dark:bg-gray-800
-  rounded-bl-3xl rounded-tr-3xl
-  overflow-hidden shadow-xl
-  border border-pink-50 dark:border-gray-700
-  hover:shadow-2xl transition-shadow duration-300
-">
+              <div className=" bg-white dark:bg-gray-800 rounded-bl-3xl rounded-tr-3xl overflow-hidden shadow-xl border border-pink-50 dark:border-gray-700 hover:shadow-2xl transition-shadow duration-300">
                 <div className="flex flex-col">
                   {/* Header Section */}
                   <div className="p-6 md:p-8 border-b border-gray-100 dark:border-gray-700">
@@ -137,9 +130,7 @@ const ExperienceSection = () => {
 
                       {/* Technologies */}
                       <div>
-                        <h4
-                          className=" text-lg font-bold text-gray-800 dark:text-gray-200 mb-4"
-                        >
+                        <h4 className=" text-lg font-bold text-gray-800 dark:text-gray-200 mb-4">
                           Technologies Used
                         </h4>
                         <div className="flex flex-wrap gap-2">
