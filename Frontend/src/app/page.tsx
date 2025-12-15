@@ -3,7 +3,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import Footer from "./components/Footer";
 import Dock from "@/components/Dock";
-import { usePathname } from "next/navigation";
 import HeroSection from "./pages/heroSection";
 import About from "./pages/about";
 import EducationSection from "./pages/education";
@@ -16,7 +15,6 @@ import MajorProjects from "./pages/MajorProjectCard";
 import { useScrollPosition } from "./utils/useScrollPosition";
 import ThemeToggle from "./components/ThemeToggle";
 
-// Icons
 import {
   HiHome,
   HiUser,
@@ -51,8 +49,7 @@ const ScrollSection = ({
 };
 
 export default function Home() {
-  const pathname = usePathname();
-  const { isAtTop } = useScrollPosition(); // ✅ Hook called at top level
+  const { isAtTop } = useScrollPosition();
 
   const showDock = !isAtTop;
 
@@ -71,7 +68,6 @@ export default function Home() {
     }
   };
 
-  // Dock items configuration
 const dockItems = [
   {
     icon: <HiHome size={24} />,
@@ -149,7 +145,7 @@ const dockItems = [
         
       </div>
 
-      {/* Dock Navigation - Hidden when at top */}
+      <div className="hidden sm:block">
       {showDock && (
         <Dock
           items={dockItems}
@@ -159,8 +155,9 @@ const dockItems = [
           distance={180}
         />
       )}
+      </div>
 
-      {<Footer />}
+      <Footer />
     </>
   );
 }

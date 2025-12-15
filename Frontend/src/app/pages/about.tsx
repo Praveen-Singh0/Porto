@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
@@ -74,7 +74,7 @@ const About = () => {
             className="relative sm:w-64 w-full h-64 rounded-xl overflow-hidden border-4 border-transparent bg-gradient-to-br from-pink-400 to-pink-600 p-1"
           >
             <Image
-              src="/assets/img/aboutSection.jpg"
+              src="/assets/img/aboutSection.webp"
               alt="Praveen Singh"
               layout="fill"
               objectFit="cover"

@@ -8,7 +8,7 @@ import {
   AiFillGithub,
   AiOutlineJavaScript,
 } from "react-icons/ai";
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 import heroBio from "../../../public/assets/data/bio.json";
@@ -172,7 +172,7 @@ const TopPage = () => {
                   {/* Main Image */}
                   <div className="hero-image-wrapper border border-red-500 dark:border-gray-100">
                     <Image
-                      src="/assets/img/Profile.JPG"
+                      src="/assets/img/Profile.webp"
                       alt="Avatar"
                       width={500}
                       height={500}

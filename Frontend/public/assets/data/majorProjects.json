@@ -11,23 +11,23 @@
   },
   {
     "id": 2,
-    "title": "Flight Search UI",
-    "description": "Modern flight search interface with advanced filters, price comparison, and smooth animations",
-    "image": "/assets/img/testIMG03.png",
-    "liveUrl": "https://your-flight-search.com",
-    "githubUrl": "https://github.com/yourusername/flight-search",
-    "technologies": ["React", "Framer Motion", "Tailwind CSS"],
-    "category": "UI/UX"
-  },
-  {
-    "id": 3,
     "title": "Aviation API Integration",
     "description": "Complete REST API integration for flight data, bookings, and user management system",
-    "image": "/assets/img/testIMG03.png",
+    "image": "/assets/img/majorProject/lowflighttravels.png",
     "liveUrl": "https://your-api-project.com",
     "githubUrl": "https://github.com/yourusername/aviation-api",
     "technologies": ["Node.js", "Express", "MongoDB", "JWT"],
     "category": "API Integration"
+  },
+  {
+    "id": 3,
+    "title": "Flight Search UI",
+    "description": "Modern flight search interface with advanced filters, price comparison, and smooth animations",
+    "image": "/assets/img/majorProject/tommorow.png",
+    "liveUrl": "https://your-flight-search.com",
+    "githubUrl": "https://github.com/yourusername/flight-search",
+    "technologies": ["React", "Framer Motion", "Tailwind CSS"],
+    "category": "UI/UX"
   },
   {
     "id": 4,

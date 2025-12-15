@@ -42,6 +42,8 @@ export default function MajorProjects() {
         />
       </div>
 
+
+
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -61,7 +63,7 @@ export default function MajorProjects() {
 
       {/* Projects Grid */}
       <motion.div
-        className="projects-grid"
+        className="projects-grid "
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -78,7 +80,7 @@ export default function MajorProjects() {
               liveUrl={project.liveUrl}
               githubUrl={project.githubUrl}
               featured={project.featured}
-              containerHeight="420px"
+              containerHeight="350px"
             />
           </motion.div>
         ))}
