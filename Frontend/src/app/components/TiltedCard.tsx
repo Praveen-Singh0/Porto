@@ -12,7 +12,6 @@ interface TiltedCardProps {
   technologies: string[];
   liveUrl: string;
   githubUrl?: string;
-  featured: boolean;
   containerHeight?: React.CSSProperties['height'];
   containerWidth?: React.CSSProperties['width'];
   scaleOnHover?: number;

@@ -2,6 +2,21 @@
 import { motion } from "framer-motion";
 import TiltedCard from "../components/TiltedCard";
 import majorProjects from "../../../public/assets/data/majorProjects.json";
+
+
+// types 
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  liveUrl: string;
+  githubUrl: string;
+  category: string;
+}
+
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -25,7 +40,7 @@ const itemVariants = {
 };
 
 export default function MajorProjects() {
-  const projects = majorProjects;
+  const projects = majorProjects as Project[];
 
   return (
     <section className="major-projects-section">
@@ -79,7 +94,6 @@ export default function MajorProjects() {
               technologies={project.technologies}
               liveUrl={project.liveUrl}
               githubUrl={project.githubUrl}
-              featured={project.featured}
               containerHeight="350px"
             />
           </motion.div>

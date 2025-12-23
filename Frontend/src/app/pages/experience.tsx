@@ -1,28 +1,13 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
-import { FaServer, FaCode } from "react-icons/fa";
-import { ScrollStackContainer } from "../components/ScrollStack";
+import { FaCode } from "react-icons/fa";
+import { ScrollStackContainer } from "../utils/ScrollStack";
 import ExperienceInfo from "../../../public/assets/data/ExperienceInfo.json";
 
-const { experiences } = ExperienceInfo;
-
-const iconMap = {
-  FaServer: FaServer,
-  FaCode: FaCode,
-};
+const experiences = ExperienceInfo;
 
 const ExperienceSection = () => {
   return (
     <div className="mt-16 mx-auto max-w-7xl relative">
-      {/* Pink background decorations */}
-      <div className="absolute top-40 left-20 -z-10 opacity-10">
-        <div className="w-72 h-72 rounded-full bg-pink-400 blur-3xl"></div>
-      </div>
-      <div className="absolute right-20 -z-10 opacity-10">
-        <div className="w-64 h-64 rounded-full bg-pink-600 blur-3xl"></div>
-      </div>
-
       <div className="pointer-events-none blur-2xl absolute inset-x-0 top-24 -z-10 flex justify-center opacity-40">
         <div
           className="w-[32rem] sm:w-[64rem] aspect-[1155/678] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] blur-3xl"
@@ -35,20 +20,17 @@ const ExperienceSection = () => {
       </div>
 
       {/* Section Title */}
-      <motion.h1
+      <h1
         className="text-center font-bold  relative text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 "
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
       >
         Work <span className="text-pink-500">Experience</span>
         <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2"></div>
-      </motion.h1>
+      </h1>
 
       {/* Scroll Stack Container */}
       <ScrollStackContainer className="mt-10">
         {experiences.map((exp, index) => {
-          const Icon = iconMap[exp.icon] || FaCode;
+          const Icon = FaCode;
 
           return (
             <div key={exp.id} className="mb-8">

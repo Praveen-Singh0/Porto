@@ -7,6 +7,7 @@ import {
   AiFillInstagram,
   AiOutlineGlobal,
 } from "react-icons/ai";
+import Button from "../components/ui/Button";
 
 type CardProps = {
   title: string;
@@ -224,7 +225,7 @@ const ContactSection = (): JSX.Element => {
                 </div>
               )}
 
-              <button
+              <Button
                 type="submit"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:from-pink-600 hover:to-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-pink-500 disabled:opacity-70 disabled:cursor-not-allowed"
                 aria-disabled={loading}
@@ -254,7 +255,7 @@ const ContactSection = (): JSX.Element => {
                   </svg>
                 )}
                 <span>{loading ? "Sending..." : "Let’s talk"}</span>
-              </button>
+              </Button>
             </div>
           </form>
         </div>

@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 import heroBio from "../../../public/assets/data/bio.json";
+import Button from "../components/ui/Button";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
@@ -207,27 +208,27 @@ const TopPage = () => {
 
                       {/* Social Buttons */}
                       <div className="hero-social-buttons">
-                        <button className="hero-social-btn">
+                        <Button className="hero-social-btn">
                           <a target="_blank" href="https://x.com/prvnBrTwal">
                             <AiOutlineClose />
                           </a>
-                        </button>
-                        <button className="hero-social-btn linkedin">
+                        </Button>
+                        <Button className="hero-social-btn linkedin">
                           <a
                             target="_blank"
                             href="https://www.linkedin.com/in/praveen-singh-ba5656172/"
                           >
                             <AiFillLinkedin className="text-sky-600" />
                           </a>
-                        </button>
-                        <button className="hero-social-btn github">
+                        </Button>
+                        <Button className="hero-social-btn github">
                           <a
                             target="_blank"
                             href="https://github.com/Praveen-Singh0"
                           >
                             <AiFillGithub />
                           </a>
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-import SplashCursor from "./SplashCursor";
+import SplashCursor from "../utils/SplashCursor";
 const Footer = () => {
   return (
     <footer className="relative overflow-hidden bg-gradient-to-br from-gray-600 via-indigo-950 to-black text-white">
@@ -24,7 +24,6 @@ const Footer = () => {
           
          
           
-          {/* CTA button - glass morphism design trend */}
           <a href="#contact" className="group relative inline-flex items-center overflow-hidden rounded-full bg-white/10 px-8 py-3 backdrop-blur-sm transition duration-300 hover:bg-white/20">
             <span className="absolute -end-full transition-all group-hover:end-4">
               <svg className="h-5 w-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

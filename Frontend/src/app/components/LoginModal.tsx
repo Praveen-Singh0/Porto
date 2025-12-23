@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -7,6 +6,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "../context/AuthContext";
+import Button from "./ui/Button";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -53,9 +53,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
         className="max-w-[950px] bg-white dark:bg-gray-900 text-black dark:text-gray-100 rounded-lg shadow-lg overflow-hidden relative"
       >
         {/* CLOSE BUTTON */}
-        <button
+        <Button
+          variant="ghost"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+          className="absolute top-4 right-4 p-2 "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -64,9 +65,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
-        </button>
+        </Button>
 
         <div className="flex flex-col md:flex-row">
           {/* IMAGE PANEL */}
@@ -86,14 +92,18 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
               <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
               </div>
-              <span className="text-xl font-semibold dark:text-gray-100">Flowbite</span>
+              <span className="text-xl font-semibold dark:text-gray-100">
+                Flowbite
+              </span>
             </div>
 
             {/* FORM */}
             <form className="space-y-4" onSubmit={handleSubmit}>
               {/* EMAIL */}
               <div>
-                <label className="block text-sm font-medium mb-2 dark:text-gray-200">Email</label>
+                <label className="block text-sm font-medium mb-2 dark:text-gray-200">
+                  Email
+                </label>
                 <input
                   type="email"
                   placeholder="your email sir.."
@@ -110,7 +120,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
 
               {/* PASSWORD */}
               <div>
-                <label className="block text-sm font-medium mb-2 dark:text-gray-200">Password</label>
+                <label className="block text-sm font-medium mb-2 dark:text-gray-200">
+                  Password
+                </label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -128,13 +140,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
                       }`}
                   />
 
-                  <button
+                  <Button
                     type="button"
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"
+                    variant="ghost"
+                    className="absolute top-1/2 right-1 transform -translate-y-1/2 "
                     onClick={() => setShowPassword((prev) => !prev)}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -146,25 +159,36 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
                     id="remember"
                     className="w-4 h-4 rounded border-gray-300 dark:bg-gray-800 dark:border-gray-600"
                   />
-                  <label htmlFor="remember" className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                  <label
+                    htmlFor="remember"
+                    className="ml-2 text-sm text-gray-600 dark:text-gray-300"
+                  >
                     Remember me
                   </label>
                 </div>
 
-                <a href="#" className="text-sm text-blue-500 dark:text-blue-400 hover:underline">
+                <a
+                  href="#"
+                  className="text-sm text-blue-500 dark:text-blue-400 hover:underline"
+                >
                   Forgot password?
                 </a>
               </div>
 
               {/* BUTTON */}
-              <button
+              <Button
+                variant="primary"
                 disabled={!email}
                 type="submit"
                 className={`w-full text-white py-2 px-4 rounded-lg transition-colors
-                ${password && email ? "bg-blue-500 hover:bg-blue-600" : "bg-blue-200 dark:bg-gray-700"}`}
+                ${
+                  password && email
+                    ? "bg-blue-500 hover:bg-blue-600"
+                    : "bg-blue-200 dark:bg-gray-700"
+                }`}
               >
                 Sign in to your account
-              </button>
+              </Button>
 
               {/* DIVIDER */}
               <div className="relative my-6">
@@ -172,33 +196,43 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
                   <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-300">or</span>
+                  <span className="px-2 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-300">
+                    or
+                  </span>
                 </div>
               </div>
 
               {/* SOCIAL BUTTONS */}
               <div className="flex">
-                <button
-                  type="button"
-                  className="w-1/2 mr-2 border rounded-lg py-2 px-4 flex items-center justify-center gap-2 
-                             bg-white dark:bg-gray-900 
-                             border-gray-300 dark:border-gray-700
-                             hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                <Button
+                  onClick={() => {
+                    console.log("Google login");
+                  }}
+                  variant="outline"
+                  className="w-1/2 mr-2 py-2 px-4 flex items-center justify-center gap-2 "
                 >
-                  <img src="/assets/img/googleIcon.png" alt="Google logo" className="w-5 h-5" />
+                  <img
+                    src="/assets/img/googleIcon.png"
+                    alt="Google logo"
+                    className="w-5 h-5"
+                  />
                   Google
-                </button>
+                </Button>
 
-                <button
-                  type="button"
-                  className="w-1/2 border rounded-lg py-2 px-4 flex items-center justify-center gap-2 
-                             bg-white dark:bg-gray-900 
-                             border-gray-300 dark:border-gray-700
-                             hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                <Button
+                  onClick={() => {
+                    console.log("Apple login");
+                  }}
+                  variant="outline"
+                  className="w-1/2 py-2 px-4 flex items-center justify-center gap-2 "
                 >
-                  <img src="/assets/img/appleIcon.png" alt="Apple logo" className="w-5 h-5" />
+                  <img
+                    src="/assets/img/appleIcon.png"
+                    alt="Apple logo"
+                    className="w-5 h-5"
+                  />
                   Apple
-                </button>
+                </Button>
               </div>
             </form>
           </div>

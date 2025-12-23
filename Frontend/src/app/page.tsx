@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Footer from "./components/Footer";
-import Dock from "@/components/Dock";
+import Dock from "./components/Dock";
 import HeroSection from "./pages/heroSection";
 import About from "./pages/about";
 import EducationSection from "./pages/education";
@@ -13,7 +13,7 @@ import ContactSection from "./pages/contact";
 import ExperienceSection from "./pages/experience";
 import MajorProjects from "./pages/MajorProjectCard";
 import { useScrollPosition } from "./utils/useScrollPosition";
-import ThemeToggle from "./components/ThemeToggle";
+import ThemeToggle from "./utils/ThemeToggle";
 
 import {
   HiHome,
@@ -124,13 +124,11 @@ const dockItems = [
         <ScrollSection delay={0.1} id="about">
           <About />
         </ScrollSection>
-        <ScrollSection delay={0.2} id="experience">
           <ExperienceSection />
-        </ScrollSection>
-        <ScrollSection delay={0.2} id="education">
+        <ScrollSection delay={0.} id="education">
           <EducationSection />
         </ScrollSection>
-        <ScrollSection delay={0.2} id="skills">
+        <ScrollSection delay={0.3} id="skills">
           <SkillsSection />
         </ScrollSection>
         <ScrollSection delay={0.3} id="projects">

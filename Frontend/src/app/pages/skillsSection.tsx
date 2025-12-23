@@ -5,9 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   AiFillHtml5, 
   AiFillGithub, 
-  AiOutlineJavaScript, 
   AiFillApi, 
-  AiFillAndroid 
 } from "react-icons/ai";
 import { BiLogoTailwindCss, BiLogoNodejs } from "react-icons/bi";
 import { BsFiletypeCss, BsBootstrap } from "react-icons/bs";

@@ -1,5 +1,4 @@
-{
-  "experiences": [
+[
     {
       "id": 1,
       "title": "Junior Software Developer",
@@ -60,4 +59,4 @@
       "icon": "FaServer"
     }
   ]
-}
+

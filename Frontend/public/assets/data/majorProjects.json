@@ -6,8 +6,7 @@
     "image": "/assets/img/testIMG01.png",
     "liveUrl": "https://your-airline-project.com",
     "githubUrl": "https://github.com/yourusername/airline-booking",
-    "technologies": ["Node.js", "Express", "MongoDB", "JWT"],
-    "category": "Full-Stack"
+    "technologies": ["Node.js", "Express", "MongoDB", "JWT"]
   },
   {
     "id": 2,
@@ -16,8 +15,7 @@
     "image": "/assets/img/majorProject/lowflighttravels.png",
     "liveUrl": "https://your-api-project.com",
     "githubUrl": "https://github.com/yourusername/aviation-api",
-    "technologies": ["Node.js", "Express", "MongoDB", "JWT"],
-    "category": "API Integration"
+    "technologies": ["Node.js", "Express", "MongoDB", "JWT"]          
   },
   {
     "id": 3,
@@ -26,8 +24,7 @@
     "image": "/assets/img/majorProject/tommorow.png",
     "liveUrl": "https://your-flight-search.com",
     "githubUrl": "https://github.com/yourusername/flight-search",
-    "technologies": ["React", "Framer Motion", "Tailwind CSS"],
-    "category": "UI/UX"
+    "technologies": ["React", "Framer Motion", "Tailwind CSS"]     
   },
   {
     "id": 4,
@@ -36,8 +33,7 @@
     "image": "/assets/img/testIMG03.png",
     "liveUrl": "https://your-airline-landing.com",
     "githubUrl": null,
-    "technologies": ["Next.js", "SCSS", "Framer Motion"],
-    "category": "Landing Page"
+    "technologies": ["Next.js", "SCSS", "Framer Motion"]
   },
   {
     "id": 5,
@@ -46,7 +42,6 @@
     "image": "/assets/img/testIMG03.png",
     "liveUrl": "https://your-dashboard.com",
     "githubUrl": "https://github.com/yourusername/travel-dashboard",
-    "technologies": ["React", "Chart.js", "Bootstrap", "REST API"],
-    "category": "Full-Stack"
+    "technologies": ["React", "Chart.js", "Bootstrap", "REST API"]
   }
 ]

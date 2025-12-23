@@ -4,7 +4,6 @@ import "./globals.css";
 import "../../public/assets/style/style.css";
 import "../../public/assets/style/mystyle.scss";
 import ClientWrapper from "./ClientWrapper";
-import { Toaster } from "@/components/ui/toaster"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +44,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}>
         <ClientWrapper>
           {children}
-          <Toaster />
         </ClientWrapper>
       </body>
     </html>

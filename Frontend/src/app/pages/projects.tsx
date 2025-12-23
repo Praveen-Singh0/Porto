@@ -1,13 +1,19 @@
 "use client";
 import Image from 'next/image';
-import { AiOutlineCaretRight, BsArrowRightCircleFill } from "react-icons/ai";
-
+import { AiOutlineCaretRight } from "react-icons/ai";
 import { useRef, useState, useEffect } from "react";
 import "../../../public/assets/style/Caro.scss";
 import cards from "../../../public/assets/data/Projects.json";
+import Button from '../components/ui/Button';
 
-const Card = ({ dataImage, header, link }) => {
-  const cardRef = useRef(null);
+interface CardProps {
+  dataImage: string;
+  header: string;
+  link: string;
+}
+
+const Card = ({ dataImage, header, link }: CardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);  ;
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [mouseX, setMouseX] = useState(0);
@@ -20,11 +26,15 @@ const Card = ({ dataImage, header, link }) => {
     }
   }, []);
 
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current.getBoundingClientRect();
-    setMouseX(e.clientX - rect.left - width / 2);
-    setMouseY(e.clientY - rect.top - height / 2);
+   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (rect) {
+      setMouseX(e.clientX - rect.left - width / 2);
+      setMouseY(e.clientY - rect.top - height / 2);
+    }
   };
+
+  
 
   const handleMouseLeave = () => {
     setTimeout(() => {
@@ -70,7 +80,7 @@ const Card = ({ dataImage, header, link }) => {
 };
 
 const ProjectSection = () => {
-  const carouselRef = useRef(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const scrollToLast = () => {
     if (carouselRef.current) {
@@ -92,9 +102,9 @@ const ProjectSection = () => {
       <section style={{ maxWidth: "100%", }} className="">
         <div className=" z-30 px-0 pt-0 pb-0  lg:px-0 xl:px-0">
           <div className="flex">
-            <button onClick={scrollToLast} className="hover:text-pink-500 sm:block text-4xl">
+            <Button variant='ghost' onClick={scrollToLast} className="hover:text-pink-500 sm:block text-4xl">
               <AiOutlineCaretRight />
-            </button>
+            </Button>
             <div className="carousel " ref={carouselRef}>
               {cards.map((card, index) => (
                 <Card key={index} dataImage={card.image} header={card.header} link={card.html_url} />

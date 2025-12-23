@@ -1,6 +1,6 @@
 "use client";
 import Image from 'next/image';
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
   SiReact,
@@ -8,17 +8,9 @@ import {
   SiTypescript,
   SiTailwindcss,
 } from "react-icons/si";
-import { FaServer, FaCode, FaCheckCircle, FaChevronDown } from "react-icons/fa";
-import LogoLoop from "@/components/ui/LogoLoop";
-import ExperienceInfo from '../../../public/assets/data/ExperienceInfo.json';
+import LogoLoop from '../components/LogoLoop';
 import aboutMeBio from '../../../public/assets/data/aboutMeBio.json'
 
-const { experiences } = ExperienceInfo;
-
-const iconMap = {
-  FaServer: FaServer,
-  FaCode: FaCode,
-};
 
 const techLogos = [
   { node: <SiReact />, title: "React", href: "https://react.dev" },
