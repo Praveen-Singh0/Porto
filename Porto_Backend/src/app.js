@@ -1,32 +1,28 @@
 import express from "express";
-import cors from 'cors'
+import cors from "cors";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
+dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  methods: ["GET", "POST", "PUT"], // ADD DELETE METHOD 
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true, 
-}))
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
-app.use(express.json({ limit: "16kb" }))
-app.use(express.urlencoded({ extended: true, limit: '16kb' }));
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-import skillRouter from './routers/skills.route.js'
-import AuthRoutes from './routers/auth.rouets.js'
+app.get("/", (req, res) => {
+  res.send("API IS RUNNING");
+});
 
-app.get('/', (req, res) => {
-  res.send("HELLO")
-})
-
-app.use("/api", skillRouter)
-app.use("/api", AuthRoutes)
-// http//:localhost:3000/api/skill/create
-
-
-export { app }
+export { app };
