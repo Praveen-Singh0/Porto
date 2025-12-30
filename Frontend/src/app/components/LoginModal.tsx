@@ -3,9 +3,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "../context/AuthContext";
 import Button from "./ui/Button";
 
 interface LoginModalProps {
@@ -14,9 +11,6 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, setIsModalOpen }) => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const { setIsLoggedIn } = useAuth();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

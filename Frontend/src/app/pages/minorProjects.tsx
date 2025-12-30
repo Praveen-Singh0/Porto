@@ -79,7 +79,7 @@ const Card = ({ dataImage, header, link }: CardProps) => {
   );
 };
 
-const ProjectSection = () => {
+const minorProject = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const scrollToLast = () => {
@@ -117,4 +117,4 @@ const ProjectSection = () => {
   );
 };
 
-export default ProjectSection;
+export default minorProject;

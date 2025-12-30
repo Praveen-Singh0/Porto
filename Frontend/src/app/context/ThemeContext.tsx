@@ -25,16 +25,16 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("light");  //light
 
   // Initialize theme from localStorage or system preference
   useEffect(() => {
     try {
-      const savedTheme = localStorage.getItem("theme") as Theme;
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      const savedTheme = localStorage.getItem("theme") as Theme; //null
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
         ? "dark"
         : "light";
-      
       const initialTheme = savedTheme || systemTheme;
       setThemeState(initialTheme);
     } catch (error) {
@@ -42,19 +42,17 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
-  // Apply theme to document when theme changes
   useEffect(() => {
     try {
       const root = document.documentElement;
       const body = document.body;
-      
-      // Apply to both html and body
+
       root.classList.remove("light", "dark");
       root.classList.add(theme);
-      
+
       body.classList.remove("light", "dark");
       body.classList.add(theme);
-      
+
       localStorage.setItem("theme", theme);
     } catch (error) {
       console.log("Theme application error:", error);

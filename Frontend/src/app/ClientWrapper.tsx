@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { PortfolioInfoProvider } from "./context/PortfolioInfoContext";
+import { ToastProvider } from "./context/ToastContext";
 
 interface ClientWrapperProps {
   children: React.ReactNode;
@@ -11,7 +12,9 @@ interface ClientWrapperProps {
 export default function ClientWrapper({ children }: ClientWrapperProps) {
   return (
     <ThemeProvider>
-      <AuthProvider>{children}</AuthProvider>
+        <PortfolioInfoProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </PortfolioInfoProvider>
     </ThemeProvider>
   );
 }

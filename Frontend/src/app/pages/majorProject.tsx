@@ -67,9 +67,9 @@ export default function MajorProjects() {
         transition={{ duration: 0.6 }}
         className="section-header"
       >
-        <h2 className="section-title text-gray-900 dark:text-gray-100">
-          Major <span className="highlight">Projects</span>
-        </h2>
+        <h1 className="mt-12 text-center font-bold mb-8 relative text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100">
+        Major <span className="text-pink-500">Projects</span>
+      </h1>
         <p className="section-subtitle text-gray-700 dark:text-gray-100">
           Showcasing my best work in development and design
         </p>

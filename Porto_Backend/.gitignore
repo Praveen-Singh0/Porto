@@ -64,3 +64,5 @@ temp/
 # Others
 !.gitignore
 .env
+
+/generated/prisma

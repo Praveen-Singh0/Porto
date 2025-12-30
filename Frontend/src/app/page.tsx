@@ -6,12 +6,12 @@ import Dock from "./components/Dock";
 import HeroSection from "./pages/heroSection";
 import About from "./pages/about";
 import EducationSection from "./pages/education";
-import ProjectSection from "./pages/projects";
+import MinorProject from "./pages/minorProjects";
+import MajorProjects from "./pages/majorProject";
 import GradientBackground from "./utils/gradientBackground";
 import SkillsSection from "./pages/skillsSection";
 import ContactSection from "./pages/contact";
 import ExperienceSection from "./pages/experience";
-import MajorProjects from "./pages/MajorProjectCard";
 import { useScrollPosition } from "./utils/useScrollPosition";
 import ThemeToggle from "./utils/ThemeToggle";
 
@@ -120,19 +120,20 @@ const dockItems = [
         <ScrollSection id="hero">
           <HeroSection />
         </ScrollSection>
-
-        <ScrollSection delay={0.1} id="about">
+        <ScrollSection delay={0.2} id="about">
           <About />
         </ScrollSection>
+        <ScrollSection id="experience">
           <ExperienceSection />
-        <ScrollSection delay={0.} id="education">
+        </ScrollSection>
+        <ScrollSection delay={0.3} id="education">
           <EducationSection />
         </ScrollSection>
         <ScrollSection delay={0.3} id="skills">
           <SkillsSection />
         </ScrollSection>
         <ScrollSection delay={0.3} id="projects">
-          <ProjectSection />
+          <MinorProject />
         </ScrollSection>
         <ScrollSection delay={0.4} id="major-projects">
           <MajorProjects />

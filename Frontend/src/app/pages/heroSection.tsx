@@ -8,11 +8,11 @@ import {
   AiFillGithub,
   AiOutlineJavaScript,
 } from "react-icons/ai";
-import Image from 'next/image';
-import { motion, useMotionValue, useSpring } from "framer-motion";
-
-import heroBio from "../../../public/assets/data/bio.json";
+import Image from "next/image";
+import { motion, useSpring } from "framer-motion";
 import Button from "../components/ui/Button";
+import { heroService } from "@/services/heroSection.service";
+import { usePortfolioInfo } from "@/hooks/usePortfolioInfo";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
@@ -21,7 +21,11 @@ const fadeUp = (delay: number) => ({
 });
 
 const TopPage = () => {
-  const [bioContent, setBioContent] = useState("");
+  const { info } = usePortfolioInfo();
+
+  const [bioContent, setBioContent] = useState({
+    bio: "",
+  });
 
   // 3D Tilt effect for image card
   const imageCardRef = useRef<HTMLDivElement>(null);
@@ -30,7 +34,11 @@ const TopPage = () => {
   const scale = useSpring(1, { damping: 30, stiffness: 100, mass: 2 });
 
   useEffect(() => {
-    setBioContent(heroBio.bio);
+    const fetchBio = async () => {
+      const data = await heroService.getInfo();
+      setBioContent(data);
+    };
+    fetchBio();
   }, []);
 
   const handleImageCardMouse = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -64,7 +72,7 @@ const TopPage = () => {
         <div className="relative isolate px-4 sm:px-5 lg:px-8">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mx-auto max-w-7xl">
             {/* LEFT CONTENT */}
-            <div>
+            <div className="w-8/12">
               {/* 1️⃣ FIRST DIV */}
               <motion.div
                 {...fadeUp(0.1)}
@@ -74,7 +82,7 @@ const TopPage = () => {
                   Connect me on LinkedIn.{" "}
                   <a
                     target="_blank"
-                    href="https://www.linkedin.com/in/praveen-singh-ba5656172/"
+                    href={info?.socialLinks?.linkedin}
                     className="font-semibold text-indigo-600"
                   >
                     <span
@@ -106,16 +114,16 @@ const TopPage = () => {
                   <div className="content__container mt-2 md:mt-0 ">
                     <ul className="content__container__list ">
                       <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl text-center sm:text-left">
-                        Frontend
+                        Frontend Dev
                       </li>
                       <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl text-center sm:text-left">
-                        Backend
+                        Backend Dev
                       </li>
                       <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl text-center sm:text-left">
                         MERN-Stack
                       </li>
                       <li className="content__container__list__item text-4xl font-semibold text-gray-900 dark:text-gray-100 sm:text-6xl text-center sm:text-left">
-                        Full-Stack
+                        Full-Stack AI
                       </li>
                     </ul>
                   </div>
@@ -126,7 +134,7 @@ const TopPage = () => {
                   {...fadeUp(0.55)}
                   className="mt-8 text-pretty text-lg font-medium text-gray-500 dark:text-gray-100 sm:text-xl/8"
                 >
-                  {bioContent}
+                  {bioContent.bio || "No bio available"}
                 </motion.p>
 
                 {/* 5️⃣ BUTTONS */}
@@ -136,23 +144,23 @@ const TopPage = () => {
                 >
                   <a
                     target="_blank"
-                    href="mailto:parnbartwal@gmail.com"
+                    href={`mailto:${info?.email}`}
                     className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Hire Me
                   </a>
                   <a
-                    href="#"
+                    href="#about"
                     className="text-sm/6 font-semibold text-gray-900 dark:text-gray-100"
                   >
-                    Learn more <span aria-hidden="true">→</span>
+                    Scroll for more <span aria-hidden="true">→</span>
                   </a>
                 </motion.div>
               </div>
             </div>
 
             {/* 6️⃣ 3D TILTED IMAGE SECTION */}
-            <motion.div {...fadeUp(0.3)} className="w-6/12 max-lg:hidden">
+            <motion.div {...fadeUp(0.3)} className="w-4/12 max-lg:hidden">
               <div
                 ref={imageCardRef}
                 className="hero-image-card-container"
@@ -173,13 +181,24 @@ const TopPage = () => {
                   {/* Main Image */}
                   <div className="hero-image-wrapper border border-red-500 dark:border-gray-100">
                     <Image
-                      src="/assets/img/Profile.webp"
+                      src={"/assets/img/Profile.webp"}
                       alt="Avatar"
-                      width={500}
-                      height={500}
+                      width={350}
+                      height={350}
                       priority
                       className="hero-profile-image"
                     />
+
+                    {/* here  */}
+                    {/* <img
+                      src={info.profileImageUrl}
+                      alt="profile"
+                      style={{
+                        width: "100%",
+                        height: "350px",
+                      }}
+                      className="hero-profile-image"
+                    /> */}
 
                     {/* Floating Tech Icons */}
                     <span className="circle circle2"></span>
@@ -209,23 +228,17 @@ const TopPage = () => {
                       {/* Social Buttons */}
                       <div className="hero-social-buttons">
                         <Button className="hero-social-btn">
-                          <a target="_blank" href="https://x.com/prvnBrTwal">
+                          <a target="_blank" href={info?.socialLinks?.twitter}>
                             <AiOutlineClose />
                           </a>
                         </Button>
                         <Button className="hero-social-btn linkedin">
-                          <a
-                            target="_blank"
-                            href="https://www.linkedin.com/in/praveen-singh-ba5656172/"
-                          >
+                          <a target="_blank" href={info?.socialLinks?.linkedin}>
                             <AiFillLinkedin className="text-sky-600" />
                           </a>
                         </Button>
                         <Button className="hero-social-btn github">
-                          <a
-                            target="_blank"
-                            href="https://github.com/Praveen-Singh0"
-                          >
+                          <a target="_blank" href={info?.socialLinks?.github}>
                             <AiFillGithub />
                           </a>
                         </Button>

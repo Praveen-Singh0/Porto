@@ -17,34 +17,40 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Praveen's Portfolio",
-description:
-  "Full-stack developer. I build fast, scalable, and user-focused web applications with clean UI and modern architecture.",
+  description:
+    "Full-stack developer. I build fast, scalable, and user-focused web applications with clean UI and modern architecture.",
   icons: {
     icon: "/assets/img/logo.png", // ✅ PNG as favicon
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                const theme = localStorage.getItem('theme') || 
-                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                document.documentElement.classList.add(theme);
-                document.body.classList.add(theme);
-              } catch (e) {}
+             try {
+                  const theme =
+                    localStorage.getItem("theme") ??
+                    (window.matchMedia("(prefers-color-scheme: dark)").matches
+                      ? "dark"
+                      : "light");
+                  document.documentElement.classList.add(theme);
+                } catch {}
             `,
           }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}>
-        <ClientWrapper>
-          {children}
-        </ClientWrapper>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
+      >
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   );
