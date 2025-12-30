@@ -63,7 +63,7 @@ const ScrollStackCard: React.FC<ScrollStackProps> = ({
 };
 
 interface ScrollStackContainerProps {
-  children: React.ReactNode[];
+  children: React.ReactNode;
   className?: string;
 }
 

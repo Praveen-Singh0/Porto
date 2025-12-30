@@ -42,3 +42,20 @@ model AboutSection {
 }
 
 
+model Experience {
+  id               Int      @id @default(autoincrement())
+  title            String
+  company          String
+  location         String
+  duration         String
+  period           String
+  type             String
+  responsibilities Json
+  technologies     Json
+  color            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+
+

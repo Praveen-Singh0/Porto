@@ -7,6 +7,7 @@ import { connectDB } from "../lib/prisma.js";
 import infoRouters from './routers/info.routes.js';
 import heroRouters from './routers/general/hero.routes.js';
 import aboutRouters from './routers/general/about.routes.js';
+import experienceRouters from './routers/experience/experience.js';
 
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 app.use("/api/info", infoRouters);
 app.use("/api/hero", heroRouters);
 app.use("/api/about", aboutRouters);
+app.use("/api/experience", experienceRouters);
 
 app.use(errorHandler);
 export { app };

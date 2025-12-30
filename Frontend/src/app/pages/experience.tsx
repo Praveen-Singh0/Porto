@@ -1,11 +1,33 @@
 "use client";
+import { useState, useEffect } from "react";
 import { FaCode } from "react-icons/fa";
 import { ScrollStackContainer } from "../utils/ScrollStack";
-import ExperienceInfo from "../../../public/assets/data/ExperienceInfo.json";
-
-const experiences = ExperienceInfo;
+import {
+  experienceInfo,
+  experienceService,
+} from "@/services/experience.service";
 
 const ExperienceSection = () => {
+  const [experiences, setExperience] = useState<experienceInfo[] | null>(null);
+
+  console.log(
+    "Experiences Data:",
+    experiences?.map((exp: experienceInfo) => exp.title)
+  );
+
+  useEffect(() => {
+    const fetchExperience = async () => {
+      try {
+        const data = await experienceService.getInfo();
+        setExperience(data);
+      } catch (error) {
+        console.error("Error fetching experience info:", error);
+      }
+    };
+
+    fetchExperience();
+  }, []);
+
   return (
     <div className="mt-16 mx-auto max-w-7xl relative">
       <div className="pointer-events-none blur-2xl absolute inset-x-0 top-24 -z-10 flex justify-center opacity-40">
@@ -20,16 +42,14 @@ const ExperienceSection = () => {
       </div>
 
       {/* Section Title */}
-      <h1
-        className="text-center font-bold  relative text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 "
-      >
+      <h1 className="text-center font-bold  relative text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 ">
         Work <span className="text-pink-500">Experience</span>
         <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2"></div>
       </h1>
 
       {/* Scroll Stack Container */}
       <ScrollStackContainer className="mt-10">
-        {experiences.map((exp, index) => {
+        {experiences?.map((exp: experienceInfo, index: number) => {
           const Icon = FaCode;
 
           return (
@@ -39,7 +59,6 @@ const ExperienceSection = () => {
                   {/* Header Section */}
                   <div className="p-6 md:p-8 border-b border-gray-100 dark:border-gray-700">
                     <div className="flex items-start gap-6">
-                      {/* Icon */}
                       <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center shadow-lg">
                         <Icon className="text-white text-2xl" />
                       </div>
@@ -94,19 +113,21 @@ const ExperienceSection = () => {
                         </h4>
 
                         <ul className="space-y-3">
-                          {exp.responsibilities.map((resp, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
-                            >
-                              <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">
-                                •
-                              </span>
-                              <span className="flex-1 leading-relaxed text-md">
-                                {resp}
-                              </span>
-                            </li>
-                          ))}
+                          {exp.responsibilities.map(
+                            (resp: string, idx: number) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-3 text-gray-700 dark:text-gray-300"
+                              >
+                                <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">
+                                  •
+                                </span>
+                                <span className="flex-1 leading-relaxed text-md">
+                                  {resp}
+                                </span>
+                              </li>
+                            )
+                          )}
                         </ul>
                       </div>
 
