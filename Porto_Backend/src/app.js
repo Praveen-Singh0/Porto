@@ -9,6 +9,7 @@ import heroRouters from './routers/general/hero.routes.js';
 import aboutRouters from './routers/general/about.routes.js';
 import experienceRouters from './routers/experience/experience.js';
 import educationRouters from './routers/general/education.routes.js';
+import skillsRouters from './routers/general/skills.routes.js';
 
 
 dotenv.config();
@@ -39,7 +40,8 @@ app.use("/api/info", infoRouters);
 app.use("/api/hero", heroRouters);
 app.use("/api/about", aboutRouters);
 app.use("/api/experience", experienceRouters);
-app.use("/api/education", educationRouters)
+app.use("/api/education", educationRouters);
+app.use("/api/skills", skillsRouters);
 
 app.use(errorHandler);
 export { app };

@@ -1,40 +1,31 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  AiFillHtml5, 
-  AiFillGithub, 
-  AiFillApi, 
-} from "react-icons/ai";
+import { AiFillHtml5, AiFillGithub, AiFillApi } from "react-icons/ai";
 import { BiLogoTailwindCss, BiLogoNodejs } from "react-icons/bi";
 import { BsFiletypeCss, BsBootstrap } from "react-icons/bs";
-import SkillsInfo from '../../../public/assets/data/SkillsInfo.json';
+import { skillsService, skillsInfo } from "@/services/skillSection.service";
 
-const { skills } = SkillsInfo;
-
-import { 
-  FaReact, 
-  FaPython, 
-  FaDocker, 
-  FaAws, 
-  FaGitAlt, 
-  FaLinux 
+import {
+  FaReact,
+  FaPython,
+  FaDocker,
+  FaAws,
+  FaGitAlt,
+  FaLinux,
 } from "react-icons/fa";
 
-import { 
-  SiNextdotjs, 
-  SiTypescript, 
-  SiVuedotjs,
+import {
+  SiNextdotjs,
+  SiTypescript,
   SiExpress,
-  SiDjango,
   SiGraphql,
   SiMongodb,
   SiPostgresql,
   SiMysql,
   SiRedis,
   SiFirebase,
-  SiKubernetes,
   SiJenkins,
   SiGithubactions,
   SiNginx,
@@ -43,9 +34,7 @@ import {
   SiWebpack,
   SiVite,
   SiPostman,
-  SiJest,
   SiPrisma,
-  SiVercel
 } from "react-icons/si";
 
 const iconMap: { [key: string]: React.ComponentType<any> } = {
@@ -56,11 +45,9 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
   BsFiletypeCss,
   BiLogoTailwindCss,
   BsBootstrap,
-  SiVuedotjs,
   BiLogoNodejs,
   SiExpress,
   FaPython,
-  SiDjango,
   AiFillApi,
   SiGraphql,
   SiPrisma,
@@ -70,13 +57,11 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
   SiRedis,
   SiFirebase,
   FaDocker,
-  SiKubernetes,
   FaAws,
   SiJenkins,
   SiGithubactions,
   SiNginx,
   FaLinux,
-  SiVercel,
   FaGitAlt,
   AiFillGithub,
   SiWebrtc,
@@ -84,15 +69,28 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
   SiWebpack,
   SiVite,
   SiPostman,
-  SiJest,
 };
 
 const SkillsSection = () => {
-  const [filter, setFilter] = useState("Frontend");
-  
-  const categories = ["Frontend", "Backend", "Database", "DevOps", "Others"];
-  
-  const filteredSkills = skills.filter(skill => skill.category === filter);
+  const [filter, setFilter] = useState("BACKEND");
+  const [skills, setSkills] = useState<skillsInfo[]>([]);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const data = await skillsService.getInfo();
+        setSkills(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSkills();
+  }, []);
+
+  const categories = Array.from(new Set(skills.map((skill) => skill.category)));
+
+  const filteredSkills = skills.filter((skill) => skill.category === filter);
 
   // Animation variants
   const containerVariants = {
@@ -101,58 +99,58 @@ const SkillsSection = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.08,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 30,
-      scale: 0.85
+      scale: 0.85,
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
   };
 
   const headerVariants = {
     hidden: { opacity: 0, y: -30 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const iconVariants = {
     rest: { scale: 1, y: 0 },
-    hover: { 
-      scale: 1.15, 
+    hover: {
+      scale: 1.15,
       y: -8,
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const badgeVariants = {
     rest: { scale: 1 },
-    hover: { 
+    hover: {
       scale: 1.1,
       transition: {
         duration: 0.2,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const blobVariants = {
@@ -163,9 +161,9 @@ const SkillsSection = () => {
       transition: {
         duration: 8,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   const statVariants = {
@@ -177,41 +175,68 @@ const SkillsSection = () => {
       transition: {
         delay: i * 0.1,
         duration: 0.5,
-        ease: "easeOut"
-      }
-    })
+        ease: "easeOut",
+      },
+    }),
   };
+
+  const SkillIcon = ({ skill }: { skill: skillsInfo }) => {
+  const IconComponent = skill.icon ? iconMap[skill.icon] : null;
+
+  if (skill.icon) {
+    // Case 1: React icon exists
+    if (IconComponent) {
+      return (
+        <IconComponent
+          className="text-2xl md:text-3xl lg:text-4xl"
+          style={{ color: skill.color }}
+        />
+      );
+    }
+  }
+  // Fallback: first letter of name
+  return (
+    <span
+      className="text-2xl md:text-3xl lg:text-4xl font-semibold"
+      style={{ color: skill.color }}
+    >
+      {skill.name?.charAt(0)}
+    </span>
+  );
+};
+
+
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 md:py-16 lg:py-14">
       {/* Animated background blobs */}
-      <motion.div 
+      <motion.div
         variants={blobVariants}
         animate="animate"
         className="absolute top-20 left-10 w-64 h-64 md:w-96 md:h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
       />
-      <motion.div 
+      <motion.div
         variants={blobVariants}
         animate="animate"
-        style={{ animationDelay: '2s' }}
+        style={{ animationDelay: "2s" }}
         className="absolute bottom-20 right-20 w-64 h-64 md:w-96 md:h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
       />
-      <motion.div 
+      <motion.div
         variants={blobVariants}
         animate="animate"
-        style={{ animationDelay: '4s' }}
+        style={{ animationDelay: "4s" }}
         className="absolute top-1/2 left-1/2 w-64 h-64 md:w-96 md:h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15"
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header - Compact for mobile */}
-        <motion.div 
+        <motion.div
           className="text-center mb-8 md:mb-12 lg:mb-16 space-y-3 md:space-y-4"
           variants={headerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div 
+          <motion.div
             className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-100 dark:border-pink-800"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -219,19 +244,24 @@ const SkillsSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <span className="text-pink-600 dark:text-pink-400 font-semibold text-xs md:text-sm tracking-wide">EXPERTISE</span>
+            <span className="text-pink-600 dark:text-pink-400 font-semibold text-xs md:text-sm tracking-wide">
+              EXPERTISE
+            </span>
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             className="text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            My <span className="bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">Skills</span>
+            My{" "}
+            <span className="bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
+              Skills
+            </span>
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base md:text-lg px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -242,7 +272,7 @@ const SkillsSection = () => {
         </motion.div>
 
         {/* Filter Tabs - Compact scrollable for mobile */}
-        <motion.div 
+        <motion.div
           className="flex justify-center mb-8 md:mb-12  pb-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -254,8 +284,8 @@ const SkillsSection = () => {
                 key={category}
                 onClick={() => setFilter(category)}
                 className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap ${
-                  filter === category 
-                    ? "text-white" 
+                  filter === category
+                    ? "text-white"
                     : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                 }`}
                 whileHover={{ scale: 1.05 }}
@@ -266,7 +296,7 @@ const SkillsSection = () => {
               >
                 {category}
                 {filter === category && (
-                  <motion.span 
+                  <motion.span
                     layoutId="activeFilter"
                     className="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg md:rounded-xl shadow-lg shadow-pink-200 -z-10"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
@@ -279,7 +309,7 @@ const SkillsSection = () => {
 
         {/* Skills Grid - 2 columns on mobile, responsive scaling */}
         <AnimatePresence mode="wait">
-          <motion.div 
+          <motion.div
             key={filter}
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6"
             variants={containerVariants}
@@ -287,8 +317,8 @@ const SkillsSection = () => {
             animate="visible"
           >
             {filteredSkills.map((skill, index) => {
-              const IconComponent = iconMap[skill.icon];
-              
+              const IconComponent = iconMap[skill.icon || ""];
+
               return (
                 <motion.div
                   key={skill.id}
@@ -303,50 +333,46 @@ const SkillsSection = () => {
                     className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-purple-500/10 opacity-0"
                     variants={{
                       rest: { opacity: 0 },
-                      hover: { opacity: 1, transition: { duration: 0.3 } }
+                      hover: { opacity: 1, transition: { duration: 0.3 } },
                     }}
                   />
 
                   {/* Icon with smooth scale animation - Smaller on mobile */}
                   <div className="relative mb-2 md:mb-3 lg:mb-4">
-                    <motion.div 
+                    <motion.div
                       className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg md:rounded-xl flex items-center justify-center shadow-lg"
-                      style={{ 
+                      style={{
                         backgroundColor: `${skill.color}15`,
                         borderColor: `${skill.color}30`,
-                        borderWidth: '2px'
+                        borderWidth: "2px",
                       }}
                       variants={iconVariants}
                     >
-                      {IconComponent && (
-                        <motion.div
+                       <motion.div
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          transition={{ 
+                          transition={{
                             delay: 0.6 + index * 0.05,
                             type: "spring",
                             stiffness: 200,
-                            damping: 15
+                            damping: 15,
                           }}
                         >
-                          <IconComponent 
-                            className="text-2xl md:text-3xl lg:text-4xl" 
-                            style={{ color: skill.color }}
-                          />
+                          <SkillIcon skill={skill} />
                         </motion.div>
-                      )}
+                      
                     </motion.div>
-                    
+
                     {/* Category badge - Hidden on mobile, visible on md+ */}
-                    <motion.span 
+                    <motion.span
                       className="hidden md:block absolute -top-2 -right-2 px-2 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 text-xs font-semibold rounded-full"
                       variants={badgeVariants}
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ 
+                      transition={{
                         delay: 0.2 + index * 0.05,
                         type: "spring",
-                        stiffness: 200
+                        stiffness: 200,
                       }}
                     >
                       {skill.category}
@@ -354,15 +380,14 @@ const SkillsSection = () => {
                   </div>
 
                   {/* Skill name - Smaller text on mobile */}
-                  <motion.h3 
+                  <motion.h3
                     className="text-sm md:text-base lg:text-xl font-bold text-gray-700 dark:text-gray-100 mb-2 md:mb-3 relative z-10 leading-tight"
                     variants={{
-                      
-                      hover: { 
+                      hover: {
                         color: "#ec4899",
                         x: 5,
-                        transition: { duration: 0.3 }
-                      }
+                        transition: { duration: 0.3 },
+                      },
                     }}
                   >
                     {skill.name}
@@ -371,16 +396,16 @@ const SkillsSection = () => {
                   {/* Proficiency bar - Compact on mobile */}
                   <div className="space-y-1 md:space-y-2 relative z-10">
                     <div className="flex justify-between items-center">
-                      <motion.span 
+                      <motion.span
                         className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium"
                         variants={{
                           rest: { x: 0 },
-                          hover: { x: 3, transition: { duration: 0.2 } }
+                          hover: { x: 3, transition: { duration: 0.2 } },
                         }}
                       >
                         Proficiency
                       </motion.span>
-                      <motion.span 
+                      <motion.span
                         className="text-xs md:text-sm font-bold text-pink-600"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -389,33 +414,33 @@ const SkillsSection = () => {
                         {skill.proficiency}%
                       </motion.span>
                     </div>
-                    
+
                     {/* Progress bar container */}
                     <div className="w-full h-1.5 md:h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                       <motion.div
                         className="h-full rounded-full relative"
                         style={{
-                          background: `linear-gradient(90deg, ${skill.color} 0%, ${skill.color}dd 100%)`
+                          background: `linear-gradient(90deg, ${skill.color} 0%, ${skill.color}dd 100%)`,
                         }}
                         initial={{ width: 0 }}
                         animate={{ width: `${skill.proficiency}%` }}
-                        transition={{ 
-                          duration: 1.2, 
+                        transition={{
+                          duration: 1.2,
                           delay: 0.8 + index * 0.05,
-                          ease: "easeOut" 
+                          ease: "easeOut",
                         }}
                       >
                         {/* Shimmer effect */}
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                           animate={{
-                            x: ['-100%', '200%']
+                            x: ["-100%", "200%"],
                           }}
                           transition={{
                             duration: 2,
                             repeat: Infinity,
                             ease: "easeInOut",
-                            delay: 1.5 + index * 0.05
+                            delay: 1.5 + index * 0.05,
                           }}
                         />
                       </motion.div>
@@ -426,15 +451,16 @@ const SkillsSection = () => {
                   <motion.div
                     className="absolute inset-0 rounded-xl md:rounded-2xl"
                     variants={{
-                      rest: { 
+                      rest: {
                         boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
                       },
-                      hover: { 
-                        boxShadow: "0 20px 25px -5px rgba(236, 72, 153, 0.3), 0 10px 10px -5px rgba(236, 72, 153, 0.1)",
-                        transition: { duration: 0.3 }
-                      }
+                      hover: {
+                        boxShadow:
+                          "0 20px 25px -5px rgba(236, 72, 153, 0.3), 0 10px 10px -5px rgba(236, 72, 153, 0.1)",
+                        transition: { duration: 0.3 },
+                      },
                     }}
-                    style={{ pointerEvents: 'none' }}
+                    style={{ pointerEvents: "none" }}
                   />
                 </motion.div>
               );
@@ -443,7 +469,7 @@ const SkillsSection = () => {
         </AnimatePresence>
 
         {/* Stats Section - 2 cols mobile, 3 cols tablet, 6 cols desktop */}
-        <motion.div 
+        <motion.div
           className="mt-12 md:mt-16 lg:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6"
           initial="hidden"
           animate="visible"
@@ -453,58 +479,78 @@ const SkillsSection = () => {
               opacity: 1,
               transition: {
                 staggerChildren: 0.1,
-                delayChildren: 1.2
-              }
-            }
+                delayChildren: 1.2,
+              },
+            },
           }}
         >
           {[
             { label: "Total Skills", value: skills.length, icon: "🚀" },
-            { label: "Frontend", value: skills.filter(s => s.category === "Frontend").length, icon: "💻" },
-            { label: "Backend", value: skills.filter(s => s.category === "Backend").length, icon: "⚙️" },
-            { label: "Database", value: skills.filter(s => s.category === "Database").length, icon: "💾" },
-            { label: "DevOps", value: skills.filter(s => s.category === "DevOps").length, icon: "🔧" },
-            { label: "Others", value: skills.filter(s => s.category === "Others").length, icon: "⭐" },
+            {
+              label: "Frontend",
+              value: skills.filter((s) => s.category === "FRONTEND").length,
+              icon: "💻",
+            },
+            {
+              label: "Backend",
+              value: skills.filter((s) => s.category === "BACKEND").length,
+              icon: "⚙️",
+            },
+            {
+              label: "Database",
+              value: skills.filter((s) => s.category === "DATABASE").length,
+              icon: "💾",
+            },
+            {
+              label: "DevOps",
+              value: skills.filter((s) => s.category === "DEVOPS").length,
+              icon: "🔧",
+            },
+            {
+              label: "Others",
+              value: skills.filter((s) => s.category === "OTHERS").length,
+              icon: "⭐",
+            },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
               custom={index}
               variants={statVariants}
               className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-5 lg:p-6 text-center shadow-lg border border-gray-100 dark:border-gray-700"
-              whileHover={{ 
+              whileHover={{
                 scale: 1.05,
                 boxShadow: "0 20px 25px -5px rgba(236, 72, 153, 0.2)",
                 borderColor: "rgba(236, 72, 153, 0.3)",
-                transition: { duration: 0.3 }
+                transition: { duration: 0.3 },
               }}
             >
-              <motion.div 
+              <motion.div
                 className="text-2xl md:text-3xl lg:text-4xl mb-1 md:mb-2"
                 animate={{
-                  y: [0, -5, 0]
+                  y: [0, -5, 0],
                 }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: index * 0.2
+                  delay: index * 0.2,
                 }}
               >
                 {stat.icon}
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="text-2xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-0.5 md:mb-1"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ 
+                transition={{
                   delay: 1.3 + index * 0.1,
                   type: "spring",
-                  stiffness: 200
+                  stiffness: 200,
                 }}
               >
                 {stat.value}
               </motion.div>
-              <motion.div 
+              <motion.div
                 className="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

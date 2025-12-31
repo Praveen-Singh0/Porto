@@ -70,4 +70,26 @@ model EducationCard {
 }
 
 
+model Skill {               //prisma model name
+  id          Int           @id @default(autoincrement())
+  name        String?       @unique  @db.VarChar(100)
+  proficiency Int?           
+  category    SkillCategory?
+  icon        String?       @db.VarChar(100)
+  color       String?        @db.VarChar(20)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  @@map("Skills")             // database model name
+}
+
+enum SkillCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  OTHERS
+}
+
+
+
 
