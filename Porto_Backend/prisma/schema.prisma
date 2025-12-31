@@ -57,5 +57,17 @@ model Experience {
   updatedAt        DateTime @updatedAt
 }
 
+model EducationCard {
+  id            Int       @id @default(autoincrement())
+  link          String
+  collageImage  String
+  collageName   String
+  course        String
+  duration      String
+  subjects      Json
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
 
 

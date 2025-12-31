@@ -19,3 +19,7 @@ export const aboutSectionSchema = z.object({
     })
   ),
 });
+
+export const aboutSectionUpdateSchema = aboutSectionSchema.extend({
+  id: z.string().uuid("Invalid ID format"),
+});
