@@ -10,15 +10,11 @@ import {
 const ExperienceSection = () => {
   const [experiences, setExperience] = useState<experienceInfo[] | null>(null);
 
-  console.log(
-    "Experiences Data:",
-    experiences?.map((exp: experienceInfo) => exp.title)
-  );
-
   useEffect(() => {
     const fetchExperience = async () => {
       try {
         const data = await experienceService.getInfo();
+        console.log("Fetched Experience Data:", data);
         setExperience(data);
       } catch (error) {
         console.error("Error fetching experience info:", error);
@@ -49,7 +45,8 @@ const ExperienceSection = () => {
 
       {/* Scroll Stack Container */}
       <ScrollStackContainer className="mt-10">
-        {experiences?.map((exp: experienceInfo, index: number) => {
+    {experiences && experiences.length > 0 &&
+        experiences?.map((exp: experienceInfo, index: number) => {
           const Icon = FaCode;
 
           return (
@@ -154,6 +151,11 @@ const ExperienceSection = () => {
             </div>
           );
         })}
+        {experiences && experiences.length === 0 ? (
+          <div className="text-center text-gray-500 dark:text-gray-400">
+            No experience fetched.
+          </div>
+        ) : null}
       </ScrollStackContainer>
     </div>
   );
