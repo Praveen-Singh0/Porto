@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 
@@ -11,15 +10,6 @@ interface PDFModalProps {
 }
 
 export const PDFModal = ({ isOpen, onClose, pdfUrl, title }: PDFModalProps) => {
-
-    console.log("rendering PDFModal")
-
-    useEffect(() => {
-      console.log("PDFModal mounted")
-      return () => {
-        console.log("PDFModal unmounted")
-      }
-    }, [])
 
   const backdrop = {
     visible: { opacity: 1 },
