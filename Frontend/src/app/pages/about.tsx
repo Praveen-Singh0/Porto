@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
   SiReact,
@@ -20,47 +20,159 @@ import {
   SiOpenai,
   SiPython,
 } from "react-icons/si";
-
-
+import { IoClose } from "react-icons/io5";
 import LogoLoop from "../components/LogoLoop";
-// import aboutMeBio from "../../../public/assets/data/aboutMeBio.json";
-import { usePortfolioInfo } from "@/hooks/usePortfolioInfo"; 
+import { usePortfolioInfoContext } from "../context/PortfolioInfoContext";
 import { aboutService } from "@/services/aboutSection.service";
 
 export const techLogos = [
   { node: <SiReact />, title: "React", href: "https://react.dev" },
   { node: <SiNextdotjs />, title: "Next.js", href: "https://nextjs.org" },
-  { node: <SiTypescript />, title: "TypeScript", href: "https://www.typescriptlang.org" },
-  { node: <SiTailwindcss />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
+  {
+    node: <SiTypescript />,
+    title: "TypeScript",
+    href: "https://www.typescriptlang.org",
+  },
+  {
+    node: <SiTailwindcss />,
+    title: "Tailwind CSS",
+    href: "https://tailwindcss.com",
+  },
   { node: <SiNodedotjs />, title: "Node.js", href: "https://nodejs.org" },
   { node: <SiExpress />, title: "Express.js", href: "https://expressjs.com" },
   { node: <SiPrisma />, title: "Prisma ORM", href: "https://www.prisma.io" },
-  { node: <SiPostgresql />, title: "PostgreSQL", href: "https://www.postgresql.org" },
+  {
+    node: <SiPostgresql />,
+    title: "PostgreSQL",
+    href: "https://www.postgresql.org",
+  },
   { node: <SiMongodb />, title: "MongoDB", href: "https://www.mongodb.com" },
   { node: <SiRedis />, title: "Redis", href: "https://redis.io" },
   { node: <SiDocker />, title: "Docker", href: "https://www.docker.com" },
   { node: <SiNginx />, title: "Nginx", href: "https://nginx.org" },
-  { node: <SiGithubactions />, title: "GitHub Actions", href: "https://github.com/features/actions" },
+  {
+    node: <SiGithubactions />,
+    title: "GitHub Actions",
+    href: "https://github.com/features/actions",
+  },
   { node: <SiLinux />, title: "Linux", href: "https://www.linux.org" },
-  { node: <SiOpenai />, title: "OpenAI API", href: "https://platform.openai.com", category: "AI" },
-  { node: <SiPython />, title: "Python", href: "https://www.python.org", category: "AI" },
+  {
+    node: <SiOpenai />,
+    title: "OpenAI API",
+    href: "https://platform.openai.com",
+    category: "AI",
+  },
+  {
+    node: <SiPython />,
+    title: "Python",
+    href: "https://www.python.org",
+    category: "AI",
+  },
 ];
 
+interface PDFModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  pdfUrl: string;
+  title: string;
+}
 
+// Modal Component with Framer Motion animations
+const PDFModal = ({ isOpen, onClose, pdfUrl, title }: PDFModalProps) => {
+  const backdrop = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  };
+
+  const modal = {
+    hidden: {
+      y: "-100vh",
+      opacity: 0,
+      scale: 0.5,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        damping: 25,
+        stiffness: 300,
+      },
+    },
+    exit: {
+      y: "100vh",
+      opacity: 0,
+      scale: 0.5,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          variants={backdrop}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          onClick={onClose}
+        >
+          <motion.div
+            className="relative w-full max-w-6xl h-[90vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden"
+            variants={modal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-800">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                <span className="text-pink-500">📄</span>
+                {title}
+              </h3>
+              <motion.button
+                onClick={onClose}
+                className="p-2 rounded-full hover:bg-pink-100 dark:hover:bg-gray-700 transition-colors"
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <IoClose className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+              </motion.button>
+            </div>
+
+            {/* PDF Viewer */}
+            <div className="w-full h-[calc(100%-80px)] overflow-auto">
+              <iframe
+                src={pdfUrl}
+                className="w-full h-full border-none"
+                title={title}
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 const About = () => {
-  const { info } = usePortfolioInfo();
+  const { info } = usePortfolioInfoContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPDF, setSelectedPDF] = useState({ url: "", title: "" });
 
-  // State to track which responsibilities sections are open (mobile only)
   const [myBio, setMyBio] = useState({
     bio: "",
     imageUrl: "",
     specialization: "",
     education: "",
-    documents: [{
-      title: "",
-      fileUrl: "",
-    }],
+    documents: [
+      {
+        title: "",
+        fileUrl: "",
+      },
+    ],
   });
 
   useEffect(() => {
@@ -69,6 +181,11 @@ const About = () => {
     });
   }, []);
 
+  const openPDFModal = (url: string, title: string) => {
+    setSelectedPDF({ url, title });
+    setIsModalOpen(true);
+  };
+
   return (
     <motion.div
       className="mt-16 mx-auto px-4 py-16 max-w-7xl relative overflow-hidden"
@@ -76,6 +193,14 @@ const About = () => {
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
     >
+      {/* PDF Modal */}
+      <PDFModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        pdfUrl={selectedPDF.url}
+        title={selectedPDF.title}
+      />
+
       {/* Title */}
       <motion.h1
         className="text-center font-bold mb-8 relative
@@ -94,7 +219,6 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="relative sm:w-64 w-full h-64 rounded-xl overflow-hidden border-4 border-transparent bg-gradient-to-br from-pink-400 to-pink-600 p-1"
           >
-            {/* when i upload image from admin dashboard then i use multer to set image here */}
             <Image
               src="/assets/img/aboutSection.webp"
               alt="Praveen Singh"
@@ -102,7 +226,6 @@ const About = () => {
               objectFit="cover"
               className="rounded-lg"
             />
-            {/* <img src={myBio.imageUrl || "/assets/img/aboutSection.webp"} alt="Praveen Singh" /> */}
           </motion.div>
 
           {/* Text Content */}
@@ -122,7 +245,6 @@ const About = () => {
             {/* Skills */}
             <motion.div className="flex flex-wrap gap-2 mb-6">
               {[
-                // these skills will comming from also aboutSection database with refrence from skillSection database
                 "React",
                 "Node.js",
                 "MongoDB",
@@ -170,9 +292,9 @@ const About = () => {
       <motion.div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
         {[
           { title: "Full Name", value: "Praveen Singh" },
-          { title: "Specialization", value: `${ myBio.specialization }` },
+          { title: "Specialization", value: `${myBio.specialization}` },
           { title: "Email", value: info?.email || " " },
-          { title: "Education", value: `${ myBio.education }` },
+          { title: "Education", value: `${myBio.education}` },
         ].map((item) => (
           <motion.div
             key={item.title}
@@ -182,7 +304,7 @@ const About = () => {
               {item.title}
             </h3>
             <p className="text-gray-800 dark:text-gray-200 font-semibold">
-              {item.value}  
+              {item.value}
             </p>
           </motion.div>
         ))}
@@ -196,24 +318,38 @@ const About = () => {
 
         {[
           {
-            file: `${myBio.documents[0]?.title || "resume_full_stack_developer.pdf"}`,
+            file: `${
+              myBio.documents[0]?.title || "resume_full_stack_developer.pdf"
+            }`,
             link: `${myBio.documents[0]?.fileUrl || "/Resume.pdf"}`,
           },
         ].map((doc) => (
           <motion.div
             key={doc.file}
-            className="flex items-center justify-between p-4 border border-pink-100 rounded-lg  transition-colors mb-4"
+            className="flex items-center justify-between p-4 border border-pink-100 rounded-lg transition-colors mb-4"
+            whileHover={{ borderColor: "#ec4899" }}
           >
             <span className="font-medium text-gray-700 dark:text-gray-100 truncate">
               {doc.file}
             </span>
-            <a
-              href={doc.link}
-              target="_blank"
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors"
+            <motion.button
+              onClick={() => openPDFModal(doc.link, doc.file)}
+              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors relative overflow-hidden"
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(236, 72, 153, 0.4)",
+                  "0 0 20px rgba(236, 72, 153, 0.6), 0 0 30px rgba(236, 72, 153, 0.4)",
+                  "0 0 0px rgba(236, 72, 153, 0.4)",
+                ],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
               View
-            </a>
+            </motion.button>
           </motion.div>
         ))}
       </motion.div>

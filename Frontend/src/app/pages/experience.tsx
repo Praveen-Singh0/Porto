@@ -14,7 +14,6 @@ const ExperienceSection = () => {
     const fetchExperience = async () => {
       try {
         const data = await experienceService.getInfo();
-        console.log("Fetched Experience Data:", data);
         setExperience(data);
       } catch (error) {
         console.error("Error fetching experience info:", error);

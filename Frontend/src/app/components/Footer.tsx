@@ -1,8 +1,8 @@
 "use client";
 import SplashCursor from "../utils/SplashCursor";
-import { usePortfolioInfo } from "@/hooks/usePortfolioInfo";
+import { usePortfolioInfoContext } from "../context/PortfolioInfoContext";
 const Footer = () => {
-  const { info } = usePortfolioInfo();
+  const { info } = usePortfolioInfoContext();
 
   return (
     <footer className="relative overflow-hidden bg-gradient-to-br from-gray-600 via-indigo-950 to-black text-white">

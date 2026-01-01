@@ -12,7 +12,7 @@ import Image from "next/image";
 import { motion, useSpring } from "framer-motion";
 import Button from "../components/ui/Button";
 import { heroService } from "@/services/heroSection.service";
-import { usePortfolioInfo } from "@/hooks/usePortfolioInfo";
+import { usePortfolioInfoContext } from "../context/PortfolioInfoContext";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
@@ -21,7 +21,7 @@ const fadeUp = (delay: number) => ({
 });
 
 const TopPage = () => {
-  const { info } = usePortfolioInfo();
+  const { info } = usePortfolioInfoContext();
 
   const [bioContent, setBioContent] = useState({
     bio: "",
