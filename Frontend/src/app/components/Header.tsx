@@ -182,7 +182,9 @@ const Header = () => {
           </motion.div>
         </nav>
 
-        <LoginModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        {isModalOpen && (
+          <LoginModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        )}
       </motion.div>
     </header>
   );

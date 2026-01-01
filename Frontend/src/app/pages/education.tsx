@@ -14,7 +14,7 @@ const EducationSection = () => {
       try {
         const data = await educationService.getInfo();
         setEducationList(data);
-        setSelectedCard(data[0]); // ✅ default selected (important)
+        setSelectedCard(data[0]);
       } catch (error) {
         console.error(error);
       }
