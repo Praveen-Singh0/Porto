@@ -17,9 +17,5 @@ export const aboutSectionSchema = z.object({
       title: z.string().max(50).optional(),
       fileUrl: z.string().url().optional(),
     })
-  ),
-});
-
-export const aboutSectionUpdateSchema = aboutSectionSchema.extend({
-  id: z.string().uuid("Invalid ID format"),
+  ).optional(),
 });

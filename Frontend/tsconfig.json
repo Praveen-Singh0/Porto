@@ -40,7 +40,7 @@
     "src/components/ui/toast.jsx",
     "src/components/ui/LogoLoop.jsx",
     ".next/dev/types/**/*.ts"
-  ],
+, "src/app/(Admin)/admin-dashboard/page.tsx", "src/app/(Admin)/admin-dashboard/components/DashboardLayout.tsx", "src/app/(Admin)/admin-dashboard/components/Navbar.jsx"  ],
   "exclude": [
     "node_modules"
   ]

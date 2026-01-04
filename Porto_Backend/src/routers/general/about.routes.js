@@ -6,7 +6,5 @@ const router = express.Router();
 
 router.post("/create", validate(aboutSectionSchema), createAbout);
 router.get("/get", getAboutSection);
-// router.delete("/:id", deleteInfo);
-// router.put("/:id", validate(aboutSectionUpdateSchema), updateInfo);
 
 export default router;  

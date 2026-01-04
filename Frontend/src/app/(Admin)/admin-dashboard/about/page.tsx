@@ -1,6 +1,6 @@
 const page = ()=>{
   return (
-    <h1>manage about section</h1>
+    <h1>manage CURD operation about section</h1>
   )
 }
 

@@ -10,6 +10,7 @@ import aboutRouters from './routers/general/about.routes.js';
 import experienceRouters from './routers/experience/experience.js';
 import educationRouters from './routers/general/education.routes.js';
 import skillsRouters from './routers/general/skills.routes.js';
+import authRouters from './routers/auth/auth.routes.js';
 
 
 dotenv.config();
@@ -42,6 +43,7 @@ app.use("/api/about", aboutRouters);
 app.use("/api/experience", experienceRouters);
 app.use("/api/education", educationRouters);
 app.use("/api/skills", skillsRouters);
+app.use("/api/auth", authRouters);
 
 app.use(errorHandler);
 export { app };

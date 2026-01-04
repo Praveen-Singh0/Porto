@@ -1,25 +1,31 @@
 "use client";
-import { useEffect, useState } from "react";
-import LoginModal from "./LoginModal";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import ThemeToggle from "../utils/ThemeToggle";
 import Button from "./ui/Button";
+import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth.service";
+import AuthModalController from "./ui/AuthModalController";
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+  const { verify_Its_Me } = authService;
 
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
+  const [open, setOpen] = useState(false);
+
+  const [authOpen, setAuthOpen] = useState(false);
+
+  const handleLoginClick = async () => {
+    try {
+      await verify_Its_Me();
+      router.push("/admin-dashboard");
+    } catch {
+            router.push("/admin-dashboard");
+
+      setAuthOpen(true);
     }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isModalOpen]);
+  };
 
   const navItems = [
     { name: "Home", current: true },
@@ -30,10 +36,6 @@ const Header = () => {
     { name: "Projects", current: false },
     { name: "Contact", current: false },
   ];
-
-  const HandleLogin = () => {
-    setIsModalOpen(true);
-  };
 
   const menuVariants = {
     hidden: {
@@ -110,7 +112,7 @@ const Header = () => {
               <ThemeToggle />
               <Button
                 variant="ghost"
-                onClick={HandleLogin}
+                onClick={handleLoginClick}
                 className="text-gray-800 dark:text-white bg-pink-300 dark:bg-gray-600 hover:bg-pink-400 dark:hover:bg-pink-600 focus:ring-3 focus:ring-gray-300 dark:focus:ring-gray-600 font-medium rounded-lg text-xs sm:text-sm px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 transition-colors duration-200"
               >
                 Log in
@@ -182,8 +184,11 @@ const Header = () => {
           </motion.div>
         </nav>
 
-        {isModalOpen && (
-          <LoginModal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+        {authOpen && (
+          <AuthModalController
+            isOpen={authOpen}
+            onClose={() => setAuthOpen(false)}
+          />
         )}
       </motion.div>
     </header>
