@@ -1,9 +1,8 @@
 import api from "@/lib/api";
-import { heroInfo } from "./heroSection.service";
 
 export interface documents {
-    title: string;
-    fileUrl: string;
+  title: string;
+  fileUrl: string;
 }
 
 export interface aboutInfo {
@@ -17,7 +16,6 @@ export interface aboutInfo {
   updatedAt: string;
 }
 
-
 export const aboutService = {
   getInfo: async (): Promise<aboutInfo> => {
     try {
@@ -26,6 +24,17 @@ export const aboutService = {
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Unable to fetch about info"
+      );
+    }
+  },
+
+  updateInfo: async (data: aboutInfo): Promise<aboutInfo> => {
+    try {
+      const res = await api.post("/about/create", data);
+      return res.data.data;
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message || "Unable to update about info"
       );
     }
   },

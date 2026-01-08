@@ -21,8 +21,11 @@ import {
   SiPython,
 } from "react-icons/si";
 import LogoLoop from "../components/LogoLoop";
-import { usePortfolioInfoContext } from "../context/PortfolioInfoContext";
+import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
 import { aboutService } from "@/services/aboutSection.service";
+import useFetch from "@/hooks/useFetch";
+import type { aboutInfo } from '@/services/aboutSection.service';
+
 
 import { PDFModal } from "../components/ui/PDFModal";
 
@@ -76,29 +79,20 @@ const About = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPDF, setSelectedPDF] = useState({ url: "", title: "" });
 
-  const [myBio, setMyBio] = useState({
-    bio: "",
-    imageUrl: "",
-    specialization: "",
-    education: "",
-    documents: [
-      {
-        title: "",
-        fileUrl: "",
-      },
-    ],
-  });
+  const {
+  data: myBio,
+  error,
+} = useFetch<aboutInfo>(aboutService.getInfo);
 
-  useEffect(() => {
-    aboutService.getInfo().then((data) => {
-      setMyBio(data);
-    });
-  }, []);
 
   const openPDFModal = (url: string, title: string) => {
     setSelectedPDF({ url, title });
     setIsModalOpen(true);
   };
+
+ 
+
+
 
   return (
     <motion.div
@@ -149,12 +143,12 @@ const About = () => {
               <span className="text-pink-500">Praveen Singh</span>
               <span className="text-gray-700 dark:text-gray-100">
                 {" "}
-                / {myBio.specialization || "Full-Stack AI Developer"}
+                / {myBio?.specialization || "Full-Stack AI Developer"}
               </span>
             </motion.h2>
 
             <motion.p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
-              {myBio.bio || "No bio available"}
+              {myBio?.bio || "No bio available"}
             </motion.p>
 
             {/* Skills */}
@@ -207,9 +201,9 @@ const About = () => {
       <motion.div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
         {[
           { title: "Full Name", value: "Praveen Singh" },
-          { title: "Specialization", value: `${myBio.specialization}` },
-          { title: "Email", value: info?.email || " " },
-          { title: "Education", value: `${myBio.education}` },
+          { title: "Specialization", value: `${myBio?.specialization}` },
+          { title: "Email", value: info?.email || "undefined" },
+          { title: "Education", value: `${myBio?.education}` },
         ].map((item) => (
           <motion.div
             key={item.title}
@@ -231,42 +225,41 @@ const About = () => {
           Documents
         </h3>
 
-        {[
-          {
-            file: `${
-              myBio.documents[0]?.title || "resume_full_stack_developer.pdf"
-            }`,
-            link: `${myBio.documents[0]?.fileUrl || "/Resume.pdf"}`,
-          },
-        ].map((doc) => (
-          <motion.div
-            key={doc.file}
-            className="flex items-center justify-between p-4 border border-pink-100 rounded-lg transition-colors mb-4"
-            whileHover={{ borderColor: "#ec4899" }}
-          >
-            <span className="font-medium text-gray-700 dark:text-gray-100 truncate">
-              {doc.file}
-            </span>
-            <motion.button
-              onClick={() => openPDFModal(doc.link, doc.file)}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors relative overflow-hidden"
-              animate={{
-                boxShadow: [
-                  "0 0 0px rgba(236, 72, 153, 0.4)",
-                  "0 0 20px rgba(236, 72, 153, 0.6), 0 0 30px rgba(236, 72, 153, 0.4)",
-                  "0 0 0px rgba(236, 72, 153, 0.4)",
-                ],
-              }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+        {myBio?.documents && myBio?.documents.length > 0 ? (
+          myBio?.documents.map((doc, index) => (
+            <motion.div
+              key={index}
+              className="flex items-center justify-between p-4 border border-pink-100 rounded-lg transition-colors mb-4"
+              whileHover={{ borderColor: "#ec4899" }}
             >
-              View
-            </motion.button>
-          </motion.div>
-        ))}
+              <span className="font-medium text-gray-700 dark:text-gray-100 truncate">
+                {doc.title}
+              </span>
+              <motion.button
+                onClick={() => openPDFModal(doc.fileUrl, doc.title)}
+                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors relative overflow-hidden"
+                animate={{
+                  boxShadow: [
+                    "0 0 0px rgba(236, 72, 153, 0.4)",
+                    "0 0 20px rgba(236, 72, 153, 0.6), 0 0 30px rgba(236, 72, 153, 0.4)",
+                    "0 0 0px rgba(236, 72, 153, 0.4)",
+                  ],
+                }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                View
+              </motion.button>
+            </motion.div>
+          ))
+        ) : (
+          <p className="text-gray-500 dark:text-gray-400">
+            No documents available
+          </p>
+        )}
       </motion.div>
     </motion.div>
   );

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import ThemeToggle from "../utils/ThemeToggle";
+import ThemeToggle from "../../utils/ThemeToggle";
 import Button from "./ui/Button";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/auth.service";
@@ -21,8 +21,6 @@ const Header = () => {
       await verify_Its_Me();
       router.push("/admin-dashboard");
     } catch {
-            router.push("/admin-dashboard");
-
       setAuthOpen(true);
     }
   };

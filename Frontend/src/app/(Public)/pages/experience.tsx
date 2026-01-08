@@ -1,27 +1,20 @@
 "use client";
-import { useState, useEffect } from "react";
 import { FaCode } from "react-icons/fa";
-import { ScrollStackContainer } from "../utils/ScrollStack";
+import { ScrollStackContainer } from "../../utils/ScrollStack";
 import {
   experienceInfo,
   experienceService,
 } from "@/services/experience.service";
+import useFetch from "@/hooks/useFetch";
 
 const ExperienceSection = () => {
-  const [experiences, setExperience] = useState<experienceInfo[] | null>(null);
 
-  useEffect(() => {
-    const fetchExperience = async () => {
-      try {
-        const data = await experienceService.getInfo();
-        setExperience(data);
-      } catch (error) {
-        console.error("Error fetching experience info:", error);
-      }
-    };
+  const {
+  data: experiences,
+  error,
+} = useFetch(experienceService.getInfo);
 
-    fetchExperience();
-  }, []);
+
 
   return (
     <div className="mt-16 mx-auto max-w-7xl relative">

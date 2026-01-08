@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.post("/create", validate(heroSectionSchema), createHero);
 router.get("/get", getHeroSection);
-// router.delete("/:id", deleteInfo);
-// router.put("/:id", validate(heroSectionUpdateSchema), updateInfo);
+
 
 export default router;  

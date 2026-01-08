@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "../../public/assets/style/style.css";
 import "../../public/assets/style/mystyle.scss";
-import ClientWrapper from "./ClientWrapper";
-
+import { ThemeProvider } from "./context/ThemeContext";
+import { ToastProvider } from "./context/ToastContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,15 +14,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-export const metadata = {
-  title: "Praveen's Portfolio",
-  description:
-    "Full-stack developer. I build fast, scalable, and user-focused web applications with clean UI and modern architecture.",
-  icons: {
-    icon: "/assets/img/logo.png", // ✅ PNG as favicon
-  },
-};
 
 export default function RootLayout({
   children,
@@ -50,7 +41,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
       >
-        <ClientWrapper>{children}</ClientWrapper>
+        <ThemeProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

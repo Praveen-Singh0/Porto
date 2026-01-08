@@ -1,10 +1,9 @@
 'use client'
-import DashboardLayout from './components/DashboardLayout';
 import StatsCard from './components/StatsCard';
 import SkillsTable from './components/SkillsTable';
 import ExperienceTimeline from './components/ExperienceTimeline';
 import { Users, Briefcase, Code, GraduationCap, LucideIcon } from 'lucide-react';
-import { dummySkills, dummyExperiences, dummyUser } from '../../../../public/assets/data/dummyData';
+import { dummySkills, dummyExperiences } from '../../../../public/assets/data/dummyData';
 
 interface Stat {
   icon: LucideIcon;
@@ -23,8 +22,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <DashboardLayout userRole={dummyUser.role}>
-
+    <>
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
@@ -39,6 +37,6 @@ export default function Dashboard() {
 
       {/* Experience Timeline */}
       <ExperienceTimeline experiences={dummyExperiences} />
-    </DashboardLayout>
+    </>
   );
 }

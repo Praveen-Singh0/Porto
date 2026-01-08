@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import TiltedCard from "../components/TiltedCard";
-import majorProjects from "../../../public/assets/data/majorProjects.json";
+import majorProjects from "../../../../public/assets/data/majorProjects.json";
 
 
 // types 

@@ -4,24 +4,23 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { educationService, educationInfo } from "@/services/education.service";
+import useFetch from "@/hooks/useFetch";
 
 const EducationSection = () => {
-  const [educationList, setEducationList] = useState<educationInfo[]>([]);
+
+    const {
+  data: educationList,
+  error,
+} = useFetch(educationService.getInfo);
+
   const [selectedCard, setSelectedCard] = useState<educationInfo | null>(null);
 
   useEffect(() => {
-    const fetchEducationInfo = async () => {
-      try {
-        const data = await educationService.getInfo();
-        setEducationList(data);
-        setSelectedCard(data[0]);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (educationList && educationList.length > 0) {
+      setSelectedCard(educationList[0]);
+    }
+  }, [educationList]);
 
-    fetchEducationInfo();
-  }, []);
 
   if (!selectedCard) return null;
 
@@ -48,7 +47,7 @@ const EducationSection = () => {
 
       {/* Tabs */}
       <div className="flex flex-wrap justify-center gap-4 mb-10">
-        {educationList.map((card) => (
+        {educationList?.map((card) => (
           <motion.button
             key={card.id}
             onClick={() => setSelectedCard(card)}

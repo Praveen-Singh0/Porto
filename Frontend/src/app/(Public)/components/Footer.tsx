@@ -1,6 +1,6 @@
 "use client";
-import SplashCursor from "../utils/SplashCursor";
-import { usePortfolioInfoContext } from "../context/PortfolioInfoContext";
+import SplashCursor from "../../utils/SplashCursor";
+import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
 const Footer = () => {
   const { info } = usePortfolioInfoContext();
 

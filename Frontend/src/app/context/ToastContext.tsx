@@ -286,7 +286,6 @@ const ToastItem = ({
   );
 };
 
-/* ================= HOOK ================= */
 
 export const useToast = () => {
   const context = useContext(ToastContext);

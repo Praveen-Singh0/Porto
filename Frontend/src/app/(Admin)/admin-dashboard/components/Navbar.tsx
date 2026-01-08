@@ -1,22 +1,50 @@
 "use client";
 import { motion } from "framer-motion";
-import { Bell, Search, Menu } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Bell, Search, Menu, LogOut } from "lucide-react";
 import ThemeToggle from "@/app/utils/ThemeToggle";
+import { memo, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth.service";
+
+
+interface UserInfo {
+  id: number;
+  name: string;
+  email: string;
+  role: "ADMIN" | "GUEST";
+  lastLoginAt: string | null;
+}
 
 interface NavbarProps {
+  user: UserInfo | null;
   onToggleSidebar: () => void;
 }
 
-export default function Navbar({ onToggleSidebar }: NavbarProps) {
+const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
+  const router = useRouter();
+  const {logout} = authService;
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      router.push("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       className="
+      sm:ml-12
+      ml-0
     sticky top-0 z-30
     backdrop-blur-xl
-    rounded-none md:rounded-[2rem]
+    rounded-none
   "
     >
       <div className="flex items-center justify-between px-6 py-4">
@@ -30,10 +58,19 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
           >
             <Menu className="w-6 h-6" />
           </button>
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <Image
+              src="https://flowbite.com/docs/images/logo.svg"
+              className="mr-2 h-5 sm:mr-3 sm:h-7 md:h-8 lg:h-9"
+              alt="Logo"
+              width={36}
+              height={36}
+            />
+          </Link>
 
-          <h1 className="text-2xl md:text-4xl tracking-tight text-gray-900 dark:text-gray-100">
+          <h1 className="hidden sm:block  text-2xl md:text-4xl tracking-tight text-gray-900 dark:text-gray-100">
             <span className="font-light">Good morning!</span>{" "}
-            <span className="font-semibold">John</span>
+            <span className="font-semibold">{user?.name}</span>
           </h1>
 
           {/* Search bar */}
@@ -58,12 +95,22 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
           </button>
 
-          <Avatar>
-            <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-            <AvatarFallback>AD</AvatarFallback>
-          </Avatar>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-violet-600 to-pink-600 flex items-center justify-center text-white font-semibold">
+            AD
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 text-gray-700 dark:text-white transition-colors group"
+            type="button"
+            aria-label="Logout"
+          >
+            <LogOut className="w-5 h-5 group-hover:text-red-500 transition-colors" />
+          </button>
         </div>
       </div>
     </motion.nav>
   );
-}
+});
+
+export default Navbar;

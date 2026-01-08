@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import Header from "../components/Header";
 import {
   AiOutlineClose,
@@ -12,7 +12,8 @@ import Image from "next/image";
 import { motion, useSpring } from "framer-motion";
 import Button from "../components/ui/Button";
 import { heroService } from "@/services/heroSection.service";
-import { usePortfolioInfoContext } from "../context/PortfolioInfoContext";
+import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
+import useFetch from "@/hooks/useFetch";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
@@ -23,9 +24,10 @@ const fadeUp = (delay: number) => ({
 const TopPage = () => {
   const { info } = usePortfolioInfoContext();
 
-  const [bioContent, setBioContent] = useState({
-    bio: "",
-  });
+  const {
+  data: bioContent,
+  error,
+} = useFetch(heroService.getInfo);
 
   // 3D Tilt effect for image card
   const imageCardRef = useRef<HTMLDivElement>(null);
@@ -33,13 +35,6 @@ const TopPage = () => {
   const rotateY = useSpring(0, { damping: 30, stiffness: 100, mass: 2 });
   const scale = useSpring(1, { damping: 30, stiffness: 100, mass: 2 });
 
-  useEffect(() => {
-    const fetchBio = async () => {
-      const data = await heroService.getInfo();
-      setBioContent(data);
-    };
-    fetchBio();
-  }, []);
 
   const handleImageCardMouse = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageCardRef.current) return;
@@ -134,7 +129,7 @@ const TopPage = () => {
                   {...fadeUp(0.55)}
                   className="mt-8 text-pretty text-lg font-medium text-gray-500 dark:text-gray-100 sm:text-xl/8"
                 >
-                  {bioContent.bio || "No bio available"}
+                  {bioContent?.bio || "No bio available"}
                 </motion.p>
 
                 {/* 5️⃣ BUTTONS */}

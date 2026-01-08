@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiFillHtml5, AiFillGithub, AiFillApi } from "react-icons/ai";
 import { BiLogoTailwindCss, BiLogoNodejs } from "react-icons/bi";
 import { BsFiletypeCss, BsBootstrap } from "react-icons/bs";
 import { skillsService, skillsInfo } from "@/services/skillSection.service";
+import useFetch from "@/hooks/useFetch";
 
 import {
   FaReact,
@@ -73,24 +74,16 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
 
 const SkillsSection = () => {
   const [filter, setFilter] = useState("BACKEND");
-  const [skills, setSkills] = useState<skillsInfo[]>([]);
+  const {
+  data: skills,
+  error,
+} = useFetch(skillsService.getInfo);
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const data = await skillsService.getInfo();
-        setSkills(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    fetchSkills();
-  }, []);
 
-  const categories = Array.from(new Set(skills.map((skill) => skill.category)));
+  const categories = Array.from(new Set(skills?.map((skill) => skill.category)));
 
-  const filteredSkills = skills.filter((skill) => skill.category === filter);
+  const filteredSkills = skills?.filter((skill) => skill.category === filter);
 
   // Animation variants
   const containerVariants = {
@@ -316,7 +309,7 @@ const SkillsSection = () => {
             initial="hidden"
             animate="visible"
           >
-            {filteredSkills.map((skill, index) => {
+            {filteredSkills?.map((skill, index) => {
               const IconComponent = iconMap[skill.icon || ""];
 
               return (
@@ -485,30 +478,30 @@ const SkillsSection = () => {
           }}
         >
           {[
-            { label: "Total Skills", value: skills.length, icon: "🚀" },
+            { label: "Total Skills", value: skills?.length, icon: "🚀" },
             {
               label: "Frontend",
-              value: skills.filter((s) => s.category === "FRONTEND").length,
+              value: skills?.filter((s) => s.category === "FRONTEND").length,
               icon: "💻",
             },
             {
               label: "Backend",
-              value: skills.filter((s) => s.category === "BACKEND").length,
+              value: skills?.filter((s) => s.category === "BACKEND").length,
               icon: "⚙️",
             },
             {
               label: "Database",
-              value: skills.filter((s) => s.category === "DATABASE").length,
+              value: skills?.filter((s) => s.category === "DATABASE").length,
               icon: "💾",
             },
             {
               label: "DevOps",
-              value: skills.filter((s) => s.category === "DEVOPS").length,
+              value: skills?.filter((s) => s.category === "DEVOPS").length,
               icon: "🔧",
             },
             {
               label: "Others",
-              value: skills.filter((s) => s.category === "OTHERS").length,
+              value: skills?.filter((s) => s.category === "OTHERS").length,
               icon: "⭐",
             },
           ].map((stat, index) => (

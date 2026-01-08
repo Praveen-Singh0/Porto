@@ -3,6 +3,7 @@ export interface AuthUser {
   name: string;
   email: string;
   role: "ADMIN" | "GUEST";
+  lastLoginAt: string | null;
 }
 
 export interface SignupPayload {

@@ -27,9 +27,10 @@ export const authService = {
     }
   },
 
-  verify_Its_Me: async (): Promise<void> => {
+  verify_Its_Me: async (): Promise<AuthUser> => {
     try {
-      await api.get("/auth/me");
+      const res = await api.get("/auth/me");
+      return res.data.data.user;
     } catch (error: any) {
       throw new Error(error.response?.data?.message || "Varify failed");
     }

@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import { AiOutlineCaretRight } from "react-icons/ai";
 import { useRef, useState, useEffect } from "react";
-import "../../../public/assets/style/Caro.scss";
-import cards from "../../../public/assets/data/Projects.json";
+import "../../../../public/assets/style/Caro.scss";
+import cards from "../../../../public/assets/data/Projects.json";
 import Button from '../components/ui/Button';
 
 interface CardProps {

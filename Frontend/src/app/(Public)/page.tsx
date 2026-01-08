@@ -8,12 +8,12 @@ import About from "./pages/about";
 import EducationSection from "./pages/education";
 import MinorProject from "./pages/minorProjects";
 import MajorProjects from "./pages/majorProject";
-import GradientBackground from "./utils/gradientBackground";
+import GradientBackground from "../utils/gradientBackground";
 import SkillsSection from "./pages/skillsSection";
 import ContactSection from "./pages/contact";
 import ExperienceSection from "./pages/experience";
-import { useScrollPosition } from "./utils/useScrollPosition";
-import ThemeToggle from "./utils/ThemeToggle";
+import { useScrollPosition } from "../utils/useScrollPosition";
+import ThemeToggle from "../utils/ThemeToggle";
 
 import {
   HiHome,
