@@ -110,5 +110,33 @@ enum SkillCategory {
 }
 
 
+model MinorProject {
+  id        Int      @id @default(autoincrement())
+  header    String
+  html_url  String
+  image     String
+  content   String
+  type      String   @default("minor")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("minor_projects")
+}
+
+model MajorProject {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String   @db.Text
+  image        String
+  liveUrl      String
+  githubUrl    String?
+  technologies String[] // PostgreSQL array type
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("major_projects")
+}
+
+
 
 

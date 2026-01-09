@@ -121,7 +121,7 @@ const About = () => {
       </motion.h1>
 
       {/* Main card */}
-      <motion.div className="relative rounded-3xl backdrop-blur-sm bg-white/70 dark:bg-gray-800/70 border border-pink-100 dark:border-gray-700 shadow-xl p-8 mb-16">
+      <motion.div className="relative rounded-3xl backdrop-blur-sm bg-white/70 dark:bg-gray-800/70 border border-pink-100 dark:border-gray-700 shadow-xl p-4 mb-16">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Profile Image */}
           <motion.div
@@ -220,7 +220,7 @@ const About = () => {
       </motion.div>
 
       {/* Documents */}
-      <motion.div className="bg-white dark:bg-gray-800 border border-pink-100 dark:border-gray-700 rounded-3xl p-8 shadow-lg">
+      <motion.div className="bg-white dark:bg-gray-800 border border-pink-100 dark:border-gray-700 rounded-3xl p-4 shadow-lg">
         <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
           Documents
         </h3>

@@ -16,6 +16,12 @@ export interface aboutInfo {
   updatedAt: string;
 }
 
+export type AboutPayload = Omit<
+  aboutInfo,
+  "id" | "createdAt" | "updatedAt"
+>;
+
+
 export const aboutService = {
   getInfo: async (): Promise<aboutInfo> => {
     try {
@@ -28,7 +34,7 @@ export const aboutService = {
     }
   },
 
-  updateInfo: async (data: aboutInfo): Promise<aboutInfo> => {
+  updateInfo: async (data: AboutPayload): Promise<aboutInfo> => {
     try {
       const res = await api.post("/about/create", data);
       return res.data.data;

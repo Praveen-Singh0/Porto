@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AiFillHtml5, AiFillGithub, AiFillApi } from "react-icons/ai";
 import { BiLogoTailwindCss, BiLogoNodejs } from "react-icons/bi";
 import { BsFiletypeCss, BsBootstrap } from "react-icons/bs";
-import { skillsService, skillsInfo } from "@/services/skillSection.service";
+import { skillsService, SkillInfo } from "@/services/skillSection.service";
 import useFetch from "@/hooks/useFetch";
 
 import {
@@ -173,7 +173,7 @@ const SkillsSection = () => {
     }),
   };
 
-  const SkillIcon = ({ skill }: { skill: skillsInfo }) => {
+  const SkillIcon = ({ skill }: { skill: SkillInfo }) => {
   const IconComponent = skill.icon ? iconMap[skill.icon] : null;
 
   if (skill.icon) {
@@ -265,40 +265,40 @@ const SkillsSection = () => {
         </motion.div>
 
         {/* Filter Tabs - Compact scrollable for mobile */}
-        <motion.div
-          className="flex justify-center mb-8 md:mb-12  pb-2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 min-w-min">
-            {categories.map((category, index) => (
-              <motion.button
-                key={category}
-                onClick={() => setFilter(category)}
-                className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap ${
-                  filter === category
-                    ? "text-white"
-                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + index * 0.05 }}
-              >
-                {category}
-                {filter === category && (
-                  <motion.span
-                    layoutId="activeFilter"
-                    className="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg md:rounded-xl shadow-lg shadow-pink-200 -z-10"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
+       <motion.div
+  className="flex justify-center mb-8 md:mb-12 pb-2 w-full overflow-x-auto"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.4 }}
+>
+  <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide -webkit-overflow-scrolling-touch">
+    {categories.map((category, index) => (
+      <motion.button
+        key={category}
+        onClick={() => setFilter(category)}
+        className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap flex-shrink-0 ${
+          filter === category
+            ? "text-white"
+            : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+        }`}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 + index * 0.05 }}
+      >
+        {category}
+        {filter === category && (
+          <motion.span
+            layoutId="activeFilter"
+            className="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg md:rounded-xl shadow-lg shadow-pink-200 -z-10"
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+          />
+        )}
+      </motion.button>
+    ))}
+  </div>
+</motion.div>
 
         {/* Skills Grid - 2 columns on mobile, responsive scaling */}
         <AnimatePresence mode="wait">

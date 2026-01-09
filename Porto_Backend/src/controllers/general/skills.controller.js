@@ -38,25 +38,6 @@ const getSkillsSection = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, "skills section retrieved", skills));
 });
 
-
-const updateSkillsSection = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { name, proficiency, category, icon, color } = req.body;
-
-  const skills = await prisma.skill.update({
-    where: { id: Number(id) },
-    data: {
-      name,
-      proficiency,
-      category,
-      icon,
-      color,
-    },
-  });
-
-  return res.status(200).json(new ApiResponse(200, "skill updated successfully", skills));
-});
-
 const deleteSkillsSection = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -69,5 +50,5 @@ const deleteSkillsSection = asyncHandler(async (req, res) => {
   );
 });
 
-export { createSkillsSection, getSkillsSection, updateSkillsSection, deleteSkillsSection };
+export { createSkillsSection, getSkillsSection, deleteSkillsSection };
 

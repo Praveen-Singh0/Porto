@@ -23,8 +23,6 @@ const generateRefreshToken = (userId) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
-  console.log("refreshToken REFRESH:", refreshToken)
-
   if (!refreshToken) {
     throw new ApiError(401, "Refresh token missing");
   }
@@ -89,9 +87,6 @@ const LoginUser = asyncHandler(async (req, res) => {
     maxAge: 2 * 60 * 1000 // 2 minutes
   });
 
-  console.log("accessToken LOGIN :", accessToken)
-  console.log("refreshToken LOGIN :", refreshToken)
-
   return res.status(200).json(
     new ApiResponse(200, "Login successful", {
       email: user.email,
@@ -114,9 +109,6 @@ const logoutUser = asyncHandler(async (req, res) => {
     secure: process.env.NODE_ENV === "production",
     sameSite: "Strict",
   });
-
-  console.log("req.cookies.accessToken LOGOUT:", req.cookies.accessToken);
-  console.log("req.cookies.refreshToken LOGOUT:", req.cookies.refreshToken);
 
   return res.status(200).json(new ApiResponse(200, "Logged out successfully"));
 });

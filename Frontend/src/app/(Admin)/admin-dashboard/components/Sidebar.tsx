@@ -18,6 +18,7 @@ import {
   Bot,
   CreditCard,
   MessageCircle,
+  NotebookPen
 } from "lucide-react";
 
 type Role = "ADMIN" | "GUEST";
@@ -85,6 +86,13 @@ const MENU_ITEMS: MenuItem[] = [
     category: "main",
   },
   {
+    icon: NotebookPen,
+    label: "Projects",
+    href: "/admin-dashboard/Projects",
+    roles: ["ADMIN"],
+    category: "main",
+  },
+  {
     icon: Settings,
     label: "Settings",
     href: "/admin-dashboard/settings",
@@ -135,17 +143,6 @@ const MENU_ITEMS: MenuItem[] = [
 
 const Sidebar = memo(function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
-
-
-  useEffect(() => {
-  console.log("Sidebar mounted");
-
-  return () => {
-    console.log("Sidebar unmounted");
-  };
-}, []);
-
-
 
   const filteredMainItems = useMemo(
     () => MENU_ITEMS.filter((item) => item.category === "main"),

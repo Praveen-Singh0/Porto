@@ -12,4 +12,3 @@ export const experienceSectionSchema = z.object({
   color: z.string().min(2).max(100).optional(),
 });
 
-export const experienceSectionUpdateSchema = experienceSectionSchema.partial();

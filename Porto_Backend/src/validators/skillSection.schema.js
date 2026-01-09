@@ -8,4 +8,3 @@ export const skillSectionSchema = z.object({
   color: z.string().min(2).max(20).optional(),
 });
 
-export const skillSectionUpdateSchema = skillSectionSchema.partial();

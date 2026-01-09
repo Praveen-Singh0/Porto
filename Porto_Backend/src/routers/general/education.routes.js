@@ -8,6 +8,6 @@ const router = express.Router();
 router.post("/create", validate(educationSectionSchema), createEducation);
 router.get("/get", getEducationSection);
 router.delete("/:id", deleteEducationSection);
-router.put("/:id", validate(educationSectionUpdateSchema), updateEducationSection);
+router.patch("/:id", validate(educationSectionUpdateSchema), updateEducationSection);
 
 export default router;  

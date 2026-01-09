@@ -1,6 +1,6 @@
 import api from "@/lib/api";
 
-export interface skillsInfo {
+export interface SkillInfo {
   id: number;
   name: string;
   proficiency: number;
@@ -11,9 +11,18 @@ export interface skillsInfo {
   updatedAt: string;
 }
 
+export type SkillCategory =
+  | "FRONTEND"
+  | "BACKEND"
+  | "DATABASE"
+  | "DEVOPS"
+  | "OTHERS";
+
+
+export type SkillPayload = Omit<SkillInfo, "id" | "createdAt" | "updatedAt">;
 
 export const skillsService = {
-  getInfo: async (): Promise<skillsInfo[]> => {
+  getInfo: async (): Promise<SkillInfo[]> => {
     try {
       const res = await api.get("/skills/get");
       return res.data.data;
@@ -23,5 +32,25 @@ export const skillsService = {
       );
     }
   },
-};
 
+  create: async (payload: SkillPayload): Promise<SkillInfo> => {
+    try {
+      const res = await api.post("/skills/create", payload);
+      return res.data.data;
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message || "Unable to create skills info"
+      );
+    }
+  },
+
+  delete: async (id: number): Promise<void> => {
+    try {
+      await api.delete(`/skills/${id}`);
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message || "Unable to delete skills info"
+      );
+    }
+  },
+};

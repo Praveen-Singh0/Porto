@@ -11,6 +11,9 @@ import experienceRouters from './routers/experience/experience.js';
 import educationRouters from './routers/general/education.routes.js';
 import skillsRouters from './routers/general/skills.routes.js';
 import authRouters from './routers/auth/auth.routes.js';
+import majorProjectsRoutes from './routers/projects/majorProject.routes.js'
+import minorProjectsRoutes from './routers/projects/minorProject.routes.js'
+import uploadRoutes from "./routers/upload/upload.routes.js";
 
 
 dotenv.config();
@@ -44,6 +47,9 @@ app.use("/api/experience", experienceRouters);
 app.use("/api/education", educationRouters);
 app.use("/api/skills", skillsRouters);
 app.use("/api/auth", authRouters);
+app.use("/api/projects/major", majorProjectsRoutes);
+app.use("/api/projects/minor", minorProjectsRoutes);
+app.use("/api/upload", uploadRoutes);
 
 app.use(errorHandler);
 export { app };
