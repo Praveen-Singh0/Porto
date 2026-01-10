@@ -23,6 +23,8 @@ import { useToast } from "@/app/context/ToastContext";
 
 import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
+import FormInput from "../components/FormInput";
+import MultiSelectInput from "../components/MultiSelectInput";
 
 const experienceTypes = [
   "Full-time",
@@ -213,12 +215,6 @@ export default function ExperiencePage() {
     setFormData({ ...formData, responsibilities: updated });
   };
 
-  const addTechnology = () => {
-    setFormData({
-      ...formData,
-      technologies: [...(formData.technologies || []), ""],
-    });
-  };
 
   const removeTechnology = (index: number) => {
     setFormData({
@@ -227,12 +223,7 @@ export default function ExperiencePage() {
     });
   };
 
-  const updateTechnology = (index: number, value: string) => {
-    const updated = [...(formData.technologies || [])];
-    updated[index] = value;
-    setFormData({ ...formData, technologies: updated });
-  };
-
+  
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -260,235 +251,138 @@ export default function ExperiencePage() {
 
       {/* Create/Edit Form */}
       <AnimatePresence>
-        {(isCreating || isEditing) && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+       {(isCreating || isEditing) && (
+  <motion.div
+    initial={{ opacity: 0, height: 0 }}
+    animate={{ opacity: 1, height: "auto" }}
+    exit={{ opacity: 0, height: 0 }}
+    transition={{ duration: 0.3 }}
+  >
+    <GlassCard>
+      <div className="space-y-4">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+          {isCreating ? "Add New Experience" : "Edit Experience"}
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormInput
+            label="Job Title"
+            value={formData.title || ""}
+            onChange={(value) => setFormData({ ...formData, title: value })}
+            placeholder="e.g., Senior Full-Stack Developer"
+            required
+          />
+
+          <FormInput
+            label="Company"
+            value={formData.company || ""}
+            onChange={(value) => setFormData({ ...formData, company: value })}
+            placeholder="e.g., Tech Innovations Pvt Ltd"
+            required
+          />
+
+          <FormInput
+            label="Location"
+            value={formData.location || ""}
+            onChange={(value) => setFormData({ ...formData, location: value })}
+            placeholder="e.g., Bangalore, India"
+          />
+
+          <FormInput
+            label="Duration"
+            value={formData.duration || ""}
+            onChange={(value) => setFormData({ ...formData, duration: value })}
+            placeholder="e.g., 2 years"
+          />
+
+          <FormInput
+            label="Period"
+            value={formData.period || ""}
+            onChange={(value) => setFormData({ ...formData, period: value })}
+            placeholder="e.g., Jan 2024 - Present"
+          />
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Employment Type
+            </label>
+            <select
+              value={formData.type || "Full-time"}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            >
+              {experienceTypes.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* ✅ Color Theme */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Color Theme
+          </label>
+          <div className="flex gap-2 flex-wrap">
+            {experienceColors.map((color) => (
+              <button
+                key={color}
+                type="button"
+                onClick={() => setFormData({ ...formData, color })}
+                className={`w-10 h-10 rounded-full transition-all ${
+                  formData.color === color
+                    ? "ring-4 ring-offset-2 ring-gray-400 dark:ring-gray-600 scale-110"
+                    : "hover:scale-105"
+                }`}
+                style={{ backgroundColor: color }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* ✅ SINGLE MultiSelectInput for Responsibilities */}
+        <MultiSelectInput
+          label="Responsibilities"
+          items={formData.responsibilities?.filter(Boolean) || []}
+          onChange={(items) => setFormData({ ...formData, responsibilities: items })}
+          placeholder="e.g., Built scalable React applications"
+          emptyMessage="Add your key responsibilities"
+        />
+
+        {/* ✅ SINGLE MultiSelectInput for Technologies */}
+        <MultiSelectInput
+          label="Technologies"
+          items={formData.technologies?.filter(Boolean) || []}
+          onChange={(items) => setFormData({ ...formData, technologies: items })}
+          placeholder="e.g., React, Node.js, AWS"
+          emptyMessage="Add technologies you worked with"
+        />
+
+        <div className="flex gap-2 pt-4">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={isCreating ? handleCreate : handleUpdate}
+            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:shadow-lg transition-all font-medium"
           >
-            <GlassCard>
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {isCreating ? "Add New Experience" : "Edit Experience"}
-                </h3>
+            <Save className="w-4 h-4" />
+            {isCreating ? "Save Experience" : "Update Experience"}
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={cancelEdit}
+            className="flex items-center gap-2 px-6 py-2.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium"
+          >
+            <X className="w-4 h-4" />
+            Cancel
+          </motion.button>
+        </div>
+      </div>
+    </GlassCard>
+  </motion.div>
+)}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Job Title
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.title || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      placeholder="e.g., Senior Full-Stack Developer"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Company
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.company || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, company: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      placeholder="e.g., Tech Innovations Pvt Ltd"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Location
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.location || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, location: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      placeholder="e.g., Bangalore, India"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Duration
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.duration || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, duration: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      placeholder="e.g., 2 years"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Period
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.period || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, period: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                      placeholder="e.g., Jan 2024 - Present"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Employment Type
-                    </label>
-                    <select
-                      value={formData.type || "Full-time"}
-                      onChange={(e) =>
-                        setFormData({ ...formData, type: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    >
-                      {experienceTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Color Theme
-                  </label>
-                  <div className="flex gap-2 flex-wrap">
-                    {experienceColors.map((color) => (
-                      <button
-                        key={color}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, color })}
-                        className={`w-10 h-10 rounded-full transition-all ${
-                          formData.color === color
-                            ? "ring-4 ring-offset-2 ring-gray-400 dark:ring-gray-600 scale-110"
-                            : "hover:scale-105"
-                        }`}
-                        style={{ backgroundColor: color }}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Responsibilities
-                    </label>
-                    <button
-                      type="button"
-                      onClick={addResponsibility}
-                      className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                    >
-                      + Add Responsibility
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {formData.responsibilities?.map((responsibility, index) => (
-                      <div key={index} className="flex gap-2">
-                        <input
-                          type="text"
-                          value={responsibility}
-                          onChange={(e) =>
-                            updateResponsibility(index, e.target.value)
-                          }
-                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                          placeholder="Describe your responsibility..."
-                        />
-                        {formData.responsibilities &&
-                          formData.responsibilities.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => removeResponsibility(index)}
-                              className="px-3 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Technologies
-                    </label>
-                    <button
-                      type="button"
-                      onClick={addTechnology}
-                      className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                    >
-                      + Add Technology
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {formData.technologies?.map((technology, index) => (
-                      <div key={index} className="flex gap-2">
-                        <input
-                          type="text"
-                          value={technology}
-                          onChange={(e) =>
-                            updateTechnology(index, e.target.value)
-                          }
-                          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                          placeholder="e.g., React, Node.js, AWS"
-                        />
-                        {formData.technologies &&
-                          formData.technologies.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => removeTechnology(index)}
-                              className="px-3 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex gap-2 pt-4">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={isCreating ? handleCreate : handleUpdate}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:shadow-lg transition-all font-medium"
-                  >
-                    <Save className="w-4 h-4" />
-                    {isCreating ? "Save Experience" : "Update Experience"}
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={cancelEdit}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium"
-                  >
-                    <X className="w-4 h-4" />
-                    Cancel
-                  </motion.button>
-                </div>
-              </div>
-            </GlassCard>
-          </motion.div>
-        )}
       </AnimatePresence>
 
       <ConfirmModal

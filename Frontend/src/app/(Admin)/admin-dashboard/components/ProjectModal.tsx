@@ -178,8 +178,10 @@ export default function ProjectModal({
               />
 
               <MultiSelectInput
-                technologies={(data as MajorProjectForm).technologies}
+                label="Technologies"
+                items={(data as MajorProjectForm).technologies}
                 onChange={(v) => updateField("technologies", v)}
+                placeholder="e.g., React, Node.js, AWS"
               />
             </>
           )}

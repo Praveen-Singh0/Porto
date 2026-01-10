@@ -13,6 +13,8 @@ import { useToast } from "@/app/context/ToastContext";
 
 import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
+import FormInput from "../components/FormInput";
+import FormTextarea from "../components/FormTextarea";
 
 const skillCategories = ["FRONTEND", "BACKEND", "DATABASE", "DEVOPS", "OTHERS"];
 
@@ -186,16 +188,12 @@ export default function SkillsPage() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Skill Name
-                </label>
-                <input
-                  type="text"
+                <FormInput
+                  label="Skill Name"
                   value={formData.name || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, name: value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="e.g., React, Node.js, Python"
                 />
               </div>
@@ -246,16 +244,12 @@ export default function SkillsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Icon (Emoji)
-                </label>
-                <input
-                  type="text"
+                <FormInput
+                  label="Icon (Emoji)"
                   value={formData.icon || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, icon: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, icon: value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="e.g., ⚛️, 🟢, 📘"
                 />
               </div>

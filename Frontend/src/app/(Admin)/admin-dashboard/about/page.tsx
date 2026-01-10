@@ -1,14 +1,27 @@
-'use client'
-import { useState, useEffect } from 'react';
-import GlassCard from '../components/GlassCard';
-import { motion } from 'framer-motion';
-import { Edit, Save, X, User, FileText, GraduationCap, Award, Download, Sparkles, Loader2 } from 'lucide-react';
-import { aboutService } from '@/services/aboutSection.service';
-import { heroService } from '@/services/heroSection.service';
-import type { aboutInfo } from '@/services/aboutSection.service';
-import type { heroInfo } from '@/services/heroSection.service';
-import { useToast } from '@/app/context/ToastContext';
-import useFetch from '@/hooks/useFetch';
+"use client";
+import { useState, useEffect } from "react";
+import GlassCard from "../components/GlassCard";
+import { motion } from "framer-motion";
+import {
+  Edit,
+  Save,
+  X,
+  User,
+  FileText,
+  GraduationCap,
+  Award,
+  Download,
+  Sparkles,
+  Loader2,
+} from "lucide-react";
+import { aboutService } from "@/services/aboutSection.service";
+import { heroService } from "@/services/heroSection.service";
+import type { aboutInfo } from "@/services/aboutSection.service";
+import type { heroInfo } from "@/services/heroSection.service";
+import { useToast } from "@/app/context/ToastContext";
+import useFetch from "@/hooks/useFetch";
+import FormInput from "../components/FormInput";
+import FormTextarea from "../components/FormTextarea";
 
 export default function AboutPage() {
   const { showToast } = useToast();
@@ -20,56 +33,52 @@ export default function AboutPage() {
 
   const [isEditingAbout, setIsEditingAbout] = useState(false);
   const [aboutFormData, setAboutFormData] = useState<Partial<aboutInfo>>({
-    bio: '',
-    imageUrl: '',
-    specialization: '',
-    education: '',
-    documents: []
+    bio: "",
+    imageUrl: "",
+    specialization: "",
+    education: "",
+    documents: [],
   });
 
+  const {
+    data: heroData,
+    loading: heroLoading,
+    error: heroError,
+    setData: setHeroData,
+  } = useFetch<heroInfo>(heroService.getInfo);
 
-const {
-  data: heroData,
-  loading: heroLoading,
-  error: heroError,
-  setData: setHeroData,
-} = useFetch<heroInfo>(heroService.getInfo);
+  const {
+    data: aboutData,
+    loading: aboutLoading,
+    error: aboutError,
+    setData: setAboutData,
+  } = useFetch<aboutInfo>(aboutService.getInfo);
 
+  useEffect(() => {
+    if (heroData) {
+      setHeroFormData({ bio: heroData.bio });
+    }
+  }, [heroData]);
 
-const {
-  data: aboutData,
-  loading: aboutLoading,
-  error: aboutError,
-  setData: setAboutData,
-} = useFetch<aboutInfo>(aboutService.getInfo);
+  useEffect(() => {
+    if (aboutData) {
+      setAboutFormData({
+        bio: aboutData.bio,
+        imageUrl: aboutData.imageUrl,
+        specialization: aboutData.specialization,
+        education: aboutData.education,
+        documents: [...aboutData.documents],
+      });
+    }
+  }, [aboutData]);
 
-
-useEffect(() => {
-  if (heroData) {
-    setHeroFormData({ bio: heroData.bio });
-  }
-}, [heroData]);
-
-useEffect(() => {
-  if (aboutData) {
-    setAboutFormData({
-      bio: aboutData.bio,
-      imageUrl: aboutData.imageUrl,
-      specialization: aboutData.specialization,
-      education: aboutData.education,
-      documents: [...aboutData.documents],
+  if (heroError || aboutError) {
+    showToast({
+      message: "Failed to load page data",
+      type: "error",
     });
+    return null;
   }
-}, [aboutData]);
-
-if (heroError || aboutError) {
-  showToast({
-    message: "Failed to load page data",
-    type: "error",
-  });
-  return null;
-}
-
 
   const handleUpdateHero = async () => {
     if (!heroFormData.bio.trim()) {
@@ -94,7 +103,7 @@ if (heroError || aboutError) {
         message: error.message || "Failed to update hero section",
         type: "error",
       });
-    } 
+    }
   };
 
   const startEditHero = () => {
@@ -123,12 +132,12 @@ if (heroError || aboutError) {
     try {
       const updatePayload = {
         bio: aboutFormData.bio!,
-        imageUrl: aboutFormData.imageUrl || '',
+        imageUrl: aboutFormData.imageUrl || "",
         specialization: aboutFormData.specialization!,
-        education: aboutFormData.education || '',
+        education: aboutFormData.education || "",
         documents: (aboutFormData.documents || []).filter(
-          doc => doc.title.trim() && doc.fileUrl.trim()
-        )
+          (doc) => doc.title.trim() && doc.fileUrl.trim()
+        ),
       };
 
       const updatedData = await aboutService.updateInfo(updatePayload);
@@ -154,7 +163,7 @@ if (heroError || aboutError) {
         imageUrl: aboutData.imageUrl,
         specialization: aboutData.specialization,
         education: aboutData.education,
-        documents: [...aboutData.documents]
+        documents: [...aboutData.documents],
       });
       setIsEditingAbout(true);
     }
@@ -163,34 +172,41 @@ if (heroError || aboutError) {
   const cancelEditAbout = () => {
     setIsEditingAbout(false);
     setAboutFormData({
-      bio: '',
-      imageUrl: '',
-      specialization: '',
-      education: '',
-      documents: []
+      bio: "",
+      imageUrl: "",
+      specialization: "",
+      education: "",
+      documents: [],
     });
   };
 
   const addDocument = () => {
     setAboutFormData({
       ...aboutFormData,
-      documents: [...(aboutFormData.documents || []), { title: '', fileUrl: '' }]
+      documents: [
+        ...(aboutFormData.documents || []),
+        { title: "", fileUrl: "" },
+      ],
     });
   };
 
   const removeDocument = (index: number) => {
     setAboutFormData({
       ...aboutFormData,
-      documents: aboutFormData.documents?.filter((_, i) => i !== index) || []
+      documents: aboutFormData.documents?.filter((_, i) => i !== index) || [],
     });
   };
 
-  const updateDocument = (index: number, field: 'title' | 'fileUrl', value: string) => {
+  const updateDocument = (
+    index: number,
+    field: "title" | "fileUrl",
+    value: string
+  ) => {
     const updated = [...(aboutFormData.documents || [])];
     updated[index] = { ...updated[index], [field]: value };
     setAboutFormData({
       ...aboutFormData,
-      documents: updated
+      documents: updated,
     });
   };
 
@@ -222,57 +238,60 @@ if (heroError || aboutError) {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Edit About Information
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Specialization *
-                  </label>
-                  <input
-                    type="text"
-                    value={aboutFormData.specialization || ''}
-                    onChange={(e) => setAboutFormData({...aboutFormData, specialization: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  <FormInput
+                    label="Specialization"
+                    value={aboutFormData.specialization || ""}
+                    onChange={(value) =>
+                      setAboutFormData({
+                        ...aboutFormData,
+                        specialization: value,
+                      })
+                    }
                     placeholder="e.g., Full-Stack Development & Cloud Architecture"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Education
-                  </label>
-                  <input
-                    type="text"
-                    value={aboutFormData.education || ''}
-                    onChange={(e) => setAboutFormData({...aboutFormData, education: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  <FormInput
+                    label="Education"
+                    value={aboutFormData.education || ""}
+                    onChange={(value) =>
+                      setAboutFormData({
+                        ...aboutFormData,
+                        education: value,
+                      })
+                    }
                     placeholder="e.g., B.Tech in Computer Science Engineering"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Profile Image URL
-                </label>
-                <input
+                <FormInput
+                  label="Profile Image URL"
+                  value={aboutFormData.imageUrl || ""}
+                  onChange={(value) =>
+                    setAboutFormData({
+                      ...aboutFormData,
+                      imageUrl: value,
+                    })
+                  }
                   type="url"
-                  value={aboutFormData.imageUrl || ''}
-                  onChange={(e) => setAboutFormData({...aboutFormData, imageUrl: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Bio *
-                </label>
-                <textarea
-                  value={aboutFormData.bio || ''}
-                  onChange={(e) => setAboutFormData({...aboutFormData, bio: e.target.value})}
+                <FormTextarea
+                  label="Bio"
+                  value={aboutFormData.bio || ""}
+                  onChange={(value) =>
+                    setAboutFormData({ ...aboutFormData, bio: value })
+                  }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="Tell us about yourself..."
                   required
                 />
@@ -297,14 +316,18 @@ if (heroError || aboutError) {
                       <input
                         type="text"
                         value={doc.title}
-                        onChange={(e) => updateDocument(index, 'title', e.target.value)}
+                        onChange={(e) =>
+                          updateDocument(index, "title", e.target.value)
+                        }
                         className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                         placeholder="Document title"
                       />
                       <input
                         type="text"
                         value={doc.fileUrl}
-                        onChange={(e) => updateDocument(index, 'fileUrl', e.target.value)}
+                        onChange={(e) =>
+                          updateDocument(index, "fileUrl", e.target.value)
+                        }
                         className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                         placeholder="/documents/file.pdf"
                       />
@@ -325,10 +348,8 @@ if (heroError || aboutError) {
                   onClick={handleUpdateAbout}
                   className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  
-                      <Save className="w-4 h-4" />
-                      Update
-                   
+                  <Save className="w-4 h-4" />
+                  Update
                 </button>
                 <button
                   onClick={cancelEditAbout}
@@ -355,7 +376,7 @@ if (heroError || aboutError) {
                   />
                 </div>
               )}
-              
+
               <div className="flex-1">
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -363,7 +384,8 @@ if (heroError || aboutError) {
                       About Me
                     </h3>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Last updated: {new Date(aboutData.updatedAt).toLocaleDateString()}
+                      Last updated:{" "}
+                      {new Date(aboutData.updatedAt).toLocaleDateString()}
                     </p>
                   </div>
                   <motion.button
@@ -375,12 +397,14 @@ if (heroError || aboutError) {
                     <Edit className="w-4 h-4" />
                   </motion.button>
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <FileText className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Bio
+                      </span>
                     </div>
                     <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                       {aboutData.bio}
@@ -391,7 +415,9 @@ if (heroError || aboutError) {
                     <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <User className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Specialization</span>
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          Specialization
+                        </span>
                       </div>
                       <p className="text-gray-600 dark:text-gray-300">
                         {aboutData.specialization}
@@ -401,7 +427,9 @@ if (heroError || aboutError) {
                     <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <GraduationCap className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Education</span>
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          Education
+                        </span>
                       </div>
                       <p className="text-gray-600 dark:text-gray-300">
                         {aboutData.education}
@@ -413,7 +441,9 @@ if (heroError || aboutError) {
                     <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <Download className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Documents</span>
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          Documents
+                        </span>
                       </div>
                       <div className="space-y-2">
                         {aboutData.documents.map((doc, idx) => (
@@ -439,7 +469,7 @@ if (heroError || aboutError) {
         )}
       </div>
 
-       {/* Hero Section */}
+      {/* Hero Section */}
       <div className="space-y-6">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
           <Sparkles className="w-6 h-6 text-violet-600" />
@@ -454,14 +484,11 @@ if (heroError || aboutError) {
                   Edit Hero Bio
                 </h3>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Bio Description
-                  </label>
-                  <textarea
+                  <FormTextarea
+                    label="Bio Description"
                     value={heroFormData.bio}
-                    onChange={(e) => setHeroFormData({ bio: e.target.value })}
+                    onChange={(value) => setHeroFormData({ bio: value })}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     placeholder="Enter hero bio..."
                   />
                 </div>
@@ -470,9 +497,8 @@ if (heroError || aboutError) {
                     onClick={handleUpdateHero}
                     className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                
-                        <Save className="w-4 h-4" />
-                        Update
+                    <Save className="w-4 h-4" />
+                    Update
                   </button>
                   <button
                     onClick={cancelEditHero}
@@ -495,7 +521,8 @@ if (heroError || aboutError) {
                         Hero Bio
                       </h3>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Last updated: {new Date(heroData.updatedAt).toLocaleDateString()}
+                        Last updated:{" "}
+                        {new Date(heroData.updatedAt).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
@@ -508,11 +535,13 @@ if (heroError || aboutError) {
                     <Edit className="w-4 h-4" />
                   </motion.button>
                 </div>
-                
+
                 <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <FileText className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Bio Content</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Bio Content
+                    </span>
                   </div>
                   <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
                     {heroData.bio}

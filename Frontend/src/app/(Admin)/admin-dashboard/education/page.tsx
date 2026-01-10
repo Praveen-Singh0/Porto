@@ -21,6 +21,8 @@ import {
 import { useToast } from "@/app/context/ToastContext";
 import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
+import FormInput from "../components/FormInput";
+import MultiSelectInput from "../components/MultiSelectInput";
 
 export default function EducationPage() {
   const { showToast } = useToast();
@@ -182,26 +184,6 @@ export default function EducationPage() {
     });
   };
 
-  const addSubject = () => {
-    setFormData({
-      ...formData,
-      subjects: [...(formData.subjects || []), { name: "" }],
-    });
-  };
-
-  const updateSubject = (index: number, value: string) => {
-    const updated = [...(formData.subjects || [])];
-    updated[index].name = value;
-    setFormData({ ...formData, subjects: updated });
-  };
-
-  const removeSubject = (index: number) => {
-    setFormData({
-      ...formData,
-      subjects: formData.subjects?.filter((_, i) => i !== index) || [],
-    });
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -237,112 +219,76 @@ export default function EducationPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Institution Name
-                </label>
-                <input
-                  type="text"
+                <FormInput
+                  label="Institution Name"
                   value={formData.collageName || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, collageName: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, collageName: value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="e.g., Indian Institute of Technology, Delhi"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Course/Degree
-                </label>
-                <input
-                  type="text"
+                <FormInput
+                  label="Course/Degree"
                   value={formData.course || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, course: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, course: value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="e.g., B.Tech in Computer Science Engineering"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Duration
-                </label>
-                <input
-                  type="text"
+                <FormInput
+                  label="Duration"
                   value={formData.duration || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, duration: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, duration: value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="e.g., 2017 - 2021"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Institution Website
-                </label>
-                <input
+                <FormInput
+                  label="Institution Website"
                   type="url"
                   value={formData.link || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, link: e.target.value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, link: value })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="https://university.edu"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Institution Image URL
-              </label>
-              <input
+              <FormInput
+                label="Institution Image URL"
                 type="url"
                 value={formData.collageImage || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, collageImage: e.target.value })
+                onChange={(value) =>
+                  setFormData({ ...formData, collageImage: value })
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 placeholder="https://example.com/college-image.jpg"
               />
             </div>
 
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Subjects/Courses
-                </label>
-                <button
-                  type="button"
-                  onClick={addSubject}
-                  className="text-sm text-blue-600 hover:text-blue-700"
-                >
-                  + Add Subject
-                </button>
-              </div>
               <div className="space-y-2">
-                {formData.subjects?.map((subject, index) => (
-                  <div key={index} className="flex gap-2">
-                    <input
-                      type="text"
-                      value={subject.name}
-                      onChange={(e) => updateSubject(index, e.target.value)}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                      placeholder="e.g., Data Structures & Algorithms"
-                    />
-                    {formData.subjects && formData.subjects.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeSubject(index)}
-                        className="px-3 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                ))}
+                <MultiSelectInput
+                  label="Subjects/Courses"
+                  items={
+                    formData.subjects?.map((s) => s.name).filter(Boolean) || []
+                  }
+                  onChange={(items) =>
+                    setFormData({
+                      ...formData,
+                      subjects: items.map((name) => ({ name })),
+                    })
+                  }
+                  placeholder="e.g., Data Structures & Algorithms"
+                  emptyMessage="No subjects added yet"
+                />
               </div>
             </div>
 
