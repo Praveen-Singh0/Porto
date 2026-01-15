@@ -128,13 +128,14 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="relative sm:w-64 w-full h-64 rounded-xl overflow-hidden border-4 border-transparent bg-gradient-to-br from-pink-400 to-pink-600 p-1"
           >
-            <Image
-              src="/assets/img/aboutSection.webp"
-              alt="Praveen Singh"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-lg"
-            />
+            {myBio?.imageUrl && (
+              <Image
+                src={myBio?.imageUrl}
+                alt="Praveen Singh"
+                layout="fill"
+                objectFit="cover"
+              />
+            )}
           </motion.div>
 
           {/* Text Content */}

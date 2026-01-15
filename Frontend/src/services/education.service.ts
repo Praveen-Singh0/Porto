@@ -1,8 +1,7 @@
 import api from "@/lib/api";
 
-
 export interface subject {
-    name: string;
+  name: string;
 }
 
 export interface educationInfo {
@@ -17,10 +16,14 @@ export interface educationInfo {
   updatedAt: string;
 }
 
-export type educationPayload = Omit<
-  educationInfo,
-  "id" | "createdAt" | "updatedAt"
->;
+export type educationPayload = {
+  link: string;
+  collageImage: File | string; // 👈 change
+  collageName: string;
+  course: string;
+  duration: string;
+  subjects: subject[];
+};
 
 export const educationService = {
   getInfo: async (): Promise<educationInfo[]> => {
@@ -37,7 +40,22 @@ export const educationService = {
 
   createInfo: async (payload: educationPayload): Promise<educationInfo> => {
     try {
-      const res = await api.post("/education/create", payload);
+      const formData = new FormData();
+
+      formData.append("link", payload.link);
+      formData.append("collageName", payload.collageName);
+      formData.append("course", payload.course);
+      formData.append("duration", payload.duration);
+      formData.append("subjects", JSON.stringify(payload.subjects));
+
+      if (payload.collageImage instanceof File) {
+        formData.append("collageImage", payload.collageImage);
+      }
+
+      const res = await api.post("/education/create", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       return res.data.data;
     } catch (error: any) {
       throw new Error(
@@ -46,12 +64,27 @@ export const educationService = {
     }
   },
 
-updateInfo: async (
+  updateInfo: async (
     id: number,
     payload: educationPayload
   ): Promise<educationInfo> => {
     try {
-      const res = await api.patch(`education/${id}`, payload);
+      const formData = new FormData();
+
+      formData.append("link", payload.link);
+      formData.append("collageName", payload.collageName);
+      formData.append("course", payload.course);
+      formData.append("duration", payload.duration);
+      formData.append("subjects", JSON.stringify(payload.subjects));
+
+      if (payload.collageImage instanceof File) {
+        formData.append("collageImage", payload.collageImage);
+      }
+
+      const res = await api.patch(`/education/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       return res.data.data;
     } catch (error: any) {
       throw new Error(
@@ -64,7 +97,7 @@ updateInfo: async (
     try {
       const res = await api.delete(`education/${id}`);
       return res.data;
-    } catch (error : any) {
+    } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Unable to delete education info"
       );

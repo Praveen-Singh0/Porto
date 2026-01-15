@@ -8,7 +8,7 @@ import {
   useEffect,
 } from "react";
 import { PortfolioInfo } from "@/types/portfolio";
-import { portfolioService } from "@/services/portfolio.service";
+import { portfolioInfoService } from "../../services/portfolio.service";
 
 interface PortfolioInfoContextType {
   info: PortfolioInfo | null;
@@ -34,7 +34,7 @@ export const PortfolioInfoProvider = ({
 
     const fetchInfo = async () => {
       try {
-        const data = await portfolioService.getInfo();
+        const data = await portfolioInfoService.getInfo();
         setInfo(data);
       } catch (error) {
         console.error("Failed to fetch portfolio info:", error);

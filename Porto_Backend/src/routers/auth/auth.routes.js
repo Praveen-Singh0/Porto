@@ -7,10 +7,10 @@ const router = express.Router();
 
 router.post("/signup", validate(signupSchema), signup);
 router.post("/login", validate(loginSchema), login);
-router.post("/logout", logout)
-router.get("/me", verify_Its_Me)
-router.get("/getUsers", getUser)
-router.delete("/:id", deleteUser)
+router.post("/logout", logout);
+router.get("/me", verify_Its_Me);
+router.get("/getUsers", getUser);
+router.delete("/:id", deleteUser);
 
 
 // router.delete("/:id", verifyJWT, isAdmin, deleteUser)

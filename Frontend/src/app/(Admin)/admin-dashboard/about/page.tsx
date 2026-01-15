@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import GlassCard from "../components/GlassCard";
-import { motion } from "framer-motion";
 import {
   Edit,
   Save,
@@ -14,7 +13,8 @@ import {
   Sparkles,
   Loader2,
 } from "lucide-react";
-import { aboutService } from "@/services/aboutSection.service";
+
+import { aboutService, documents } from "@/services/aboutSection.service";
 import { heroService } from "@/services/heroSection.service";
 import type { aboutInfo } from "@/services/aboutSection.service";
 import type { heroInfo } from "@/services/heroSection.service";
@@ -22,6 +22,8 @@ import { useToast } from "@/app/context/ToastContext";
 import useFetch from "@/hooks/useFetch";
 import FormInput from "../components/FormInput";
 import FormTextarea from "../components/FormTextarea";
+import PortfolioInfoPage from "../portfolioInfo/page";
+import ImageUpload from "../components/ImageUpload";
 
 export default function AboutPage() {
   const { showToast } = useToast();
@@ -32,9 +34,16 @@ export default function AboutPage() {
   });
 
   const [isEditingAbout, setIsEditingAbout] = useState(false);
-  const [aboutFormData, setAboutFormData] = useState<Partial<aboutInfo>>({
+  const [aboutUpdating, setAboutUpdating] = useState(false);
+  const [aboutFormData, setAboutFormData] = useState<{
+    bio: string;
+    image: File | string;
+    specialization: string;
+    education: string;
+    documents: documents[];
+  }>({
     bio: "",
-    imageUrl: "",
+    image: "",
     specialization: "",
     education: "",
     documents: [],
@@ -64,7 +73,7 @@ export default function AboutPage() {
     if (aboutData) {
       setAboutFormData({
         bio: aboutData.bio,
-        imageUrl: aboutData.imageUrl,
+        image: aboutData.imageUrl, // string URL
         specialization: aboutData.specialization,
         education: aboutData.education,
         documents: [...aboutData.documents],
@@ -121,79 +130,75 @@ export default function AboutPage() {
   };
 
   const handleUpdateAbout = async () => {
-    if (!aboutFormData.bio?.trim() || !aboutFormData.specialization?.trim()) {
+    if (!aboutFormData.bio.trim() || !aboutFormData.specialization.trim()) {
       showToast({
-        message: "Bio and Specialization are required fields",
+        message: "Bio and Specialization are required",
         type: "error",
       });
       return;
     }
 
     try {
-      const updatePayload = {
-        bio: aboutFormData.bio!,
-        imageUrl: aboutFormData.imageUrl || "",
-        specialization: aboutFormData.specialization!,
-        education: aboutFormData.education || "",
-        documents: (aboutFormData.documents || []).filter(
-          (doc) => doc.title.trim() && doc.fileUrl.trim()
-        ),
-      };
+      setAboutUpdating(true);
 
-      const updatedData = await aboutService.updateInfo(updatePayload);
-      setAboutData(updatedData);
+      const updated = await aboutService.updateInfo(aboutFormData);
+
+      setAboutData(updated);
       setIsEditingAbout(false);
+
       showToast({
         message: "About section updated successfully 🎉",
         type: "success",
       });
     } catch (error: any) {
-      console.error("Failed to update about", error);
       showToast({
-        message: error.message || "Failed to update about section",
+        message: error.message || "Failed to update About section",
         type: "error",
       });
+    } finally {
+      setAboutUpdating(false);
     }
   };
 
   const startEditAbout = () => {
-    if (aboutData) {
-      setAboutFormData({
-        bio: aboutData.bio,
-        imageUrl: aboutData.imageUrl,
-        specialization: aboutData.specialization,
-        education: aboutData.education,
-        documents: [...aboutData.documents],
-      });
-      setIsEditingAbout(true);
-    }
+    if (!aboutData) return;
+
+    setAboutFormData({
+      bio: aboutData.bio,
+      image: aboutData.imageUrl,
+      specialization: aboutData.specialization,
+      education: aboutData.education,
+      documents: [...aboutData.documents],
+    });
+
+    setIsEditingAbout(true);
   };
 
   const cancelEditAbout = () => {
     setIsEditingAbout(false);
+
+    if (!aboutData) return;
+
     setAboutFormData({
-      bio: "",
-      imageUrl: "",
-      specialization: "",
-      education: "",
-      documents: [],
+      bio: aboutData.bio,
+      image: aboutData.imageUrl,
+      specialization: aboutData.specialization,
+      education: aboutData.education,
+      documents: [...aboutData.documents],
     });
   };
 
   const addDocument = () => {
     setAboutFormData({
       ...aboutFormData,
-      documents: [
-        ...(aboutFormData.documents || []),
-        { title: "", fileUrl: "" },
-      ],
+      documents: [...aboutFormData.documents, { title: "", fileUrl: "" }],
     });
   };
 
   const removeDocument = (index: number) => {
     setAboutFormData({
       ...aboutFormData,
-      documents: aboutFormData.documents?.filter((_, i) => i !== index) || [],
+      documents: aboutFormData.documents.filter((_, i) => i !== index),
     });
   };
 
@@ -202,8 +207,9 @@ export default function AboutPage() {
     field: "title" | "fileUrl",
     value: string
   ) => {
-    const updated = [...(aboutFormData.documents || [])];
+    const updated = [...aboutFormData.documents];
     updated[index] = { ...updated[index], [field]: value };
+
     setAboutFormData({
       ...aboutFormData,
       documents: updated,
@@ -270,20 +276,17 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <FormInput
-                  label="Profile Image URL"
-                  value={aboutFormData.imageUrl || ""}
-                  onChange={(value) =>
+                <ImageUpload
+                  label="Profile Image"
+                  value={aboutFormData.image}
+                  onChange={(v) =>
                     setAboutFormData({
                       ...aboutFormData,
-                      imageUrl: value,
+                      image: v,
                     })
                   }
-                  type="url"
-                  placeholder="https://example.com/image.jpg"
                 />
               </div>
-
               <div>
                 <FormTextarea
                   label="Bio"
@@ -346,11 +349,24 @@ export default function AboutPage() {
               <div className="flex gap-2">
                 <button
                   onClick={handleUpdateAbout}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={aboutUpdating}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg
+             hover:bg-green-700 transition-colors
+             disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Save className="w-4 h-4" />
-                  Update
+                  {aboutUpdating ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4" />
+                      Update
+                    </>
+                  )}
                 </button>
+
                 <button
                   onClick={cancelEditAbout}
                   className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
@@ -388,14 +404,12 @@ export default function AboutPage() {
                       {new Date(aboutData.updatedAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={startEditAbout}
                     className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />
-                  </motion.button>
+                  </button>
                 </div>
 
                 <div className="space-y-4">
@@ -526,14 +540,12 @@ export default function AboutPage() {
                       </p>
                     </div>
                   </div>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <button
                     onClick={startEditHero}
                     className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />
-                  </motion.button>
+                  </button>
                 </div>
 
                 <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -551,6 +563,14 @@ export default function AboutPage() {
             )}
           </GlassCard>
         )}
+      </div>
+
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <Sparkles className="w-6 h-6 text-violet-600" />
+          Basic Info
+        </h2>
+        <PortfolioInfoPage />
       </div>
     </div>
   );

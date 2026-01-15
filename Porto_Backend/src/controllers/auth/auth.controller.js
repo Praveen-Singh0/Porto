@@ -6,11 +6,9 @@ import { ApiError } from "../../utils/ApiErrors.js";
 import { prisma } from "../../../lib/prisma.js";
 
 const generateToken = (user) => {
-  return jwt.sign(
-    { id: user.id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN }
-  );
+  return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
 };
 
 export const verifyJWT = (req, res, next) => {
@@ -29,15 +27,12 @@ export const verifyJWT = (req, res, next) => {
   }
 };
 
-
 export const isAdmin = (req, res, next) => {
   if (req.user.role !== "ADMIN") {
     return res.status(403).json({ message: "Admin access only" });
   }
   next();
 };
-
-
 
 export const signup = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -49,7 +44,6 @@ export const signup = asyncHandler(async (req, res) => {
     throw new ApiError(409, "Email already registered");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  
 
   const user = await prisma.user.create({
     data: {
@@ -70,8 +64,6 @@ export const signup = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(201, "User created successfully", user));
 });
-
-
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -99,11 +91,10 @@ export const login = asyncHandler(async (req, res) => {
   });
 
   const istTime = user.lastLoginAt
-  ? new Date(user.lastLoginAt).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-    })
-  : null;
-
+    ? new Date(user.lastLoginAt).toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+      })
+    : null;
 
   const token = generateToken(user);
 
@@ -112,7 +103,7 @@ export const login = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   return res.status(200).json(
@@ -121,11 +112,10 @@ export const login = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      lastLoginAt: istTime
+      lastLoginAt: istTime,
     })
   );
 });
-
 
 export const logout = asyncHandler(async (_req, res) => {
   res.clearCookie("token", {
@@ -134,32 +124,28 @@ export const logout = asyncHandler(async (_req, res) => {
     secure: process.env.NODE_ENV === "production",
   });
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, "Logout successful"));
+  return res.status(200).json(new ApiResponse(200, "Logout successful"));
 });
 
-export const getUser = asyncHandler(async(req, res) => {
+export const getUser = asyncHandler(async (req, res) => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      isActive: true,
+      lastLoginAt: true,
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-    const users = await prisma.user.findMany({
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-            isActive: true,
-            lastLoginAt: true,
-            createdAt: true,
-        },
-        orderBy: {
-            createdAt: "desc",
-        },
-    });
-
-     return res.status(200).json(
-    new ApiResponse(200, "Users fetched successfully", users)
-  );
-
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Users fetched successfully", users));
 });
 
 export const verify_Its_Me = asyncHandler(async (req, res) => {
@@ -171,7 +157,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET); // { id, role, iat, exp }
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch {
     throw new ApiError(401, "Invalid or expired token");
   }
@@ -209,10 +195,10 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
   }
 
   const istTime = user.lastLoginAt
-  ? new Date(user.lastLoginAt).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-    })
-  : null;
+    ? new Date(user.lastLoginAt).toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+      })
+    : null;
 
   return res.status(200).json(
     new ApiResponse(200, "Authenticated", {
@@ -250,8 +236,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
     where: { id: userId },
   });
 
-  return res.status(200).json(
-    new ApiResponse(200, "User deleted successfully")
-  );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "User deleted successfully"));
 });
-

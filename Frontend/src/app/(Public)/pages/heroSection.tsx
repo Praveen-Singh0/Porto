@@ -24,17 +24,13 @@ const fadeUp = (delay: number) => ({
 const TopPage = () => {
   const { info } = usePortfolioInfoContext();
 
-  const {
-  data: bioContent,
-  error,
-} = useFetch(heroService.getInfo);
+  const { data: bioContent, error } = useFetch(heroService.getInfo);
 
   // 3D Tilt effect for image card
   const imageCardRef = useRef<HTMLDivElement>(null);
   const rotateX = useSpring(0, { damping: 30, stiffness: 100, mass: 2 });
   const rotateY = useSpring(0, { damping: 30, stiffness: 100, mass: 2 });
   const scale = useSpring(1, { damping: 30, stiffness: 100, mass: 2 });
-
 
   const handleImageCardMouse = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageCardRef.current) return;
@@ -175,14 +171,16 @@ const TopPage = () => {
                 >
                   {/* Main Image */}
                   <div className="hero-image-wrapper border border-red-500 dark:border-gray-100">
-                    <Image
-                      src={"/assets/img/Profile.webp"}
-                      alt="Avatar"
-                      width={350}
-                      height={350}
-                      priority
-                      className="hero-profile-image"
-                    />
+                    {info?.profileImage && (
+                      <Image
+                        src={info.profileImage}
+                        alt="Avatar"
+                        width={350}
+                        height={350}
+                        priority
+                        className="hero-profile-image"
+                      />
+                    )}
 
                     {/* here  */}
                     {/* <img
@@ -215,11 +213,6 @@ const TopPage = () => {
                   <div className="hero-card-content">
                     <div className="hero-content-inner">
                       <span className="hero-title">Connect with me</span>
-                      <span className="hero-text">
-                        Make, share, and use beautiful relationship <br />
-                        with Programming
-                      </span>
-
                       {/* Social Buttons */}
                       <div className="hero-social-buttons">
                         <Button className="hero-social-btn">

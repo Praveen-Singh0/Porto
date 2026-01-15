@@ -91,14 +91,14 @@ const EducationSection = () => {
                 transition={{ duration: 0.4, delay: 0.05 }}
               >
                 <div className="h-56 md:h-64 lg:h-full relative">
-                  {/* <Image
-                    src={selectedCard.collageImage}
-                    alt={selectedCard.collageName}
-                    fill
-                    className="object-cover"
-                  /> */}
-
-                  <img src={selectedCard.collageImage} alt={selectedCard.collageName} style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                  {selectedCard.collageImage && (
+                    <Image
+                      src={selectedCard.collageImage}
+                      alt={selectedCard.collageName}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
                 </div>
               </motion.div>
 

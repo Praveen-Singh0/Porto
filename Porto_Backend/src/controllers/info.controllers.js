@@ -2,79 +2,71 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiErrors.js";
 import { prisma } from "../../lib/prisma.js";
+import {
+  uploadToCloudinary,
+  deleteFromCloudinary,
+  getPublicIdFromUrl,
+} from "../utils/cloudinary.js";
 
+export const createOrUpdateInfo = asyncHandler(async (req, res) => {
+  const { email, phone, location, socialLinks } = req.body;
 
-const createInfo = asyncHandler(async (req, res) => {
-    const {email, phone, profileImage, location, socialLinks} = req.body;
+  const existingInfo = await prisma.portfolioInfo.findUnique({
+    where: { id: 1 },
+  });
 
-   const info = await prisma.portfolioInfo.upsert({
+  let profileImageUrl = existingInfo?.profileImage || "";
+
+  if (req.file) {
+    if (existingInfo?.profileImage) {
+      const oldPublicId = getPublicIdFromUrl(existingInfo.profileImage);
+      if (oldPublicId) {
+        await deleteFromCloudinary(oldPublicId);
+      }
+    }
+
+    const cloudinaryResult = await uploadToCloudinary(
+      req.file.buffer,
+      "profile"
+    );
+
+    profileImageUrl = cloudinaryResult.secure_url;
+  }
+
+  const info = await prisma.portfolioInfo.upsert({
     where: { id: 1 },
     update: {
       email,
       phone,
-      profileImage,
-      socialLinks,
-      location
+      location,
+      socialLinks: socialLinks ? JSON.parse(socialLinks) : undefined,
+      profileImage: profileImageUrl,
     },
     create: {
       id: 1,
       email,
       phone,
-      profileImage,
-      socialLinks,
-      location
-    }
+      location,
+      socialLinks: socialLinks ? JSON.parse(socialLinks) : {},
+      profileImage: profileImageUrl,
+    },
   });
 
-
-    return res.status(201).json(new ApiResponse(201, "Info created successfully", info));
-})
-
-const getInfo = asyncHandler(async (req, res) => {
-    const info = await prisma.portfolioInfo.findUnique({
-      where: { id: 1 }
-    });
-    if (!info) {
-        return res.status(404).json(new ApiError(404, "Info not found"));
-    }
-    return res.status(200).json(new ApiResponse(200, "Info retrieved successfully", info));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Portfolio info saved successfully", info));
 });
 
-const deleteInfo = asyncHandler(async(req, res) => {
-    const info = await prisma.portfolioInfo.deleteMany();
-    if (!info) {
-        return res.status(404).json(new ApiError(404, "Info not found"));
-    }
-    return res.status(200).json(new ApiResponse(200, "Info deleted successfully", info));
-})
-
-
-
-
-
-const updateInfo = asyncHandler(async (req, res) => {
-
-  if (Object.keys(req.body).length === 0) {
-    throw new ApiError(400, "At least one field is required to update");
-  }
-  const existingInfo = await prisma.portfolioInfo.findUnique({
+export const getInfo = asyncHandler(async (req, res) => {
+  const info = await prisma.portfolioInfo.findUnique({
     where: { id: 1 },
   });
 
-  if (!existingInfo) {
+  if (!info) {
     throw new ApiError(404, "Portfolio info not found");
   }
 
-  const info = await prisma.portfolioInfo.update({
-    where: { id: 1 },
-    data: req.body,
-  });
-
-  return res.status(200).json(
-    new ApiResponse(200, "Portfolio info updated successfully", info)
-  );
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Portfolio info retrieved", info));
 });
-
-
-
-export { createInfo, getInfo, deleteInfo, updateInfo };

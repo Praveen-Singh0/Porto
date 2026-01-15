@@ -16,32 +16,36 @@ export interface aboutInfo {
   updatedAt: string;
 }
 
-export type AboutPayload = Omit<
-  aboutInfo,
-  "id" | "createdAt" | "updatedAt"
->;
-
+export interface AboutFormData {
+  bio: string;
+  image: File | string;
+  specialization: string;
+  education: string;
+  documents: documents[];
+}
 
 export const aboutService = {
   getInfo: async (): Promise<aboutInfo> => {
-    try {
-      const res = await api.get("/about/get");
-      return res.data.data;
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message || "Unable to fetch about info"
-      );
-    }
+    const res = await api.get("/about/get");
+    return res.data.data;
   },
 
-  updateInfo: async (data: AboutPayload): Promise<aboutInfo> => {
-    try {
-      const res = await api.post("/about/create", data);
-      return res.data.data;
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message || "Unable to update about info"
-      );
+  updateInfo: async (data: AboutFormData): Promise<aboutInfo> => {
+    const formData = new FormData();
+
+    formData.append("bio", data.bio);
+    formData.append("specialization", data.specialization);
+    formData.append("education", data.education);
+    formData.append("documents", JSON.stringify(data.documents));
+
+    if (data.image instanceof File) {
+      formData.append("image", data.image);
     }
+
+    const res = await api.post("/about/create", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res.data.data;
   },
 };

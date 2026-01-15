@@ -1,7 +1,8 @@
-'use client'
-import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
+"use client";
+import { useState, useRef } from "react";
+import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface ImageUploadProps {
   value: string | File; // Can be URL string or File object
@@ -10,14 +11,14 @@ interface ImageUploadProps {
   required?: boolean;
 }
 
-export default function ImageUpload({ 
-  value, 
-  onChange, 
-  label = "Image", 
-  required = false 
+export default function ImageUpload({
+  value,
+  onChange,
+  label = "Image",
+  required = false,
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string>(
-    typeof value === 'string' ? value : ''
+    typeof value === "string" ? value : ""
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -26,14 +27,14 @@ export default function ImageUpload({
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
       return;
     }
 
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image size should be less than 5MB');
+      alert("Image size should be less than 5MB");
       return;
     }
 
@@ -46,10 +47,10 @@ export default function ImageUpload({
   };
 
   const handleRemove = () => {
-    setPreview('');
-    onChange('');
+    setPreview("");
+    onChange("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -58,17 +59,19 @@ export default function ImageUpload({
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
-      
+
       <div className="space-y-3">
         {preview ? (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="relative group"
           >
-            <img 
-              src={preview} 
-              alt="Preview" 
+            <Image
+              width={400}
+              height={400}
+              src={preview}
+              alt="Preview"
               className="w-full h-48 object-cover rounded-lg border-2 border-gray-300 dark:border-gray-600"
             />
             <button
@@ -91,7 +94,7 @@ export default function ImageUpload({
             <p className="text-xs text-gray-500">PNG, JPG, WEBP up to 5MB</p>
           </div>
         )}
-        
+
         <input
           ref={fileInputRef}
           type="file"
@@ -99,14 +102,14 @@ export default function ImageUpload({
           onChange={handleFileChange}
           className="hidden"
         />
-        
+
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
         >
           <Upload className="w-4 h-4" />
-          {preview ? 'Change Image' : 'Upload Image'}
+          {preview ? "Change Image" : "Upload Image"}
         </button>
       </div>
     </div>

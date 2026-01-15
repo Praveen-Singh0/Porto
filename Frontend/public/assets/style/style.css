@@ -33,22 +33,19 @@
     }
   }
 
-
   .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap:22px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 22px;
 
-  max-width: 1300px;
-  margin: 0 auto; 
+    max-width: 1300px;
+    margin: 0 auto;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
-
-}
-
 
 .tilted-card-container {
   width: 100%;
@@ -73,7 +70,6 @@
       width: 100%;
       height: 85%;
       overflow: hidden;
-      
     }
 
     .featured-badge {
@@ -88,7 +84,7 @@
         background: linear-gradient(135deg, #eccc7b, #e6be78);
         color: rgb(247, 72, 72);
         border-radius: 20px;
-        font-size: 0.80rem;
+        font-size: 0.8rem;
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
         display: inline-block;
@@ -123,8 +119,7 @@
           color: rgb(247, 247, 247);
           margin-bottom: 12px;
           line-height: 1.2;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
         }
 
         .card-description {
@@ -132,8 +127,7 @@
           color: rgba(255, 255, 255, 0.9);
           line-height: 1.6;
           margin-bottom: 16px;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
-
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
         }
 
         .tech-stack {
@@ -267,11 +261,9 @@
   overflow: hidden;
   will-change: transform;
   transform-style: preserve-3d;
-  box-shadow: 
-    0 35px 60px -25px rgba(0, 0, 0, 0.45),
+  box-shadow: 0 35px 60px -25px rgba(0, 0, 0, 0.45),
     0 10px 20px -10px rgba(0, 0, 0, 0.25);
 }
-
 
 .hero-image-wrapper {
   position: relative;
@@ -312,15 +304,6 @@
   color: white;
   margin-bottom: 8px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.hero-text {
-  display: block;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.5;
-  margin-bottom: 20px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-social-buttons {
@@ -414,14 +397,10 @@
   font-size: 1.2rem;
 }
 
-
-
 /* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
   .hero-image-card {
-    box-shadow: 
-      0 10px 30px rgba(0, 0, 0, 0.4),
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.1);
   }
-  
 }

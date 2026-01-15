@@ -1,17 +1,13 @@
-export interface SocialLinks {
-  github?: string;
-  linkedin?: string;
-  twitter?: string;
-  instagram?: string;
-}
 
 export interface PortfolioInfo {
-  id: number;
-  email?: string;
-  phone?: string;
-  location?: string;
-  profileImage?: string;
-  socialLinks?: SocialLinks;
-  createdAt: string;
-  updatedAt: string;
+  email: string;
+  phone: string;
+  location: string;
+  profileImage: File | string;
+  socialLinks: {
+    github?: string;
+    linkedin?: string;
+    twitter?: string;
+    instagram?: string;
+  };
 }

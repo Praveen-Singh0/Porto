@@ -1,15 +1,30 @@
+// src/services/portfolioInfo.service.ts
 import api from "@/lib/api";
 import { PortfolioInfo } from "@/types/portfolio";
 
-export const portfolioService = {
-  getInfo: async (): Promise<PortfolioInfo> => {
-    try {
-      const res = await api.get("/info/get");
-      return res.data.data;  
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message || "Unable to fetch portfolio info"
-      );
+
+export const portfolioInfoService = {
+  getInfo: async () => {
+    const res = await api.get("/info/get");
+    return res.data.data;
+  },
+
+  save: async (data: PortfolioInfo) => {
+    const formData = new FormData();
+
+    formData.append("email", data.email);
+    formData.append("phone", data.phone);
+    formData.append("location", data.location);
+    formData.append("socialLinks", JSON.stringify(data.socialLinks));
+
+    if (data.profileImage instanceof File) {
+      formData.append("profileImage", data.profileImage);
     }
+
+    const res = await api.post("/info/create", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return res.data.data;
   },
 };

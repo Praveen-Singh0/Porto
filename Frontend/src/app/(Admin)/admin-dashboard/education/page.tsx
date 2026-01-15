@@ -12,6 +12,7 @@ import {
   ExternalLink,
   BookOpen,
   Calendar,
+  Loader2,
 } from "lucide-react";
 import {
   educationService,
@@ -23,6 +24,7 @@ import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import FormInput from "../components/FormInput";
 import MultiSelectInput from "../components/MultiSelectInput";
+import ImageUpload from "../components/ImageUpload";
 
 export default function EducationPage() {
   const { showToast } = useToast();
@@ -32,6 +34,8 @@ export default function EducationPage() {
   const [isEditing, setIsEditing] = useState<number | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [savingLoading, setSavingLoading] = useState(false);
+
   const [formData, setFormData] = useState<Partial<educationPayload>>({
     link: "",
     collageImage: "",
@@ -82,21 +86,19 @@ export default function EducationPage() {
 
   const handleCreate = async () => {
     try {
-      const created = await educationService.createInfo(buildPayload());
+      setSavingLoading(true);
 
+      const created = await educationService.createInfo(buildPayload());
       setEducations((prev) => [...prev, created]);
+
       setIsCreating(false);
       resetForm();
 
-      showToast({
-        message: "Education added successfully",
-        type: "success",
-      });
+      showToast({ message: "Education added successfully", type: "success" });
     } catch {
-      showToast({
-        message: "Failed to add education",
-        type: "error",
-      });
+      showToast({ message: "Failed to add education", type: "error" });
+    } finally {
+      setSavingLoading(false);
     }
   };
 
@@ -104,6 +106,8 @@ export default function EducationPage() {
     if (!isEditing) return;
 
     try {
+      setSavingLoading(true);
+
       const updated = await educationService.updateInfo(
         isEditing,
         buildPayload()
@@ -116,15 +120,11 @@ export default function EducationPage() {
       setIsEditing(null);
       resetForm();
 
-      showToast({
-        message: "Education updated successfully",
-        type: "success",
-      });
+      showToast({ message: "Education updated successfully", type: "success" });
     } catch {
-      showToast({
-        message: "Failed to update education",
-        type: "error",
-      });
+      showToast({ message: "Failed to update education", type: "error" });
+    } finally {
+      setSavingLoading(false);
     }
   };
 
@@ -162,7 +162,11 @@ export default function EducationPage() {
   const startEdit = (edu: educationInfo) => {
     setIsEditing(edu.id);
     setFormData({
-      ...edu,
+      link: edu.link,
+      collageImage: edu.collageImage, // ✅ string URL
+      collageName: edu.collageName,
+      course: edu.course,
+      duration: edu.duration,
       subjects: [...edu.subjects, { name: "" }],
     });
   };
@@ -170,18 +174,7 @@ export default function EducationPage() {
   const cancelEdit = () => {
     setIsEditing(null);
     setIsCreating(false);
-    setFormData({
-      link: "",
-      collageImage: "",
-      collageName: "",
-      course: "",
-      duration: "",
-      subjects: [
-        {
-          name: " ",
-        },
-      ],
-    });
+    resetForm();
   };
 
   return (
@@ -262,14 +255,15 @@ export default function EducationPage() {
             </div>
 
             <div>
-              <FormInput
-                label="Institution Image URL"
-                type="url"
+              <ImageUpload
+                label="Institution Image"
                 value={formData.collageImage || ""}
-                onChange={(value) =>
-                  setFormData({ ...formData, collageImage: value })
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    collageImage: v,
+                  })
                 }
-                placeholder="https://example.com/college-image.jpg"
               />
             </div>
 
@@ -294,12 +288,25 @@ export default function EducationPage() {
 
             <div className="flex gap-2">
               <button
-                onClick={isCreating ? handleCreate : () => handleUpdate()}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                onClick={isCreating ? handleCreate : handleUpdate}
+                disabled={savingLoading}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg
+             hover:bg-green-700 transition-colors
+             disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <Save className="w-4 h-4" />
-                {isCreating ? "Save" : "Update"}
+                {savingLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4" />
+                    {isCreating ? "Save" : "Update"}
+                  </>
+                )}
               </button>
+
               <button
                 onClick={cancelEdit}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"

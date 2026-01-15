@@ -18,7 +18,8 @@ import {
   Bot,
   CreditCard,
   MessageCircle,
-  NotebookPen
+  NotebookPen,
+  Info
 } from "lucide-react";
 
 type Role = "ADMIN" | "GUEST";
