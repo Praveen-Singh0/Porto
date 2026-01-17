@@ -28,7 +28,7 @@ export type educationPayload = {
 export const educationService = {
   getInfo: async (): Promise<educationInfo[]> => {
     try {
-      const res = await api.get("/education/get");
+      const res = await api.get("/education");
       const education: educationInfo[] = res.data.data;
       return education;
     } catch (error: any) {

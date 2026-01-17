@@ -24,7 +24,7 @@ router.patch(
   updateEducationSection
 );
 
-router.get("/get", getEducationSection);
+router.get("/", getEducationSection);
 router.delete("/:id", deleteEducationSection);
 
 export default router;

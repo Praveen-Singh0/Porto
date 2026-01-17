@@ -14,6 +14,6 @@ router.post(
   createOrUpdateInfo
 );
 
-router.get("/get", getInfo);
+router.get("/", getInfo);
 
 export default router;

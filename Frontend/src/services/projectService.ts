@@ -42,7 +42,7 @@ export interface MajorProjectFormData {
 export const minorProjectService = {
   getAll: async (): Promise<MinorProject[]> => {
     try {
-      const res = await api.get("/projects/minor");
+      const res = await api.get("/minorProjects");
       return res.data.data;
     } catch (error: any) {
       throw new Error(
@@ -63,7 +63,7 @@ export const minorProjectService = {
       formData.append("content", data.content);
       formData.append("image", data.image);
 
-      const res = await api.post("/projects/minor/create", formData, {
+      const res = await api.post("/minorProjects/create", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -88,7 +88,7 @@ export const minorProjectService = {
       if (data.content) formData.append("content", data.content);
       if (data.image) formData.append("image", data.image); // New image file
 
-      const res = await api.put(`/projects/minor/${id}`, formData, {
+      const res = await api.put(`/minorProjects/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -104,7 +104,7 @@ export const minorProjectService = {
 
   delete: async (id: number): Promise<void> => {
     try {
-      await api.delete(`/projects/minor/${id}`);
+      await api.delete(`/minorProjects/${id}`);
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Unable to delete minor project"
@@ -118,7 +118,7 @@ export const minorProjectService = {
 export const majorProjectService = {
   getAll: async (): Promise<MajorProject[]> => {
     try {
-      const res = await api.get("/projects/major");
+      const res = await api.get("/majorProjects");
       return res.data.data;
     } catch (error: any) {
       throw new Error(
@@ -142,9 +142,9 @@ export const majorProjectService = {
         formData.append("githubUrl", data.githubUrl);
       }
       formData.append("technologies", JSON.stringify(data.technologies));
-      formData.append("image", data.image); // File object
+      formData.append("image", data.image);
 
-      const res = await api.post("/projects/major/create", formData, {
+      const res = await api.post("/majorProjects/create", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -176,7 +176,7 @@ export const majorProjectService = {
       }
       if (data.image) formData.append("image", data.image);
 
-      const res = await api.put(`/projects/major/${id}`, formData, {
+      const res = await api.put(`/majorProjects/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -192,7 +192,7 @@ export const majorProjectService = {
 
   delete: async (id: number): Promise<void> => {
     try {
-      await api.delete(`/projects/major/${id}`);
+      await api.delete(`/majorProjects/${id}`);
     } catch (error: any) {
       throw new Error(
         error.response?.data?.message || "Unable to delete major project"

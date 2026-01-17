@@ -6,7 +6,7 @@ import { createSkillsSection, getSkillsSection, deleteSkillsSection } from "../.
 const router = express.Router();
 
 router.post("/create", validate(skillSectionSchema), createSkillsSection);
-router.get("/get", getSkillsSection);
+router.get("/", getSkillsSection);
 router.delete("/:id", deleteSkillsSection);
 
 export default router;  

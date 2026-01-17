@@ -11,7 +11,7 @@ export interface heroInfo {
 export const heroService = {
   getInfo: async (): Promise<heroInfo> => {
     try {
-      const res = await api.get("/hero/get");
+      const res = await api.get("/hero");
       return res.data.data;
     } catch (error: any) {
       throw new Error(

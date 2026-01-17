@@ -6,7 +6,7 @@ import { createHero, getHeroSection } from "../../controllers/general/heroSectio
 const router = express.Router();
 
 router.post("/create", validate(heroSectionSchema), createHero);
-router.get("/get", getHeroSection);
+router.get("/", getHeroSection);
 
 
 export default router;  

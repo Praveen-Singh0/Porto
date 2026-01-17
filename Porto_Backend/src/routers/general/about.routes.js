@@ -14,6 +14,6 @@ router.post(
   createAbout
 );
 
-router.get("/get", getAboutSection);
+router.get("/", getAboutSection);
 
 export default router;

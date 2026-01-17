@@ -23,7 +23,7 @@ export type ExperiencePayload = Omit<
 export const experienceService = {
   getInfo: async (): Promise<experienceInfo[]> => {
     try {
-      const res = await api.get("/experience/get");
+      const res = await api.get("/experience");
       const experiences: experienceInfo[] = res.data.data;
       return experiences;
     } catch (error: any) {

@@ -24,7 +24,7 @@ export type SkillPayload = Omit<SkillInfo, "id" | "createdAt" | "updatedAt">;
 export const skillsService = {
   getInfo: async (): Promise<SkillInfo[]> => {
     try {
-      const res = await api.get("/skills/get");
+      const res = await api.get("/skills");
       return res.data.data;
     } catch (error: any) {
       throw new Error(

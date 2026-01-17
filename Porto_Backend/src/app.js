@@ -47,8 +47,8 @@ app.use("/api/experience", experienceRouters);
 app.use("/api/education", educationRouters);
 app.use("/api/skills", skillsRouters);
 app.use("/api/auth", authRouters);
-app.use("/api/projects/major", majorProjectsRoutes);
-app.use("/api/projects/minor", minorProjectsRoutes);
+app.use("/api/majorProjects", majorProjectsRoutes);
+app.use("/api/minorProjects", minorProjectsRoutes);
 app.use("/api/upload", uploadRoutes);
 
 app.use(errorHandler);

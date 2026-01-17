@@ -13,7 +13,7 @@ import {
 const router = express.Router();
 
 router.post("/create", validate(experienceSectionSchema), createExperience);
-router.get("/get", getExperienceSection);
+router.get("/", getExperienceSection);
 router.patch(
   "/:id",
   validate(experienceSectionSchema.partial()),
