@@ -59,7 +59,7 @@ export const PDFModal = ({ isOpen, onClose, pdfUrl, title }: PDFModalProps) => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-800">
+            <div className="flex items-center justify-between p-2 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-800">
               <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                 <span className="text-pink-500">📄</span>
                 {title}

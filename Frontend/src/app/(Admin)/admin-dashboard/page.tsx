@@ -2,17 +2,17 @@
 "use client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { 
-  Brain, 
-  Github, 
-  MessageCircle, 
-  Plane, 
+import {
+  Brain,
+  Github,
+  MessageCircle,
+  Plane,
   Activity,
   Zap,
   Database,
   Wifi,
   ArrowRight,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import GlassCard from "./components/GlassCard";
@@ -21,17 +21,11 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen">
       <div className="mx-auto space-y-6">
-        
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-className="relative overflow-hidden 
-bg-gradient-to-br from-purple-700 to-pink-100/50 
-dark:from-purple-500 dark:to-grey-100 
-p-8 md:p-12 text-white 
-rounded-tr-3xl rounded-bl-3xl"
-        >
+          className="relative overflow-hidden bg-gradient-to-br from-purple-700 to-pink-100/50 dark:from-purple-500 dark:to-grey-100 p-8 md:p-12 text-white rounded-tr-3xl rounded-bl-3xl">
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-6 h-6" />
@@ -43,11 +37,12 @@ rounded-tr-3xl rounded-bl-3xl"
               Welcome to the Control Center
             </h1>
             <p className="text-lg opacity-90 max-w-2xl">
-              Real-time systems powered by AI, live data, and modern architecture. 
-              Not just a portfolio—it's a production-ready platform.
+              Real-time systems powered by AI, live data, and modern
+              architecture. Not just a portfolio—it's a production-ready
+              platform.
             </p>
           </div>
-          
+
           {/* Animated background elements */}
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-0 left-1/4 w-72 h-72 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-pulse" />
@@ -67,7 +62,6 @@ rounded-tr-3xl rounded-bl-3xl"
         {/* Secondary Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <ChatSystemWidget />
-          <FlightBookingWidget />
           <SystemHealthWidget />
         </div>
 
@@ -96,7 +90,7 @@ function SystemStatusBar() {
             All Systems Operational
           </span>
         </div>
-        
+
         <div className="flex items-center gap-6 overflow-x-auto">
           {services.map((service, index) => (
             <motion.div
@@ -125,7 +119,7 @@ function SystemStatusBar() {
 function AIAssistantWidget() {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
-  
+
   const suggestions = [
     "Analyze my GitHub contributions",
     "Generate resume from experience",
@@ -145,7 +139,7 @@ function AIAssistantWidget() {
       onHoverEnd={() => setIsHovered(false)}
       className="relative group"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity "       />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity " />
       <GlassCard className="relative h-full" hover={false}>
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -161,7 +155,7 @@ function AIAssistantWidget() {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800">
             <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
             <span className="text-xs font-medium text-green-700 dark:text-green-400">
@@ -206,7 +200,7 @@ function AIAssistantWidget() {
 function GitHubLiveWidget() {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
-  
+
   const stats = [
     { label: "Commits This Week", value: "34", trend: "+12%" },
     { label: "Active Repos", value: "6", trend: "+2" },
@@ -227,7 +221,7 @@ function GitHubLiveWidget() {
       className="relative group"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-900 rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-      
+
       <GlassCard className="relative h-full" hover={false}>
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -243,10 +237,14 @@ function GitHubLiveWidget() {
               </p>
             </div>
           </div>
-          
+
           <div className="text-right">
-            <div className="text-xs text-gray-500 dark:text-gray-400">Last Push</div>
-            <div className="text-sm font-medium text-gray-900 dark:text-white">2 hours ago</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              Last Push
+            </div>
+            <div className="text-sm font-medium text-gray-900 dark:text-white">
+              2 hours ago
+            </div>
           </div>
         </div>
 
@@ -278,8 +276,11 @@ function GitHubLiveWidget() {
             Recent Activity
           </div>
           {[
-            { repo: "portfolio-v3", action: "Updated dashboard UI", time: "2h" },
-            { repo: "flight-booking", action: "Added API integration", time: "5h" },
+            {
+              repo: "portfolio-v3",
+              action: "Updated dashboard UI",
+              time: "2h",
+            },
           ].map((activity, index) => (
             <div
               key={index}
@@ -328,7 +329,7 @@ function ChatSystemWidget() {
       className="relative group"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-      
+
       <GlassCard className="relative h-full" hover={false}>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
@@ -346,16 +347,28 @@ function ChatSystemWidget() {
 
         <div className="space-y-3 mb-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Online Users</span>
-            <span className="text-lg font-bold text-gray-900 dark:text-white">3</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Online Users
+            </span>
+            <span className="text-lg font-bold text-gray-900 dark:text-white">
+              3
+            </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Messages Today</span>
-            <span className="text-lg font-bold text-gray-900 dark:text-white">42</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Messages Today
+            </span>
+            <span className="text-lg font-bold text-gray-900 dark:text-white">
+              42
+            </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Response Time</span>
-            <span className="text-sm font-medium text-green-600 dark:text-green-400">~2min</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Response Time
+            </span>
+            <span className="text-sm font-medium text-green-600 dark:text-green-400">
+              ~2min
+            </span>
           </div>
         </div>
 
@@ -372,65 +385,6 @@ function ChatSystemWidget() {
   );
 }
 
-// Flight Booking Widget
-function FlightBookingWidget() {
-  const router = useRouter();
-
-  const handleSearchFlights = () => {
-    router.push("/admin-dashboard/services/flight-booking");
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 0.5 }}
-      className="relative group"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-      
-      <GlassCard className="relative h-full" hover={false}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-            <Plane className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-              Flight Engine
-            </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Search & Book
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-3 mb-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">API Status</span>
-            <span className="text-sm font-medium text-green-600 dark:text-green-400">Online</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Searches Today</span>
-            <span className="text-lg font-bold text-gray-900 dark:text-white">18</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Best Deal</span>
-            <span className="text-lg font-bold text-blue-600 dark:text-blue-400">₹4,312</span>
-          </div>
-        </div>
-
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={handleSearchFlights}
-          className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm font-medium hover:shadow-lg transition-all"
-        >
-          Search Flights
-        </motion.button>
-      </GlassCard>
-    </motion.div>
-  );
-}
 
 // System Health Widget
 function SystemHealthWidget() {
@@ -449,7 +403,7 @@ function SystemHealthWidget() {
       className="relative group"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity" />
-      
+
       <GlassCard className="relative h-full" hover={false}>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
@@ -521,9 +475,11 @@ function QuickStatsGrid() {
           <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
             {stat.value}
           </div>
-          <div className={`text-xs font-medium ${
-            stat.change.startsWith('+') ? 'text-green-600' : 'text-blue-600'
-          }`}>
+          <div
+            className={`text-xs font-medium ${
+              stat.change.startsWith("+") ? "text-green-600" : "text-blue-600"
+            }`}
+          >
             {stat.change}
           </div>
         </GlassCard>

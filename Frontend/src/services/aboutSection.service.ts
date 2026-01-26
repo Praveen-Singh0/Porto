@@ -2,7 +2,8 @@ import api from "@/lib/api";
 
 export interface documents {
   title: string;
-  fileUrl: string;
+  file?: File;
+  fileUrl?: string;
 }
 
 export interface aboutInfo {
@@ -11,7 +12,7 @@ export interface aboutInfo {
   imageUrl: string;
   specialization: string;
   education: string;
-  documents: documents[];
+  documents: documents;
   createdAt: string;
   updatedAt: string;
 }
@@ -21,7 +22,7 @@ export interface AboutFormData {
   image: File | string;
   specialization: string;
   education: string;
-  documents: documents[];
+  documents: documents;
 }
 
 export const aboutService = {
@@ -30,22 +31,29 @@ export const aboutService = {
     return res.data.data;
   },
 
-  updateInfo: async (data: AboutFormData): Promise<aboutInfo> => {
-    const formData = new FormData();
+updateInfo: async (data: AboutFormData): Promise<aboutInfo> => {
+  const formData = new FormData();
 
-    formData.append("bio", data.bio);
-    formData.append("specialization", data.specialization);
-    formData.append("education", data.education);
-    formData.append("documents", JSON.stringify(data.documents));
+  formData.append("bio", data.bio);
+  formData.append("specialization", data.specialization);
+  formData.append("education", data.education);
 
-    if (data.image instanceof File) {
-      formData.append("image", data.image);
-    }
+  formData.append("title", data.documents.title);
 
-    const res = await api.post("/about/create", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+  if (data.image instanceof File) {
+    formData.append("image", data.image);
+  }
 
-    return res.data.data;
-  },
+  if (data.documents.file instanceof File) {
+    formData.append("document", data.documents.file);
+  }
+
+  const res = await api.post("/about/create", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data.data;
+},
+
+
 };

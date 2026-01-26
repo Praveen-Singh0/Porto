@@ -9,54 +9,75 @@ import {
 } from "../../utils/cloudinary.js";
 
 const createAbout = asyncHandler(async (req, res) => {
-  const { bio, specialization, education, documents } = req.body;
+  const { bio, specialization, education } = req.body;
 
-  const existing = await prisma.aboutSection.findUnique({
+  let existing = await prisma.aboutSection.findUnique({
     where: { id: 1 },
   });
 
   let imageUrl = existing?.imageUrl || "";
 
-  // ✅ If new image uploaded
-  if (req.file) {
-    // delete old image
+  if (req.files?.image?.[0]) {
+    const imageFile = req.files.image[0];
+
     if (existing?.imageUrl) {
       const oldPublicId = getPublicIdFromUrl(existing.imageUrl);
-      if (oldPublicId) {
-        await deleteFromCloudinary(oldPublicId);
-      }
+      if (oldPublicId) await deleteFromCloudinary(oldPublicId);
     }
 
-    const cloudinaryResult = await uploadToCloudinary(
-      req.file.buffer,
-      "about"
+    const uploadedImg = await uploadToCloudinary(
+      imageFile.buffer,
+      "image",
+      imageFile.mimetype,
     );
 
-    imageUrl = cloudinaryResult.secure_url;
+    imageUrl = uploadedImg.secure_url;
   }
 
-  const about = await prisma.aboutSection.upsert({
+  let documentObj = existing?.documents || null;
+
+  if (req.files?.document?.[0]) {
+    const pdfFile = req.files.document[0];
+
+    if (existing?.documents?.fileUrl) {
+      const oldPublicId = getPublicIdFromUrl(existing.documents.fileUrl);
+      if (oldPublicId) await deleteFromCloudinary(oldPublicId);
+    }
+
+    const uploadedPDF = await uploadToCloudinary(
+      pdfFile.buffer,
+      "documents",
+      pdfFile.mimetype,
+    );
+
+    documentObj = {
+      title: req.body.title || existing?.documents?.title || "",
+      fileUrl: uploadedPDF.secure_url,
+    };
+  }
+
+  const updated = await prisma.aboutSection.upsert({
     where: { id: 1 },
     update: {
       bio,
       specialization,
       education,
-      documents: documents ? JSON.parse(documents) : [],
       imageUrl,
+      documents: documentObj,
     },
     create: {
       id: 1,
       bio,
       specialization,
       education,
-      documents: documents ? JSON.parse(documents) : [],
       imageUrl,
+      documents: documentObj,
     },
   });
 
   return res
     .status(201)
-    .json(new ApiResponse(201, "About section updated", about));
+    .json(new ApiResponse(201, "About section updated", updated));
 });
 
 const getAboutSection = asyncHandler(async (req, res) => {

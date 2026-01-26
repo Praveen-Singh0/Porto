@@ -18,6 +18,7 @@ import {
 import { useToast } from "@/app/context/ToastContext";
 import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
+import { useAuth } from "@/app/context/AuthContext";
 
 interface ApiKey {
   id: string;
@@ -37,12 +38,6 @@ const predefinedServices = [
     description: "Payment gateway integration for processing payments",
     icon: "💳",
     color: "#00A651",
-  },
-  {
-    name: "Amadeus",
-    description: "Travel and tourism API for flight, hotel bookings",
-    icon: "✈️",
-    color: "#1E40AF",
   },
   {
     name: "GitHub",
@@ -83,6 +78,7 @@ const predefinedServices = [
 ];
 
 export default function SettingsPage() {
+  const { user } = useAuth();
   const { showToast } = useToast();
   const { modalState, openConfirm, closeConfirm } = useConfirmModal();
 
@@ -168,7 +164,7 @@ export default function SettingsPage() {
 
   const handleUpdate = (id: string) => {
     setApiKeys(
-      apiKeys.map((key) => (key.id === id ? { ...key, ...formData } : key))
+      apiKeys.map((key) => (key.id === id ? { ...key, ...formData } : key)),
     );
     setIsEditing(null);
     setFormData({
@@ -250,8 +246,8 @@ export default function SettingsPage() {
   const toggleKeyStatus = (id: string) => {
     setApiKeys(
       apiKeys.map((key) =>
-        key.id === id ? { ...key, isActive: !key.isActive } : key
-      )
+        key.id === id ? { ...key, isActive: !key.isActive } : key,
+      ),
     );
   };
 
@@ -275,6 +271,8 @@ export default function SettingsPage() {
     );
   };
 
+  if(user?.role === "GUEST") return;
+
   return (
     <div className="space-y-4 sm:space-y-6 sm:px-0">
       {/* Header */}
@@ -288,15 +286,15 @@ export default function SettingsPage() {
               Manage your API keys and service integrations securely
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsCreating(true)}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all w-full sm:w-auto"
-          >
-            <Plus className="w-4 h-4" />
-            <span className="whitespace-nowrap">Add API Key</span>
-          </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsCreating(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all w-full sm:w-auto"
+            >
+              <Plus className="w-4 h-4" />
+              <span className="whitespace-nowrap">Add API Key</span>
+            </motion.button>
         </div>
       </GlassCard>
 

@@ -14,7 +14,7 @@ import {
   Loader2,
 } from "lucide-react";
 
-import { aboutService, documents } from "@/services/aboutSection.service";
+import { aboutService } from "@/services/aboutSection.service";
 import { heroService } from "@/services/heroSection.service";
 import type { aboutInfo } from "@/services/aboutSection.service";
 import type { heroInfo } from "@/services/heroSection.service";
@@ -24,9 +24,11 @@ import FormInput from "../components/FormInput";
 import FormTextarea from "../components/FormTextarea";
 import PortfolioInfoPage from "../portfolioInfo/page";
 import ImageUpload from "../components/ImageUpload";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function AboutPage() {
   const { showToast } = useToast();
+  const { user } = useAuth();
 
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [heroFormData, setHeroFormData] = useState<{ bio: string }>({
@@ -40,13 +42,21 @@ export default function AboutPage() {
     image: File | string;
     specialization: string;
     education: string;
-    documents: documents[];
+    documents: {
+      title: string;
+      file?: File;
+      fileUrl?: string;
+    };
   }>({
     bio: "",
     image: "",
     specialization: "",
     education: "",
-    documents: [],
+    documents: {
+      title: "",
+      file: undefined,
+      fileUrl: "",
+    },
   });
 
   const {
@@ -76,7 +86,11 @@ export default function AboutPage() {
         image: aboutData.imageUrl, // string URL
         specialization: aboutData.specialization,
         education: aboutData.education,
-        documents: [...aboutData.documents],
+        documents: {
+          title: aboutData.documents?.title || "",
+          fileUrl: aboutData.documents?.fileUrl || "",
+          file: undefined,
+        },
       });
     }
   }, [aboutData]);
@@ -168,7 +182,11 @@ export default function AboutPage() {
       image: aboutData.imageUrl,
       specialization: aboutData.specialization,
       education: aboutData.education,
-      documents: [...aboutData.documents],
+      documents: {
+        title: aboutData.documents?.title || "",
+        fileUrl: aboutData.documents?.fileUrl || "",
+        file: undefined,
+      },
     });
 
     setIsEditingAbout(true);
@@ -184,37 +202,16 @@ export default function AboutPage() {
       image: aboutData.imageUrl,
       specialization: aboutData.specialization,
       education: aboutData.education,
-      documents: [...aboutData.documents],
+      documents: {
+        title: aboutData.documents?.title || "",
+        fileUrl: aboutData.documents?.fileUrl || "",
+        file: undefined,
+      },
     });
   };
 
-  const addDocument = () => {
-    setAboutFormData({
-      ...aboutFormData,
-      documents: [...aboutFormData.documents, { title: "", fileUrl: "" }],
-    });
-  };
 
-  const removeDocument = (index: number) => {
-    setAboutFormData({
-      ...aboutFormData,
-      documents: aboutFormData.documents.filter((_, i) => i !== index),
-    });
-  };
-
-  const updateDocument = (
-    index: number,
-    field: "title" | "fileUrl",
-    value: string
-  ) => {
-    const updated = [...aboutFormData.documents];
-    updated[index] = { ...updated[index], [field]: value };
-
-    setAboutFormData({
-      ...aboutFormData,
-      documents: updated,
-    });
-  };
+  if (!user) return null;
 
   return (
     <div className="space-y-6">
@@ -301,48 +298,58 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Documents
+                {/* PDF DOCUMENT */}
+                <div>
+                  <label className="block text-sm font-medium">
+                    Upload PDF Document
                   </label>
-                  <button
-                    type="button"
-                    onClick={addDocument}
-                    className="text-sm text-blue-600 hover:text-blue-700 disabled:opacity-50"
-                  >
-                    + Add Document
-                  </button>
-                </div>
-                <div className="space-y-2">
-                  {aboutFormData.documents?.map((doc, index) => (
-                    <div key={index} className="flex gap-2">
-                      <input
-                        type="text"
-                        value={doc.title}
-                        onChange={(e) =>
-                          updateDocument(index, "title", e.target.value)
-                        }
-                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                        placeholder="Document title"
-                      />
-                      <input
-                        type="text"
-                        value={doc.fileUrl}
-                        onChange={(e) =>
-                          updateDocument(index, "fileUrl", e.target.value)
-                        }
-                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                        placeholder="/documents/file.pdf"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeDocument(index)}
-                        className="px-3 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg disabled:opacity-50"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
+
+                  {/* Title */}
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 mt-2 border rounded"
+                    placeholder="Document Title"
+                    value={aboutFormData.documents.title}
+                    onChange={(e) =>
+                      setAboutFormData({
+                        ...aboutFormData,
+                        documents: {
+                          ...aboutFormData.documents,
+                          title: e.target.value,
+                        },
+                      })
+                    }
+                  />
+
+                  {/* PDF File Upload */}
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    className="w-full px-3 py-2 mt-2 border rounded"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+
+                      setAboutFormData({
+                        ...aboutFormData,
+                        documents: {
+                          ...aboutFormData.documents,
+                          file,
+                        },
+                      });
+                    }}
+                  />
+
+                  {/* Show existing PDF if exists */}
+                  {aboutFormData.documents.fileUrl && (
+                    <a
+                      href={aboutFormData.documents.fileUrl}
+                      target="_blank"
+                      className="text-blue-500 underline mt-2 block text-sm"
+                    >
+                      View Existing PDF
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -404,12 +411,14 @@ export default function AboutPage() {
                       {new Date(aboutData.updatedAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <button
-                    onClick={startEditAbout}
-                    className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
+                  {user?.role === "ADMIN" && (
+                    <button
+                      onClick={startEditAbout}
+                      className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
                 <div className="space-y-4">
@@ -451,28 +460,26 @@ export default function AboutPage() {
                     </div>
                   </div>
 
-                  {aboutData.documents.length > 0 && (
+                  {aboutData.documents && (
                     <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <Download className="w-4 h-4 text-gray-500" />
                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Documents
+                          Document
                         </span>
                       </div>
-                      <div className="space-y-2">
-                        {aboutData.documents.map((doc, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <Award className="w-4 h-4 text-green-600" />
-                            <a
-                              href={doc.fileUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-green-600 hover:text-green-700 transition-colors"
-                            >
-                              {doc.title || `Document ${idx + 1}`}
-                            </a>
-                          </div>
-                        ))}
+
+                      <div className="flex items-center gap-2">
+                        <Award className="w-4 h-4 text-green-600" />
+
+                        <a
+                          href={aboutData.documents.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-green-600 hover:text-green-700 transition-colors"
+                        >
+                          {aboutData.documents.title || "View Document"}
+                        </a>
                       </div>
                     </div>
                   )}
@@ -540,12 +547,14 @@ export default function AboutPage() {
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={startEditHero}
-                    className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
+                  {user?.role === "ADMIN" && (
+                    <button
+                      onClick={startEditHero}
+                      className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
 
                 <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
@@ -570,7 +579,7 @@ export default function AboutPage() {
           <Sparkles className="w-6 h-6 text-violet-600" />
           Basic Info
         </h2>
-        <PortfolioInfoPage />
+        <PortfolioInfoPage user={user} />
       </div>
     </div>
   );

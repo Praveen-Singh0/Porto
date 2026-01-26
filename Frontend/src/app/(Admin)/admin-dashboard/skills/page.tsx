@@ -14,7 +14,7 @@ import { useToast } from "@/app/context/ToastContext";
 import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import FormInput from "../components/FormInput";
-import FormTextarea from "../components/FormTextarea";
+import { useAuth } from "@/app/context/AuthContext";
 
 const skillCategories = ["FRONTEND", "BACKEND", "DATABASE", "DEVOPS", "OTHERS"];
 
@@ -31,6 +31,7 @@ const skillColors = [
 ];
 
 export default function SkillsPage() {
+  const { user } = useAuth();
   const { showToast } = useToast();
   const { modalState, openConfirm, closeConfirm } = useConfirmModal();
 
@@ -146,13 +147,16 @@ export default function SkillsPage() {
     return "bg-red-500";
   };
 
-  const groupedSkills = skills.reduce((acc, skill) => {
-    if (!acc[skill.category]) {
-      acc[skill.category] = [];
-    }
-    acc[skill.category].push(skill);
-    return acc;
-  }, {} as Record<string, SkillInfo[]>);
+  const groupedSkills = skills.reduce(
+    (acc, skill) => {
+      if (!acc[skill.category]) {
+        acc[skill.category] = [];
+      }
+      acc[skill.category].push(skill);
+      return acc;
+    },
+    {} as Record<string, SkillInfo[]>,
+  );
 
   return (
     <div className="space-y-6">
@@ -167,15 +171,18 @@ export default function SkillsPage() {
               Manage your technical skills and proficiency levels
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsCreating(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            Add Skill
-          </motion.button>
+
+          {user?.role === "ADMIN" && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsCreating(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all"
+            >
+              <Plus className="w-4 h-4" />
+              Add Skill
+            </motion.button>
+          )}
         </div>
       </GlassCard>
 
@@ -365,7 +372,7 @@ export default function SkillsPage() {
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full transition-all ${getProgressColor(
-                          skill.proficiency
+                          skill.proficiency,
                         )}`}
                         style={{ width: `${skill.proficiency}%` }}
                       />

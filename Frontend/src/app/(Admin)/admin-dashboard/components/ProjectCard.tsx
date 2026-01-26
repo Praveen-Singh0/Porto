@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Edit, Trash2, ExternalLink, Github } from "lucide-react";
 import GlassCard from "./GlassCard";
+import { useAuth } from "@/app/context/AuthContext";
 
 interface MinorProject {
   id: number;
@@ -34,6 +35,7 @@ export default function ProjectCard({
   onEdit,
   onDelete,
 }: ProjectCardProps) {
+  const { user } = useAuth();
   const isMinor = type === "minor";
   const minorProject = project as MinorProject;
   const majorProject = project as MajorProject;
@@ -105,26 +107,28 @@ export default function ProjectCard({
             )}
           </div>
 
-          <div className="flex gap-2">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={onEdit}
-              className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-              title="Edit"
-            >
-              <Edit className="w-4 h-4" />
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={onDelete}
-              className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-              title="Delete"
-            >
-              <Trash2 className="w-4 h-4" />
-            </motion.button>
-          </div>
+          {user?.role === "ADMIN" && (
+            <div className="flex gap-2">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onEdit}
+                className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                title="Edit"
+              >
+                <Edit className="w-4 h-4" />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onDelete}
+                className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                title="Delete"
+              >
+                <Trash2 className="w-4 h-4" />
+              </motion.button>
+            </div>
+          )}
         </div>
       </div>
     </GlassCard>

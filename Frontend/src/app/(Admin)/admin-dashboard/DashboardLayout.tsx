@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useState, useEffect, ReactNode, useCallback, memo } from "react";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
-import { authService } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
+
 interface DashboardLayoutProps {
   children: ReactNode;
 }
@@ -24,23 +24,11 @@ const MemoizedSidebar = memo(Sidebar);
 const DashboardLayout = memo(function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const { verify_Its_Me } = authService;
-  const router = useRouter();
+
+    const { user, loading } = useAuth();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [user, setUser] = useState<UserInfo | null>(null);
 
-  useEffect(() => {
-    const verify = async () => {
-      try {
-        const user = await verify_Its_Me();
-        setUser(user);
-      } catch {
-        router.replace("/");
-      }
-    };
-
-    verify();
-  }, []);
 
   const handleToggleSidebar = useCallback(() => {
     setIsSidebarOpen(true);

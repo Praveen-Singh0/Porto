@@ -14,6 +14,7 @@ import {
   MajorProject,
 } from "@/services/projectService";
 import { useToast } from "@/app/context/ToastContext";
+import { useAuth } from "@/app/context/AuthContext";
 
 type ProjectType = "minor" | "major";
 
@@ -34,6 +35,7 @@ const INITIAL_MAJOR = {
 };
 
 export default function AdminDashboard() {
+  const { user } = useAuth();
   const { showToast } = useToast();
   const { modalState, openConfirm, closeConfirm } = useConfirmModal();
 
@@ -112,54 +114,53 @@ export default function AdminDashboard() {
     }
   };
 
- const handleUpdate = async () => {
-  setIsLoading(true);
-  try {
-    if (projectType === "minor") {
-      const updated = await minorProjectService.update(formData.id, {
-        header: formData.header,
-        html_url: formData.html_url,
-        content: formData.content,
-        image: formData.image instanceof File ? formData.image : undefined,
-      });
-      setMinorProjects(
-        minorProjects.map((p) => (p.id === updated.id ? updated : p))
-      );
+  const handleUpdate = async () => {
+    setIsLoading(true);
+    try {
+      if (projectType === "minor") {
+        const updated = await minorProjectService.update(formData.id, {
+          header: formData.header,
+          html_url: formData.html_url,
+          content: formData.content,
+          image: formData.image instanceof File ? formData.image : undefined,
+        });
+        setMinorProjects(
+          minorProjects.map((p) => (p.id === updated.id ? updated : p)),
+        );
+        showToast({
+          message: "Minor project updated successfully",
+          type: "success",
+        });
+      } else {
+        const updated = await majorProjectService.update(formData.id, {
+          title: formData.title,
+          description: formData.description,
+          liveUrl: formData.liveUrl,
+          githubUrl: formData.githubUrl,
+          technologies: formData.technologies,
+          image: formData.image instanceof File ? formData.image : undefined,
+        });
+        setMajorProjects(
+          majorProjects.map((p) => (p.id === updated.id ? updated : p)),
+        );
+        // ✅ FIX: This should be success, not error!
+        showToast({
+          message: "Major project updated successfully",
+          type: "success",
+        });
+      }
+      closeModal();
+    } catch (error: any) {
+      // ✅ Error handling should be here
+      console.error("Error updating project:", error);
       showToast({
-        message: "Minor project updated successfully",
-        type: "success",
+        message: error.message || "Failed to update project",
+        type: "error",
       });
-    } else {
-      const updated = await majorProjectService.update(formData.id, {
-        title: formData.title,
-        description: formData.description,
-        liveUrl: formData.liveUrl,
-        githubUrl: formData.githubUrl,
-        technologies: formData.technologies,
-        image: formData.image instanceof File ? formData.image : undefined,
-      });
-      setMajorProjects(
-        majorProjects.map((p) => (p.id === updated.id ? updated : p))
-      );
-      // ✅ FIX: This should be success, not error!
-      showToast({
-        message: "Major project updated successfully",
-        type: "success",
-      });
+    } finally {
+      setIsLoading(false);
     }
-    closeModal();
-  } catch (error: any) {
-    // ✅ Error handling should be here
-    console.error("Error updating project:", error);
-    showToast({
-      message: error.message || "Failed to update project",
-      type: "error",
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+  };
 
   const handleDelete = (id: number, projectName: string) => {
     openConfirm({
@@ -244,7 +245,7 @@ export default function AdminDashboard() {
           p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
           p.technologies.some((t) =>
-            t.toLowerCase().includes(searchQuery.toLowerCase())
+            t.toLowerCase().includes(searchQuery.toLowerCase()),
           )
         );
       }
@@ -280,15 +281,17 @@ export default function AdminDashboard() {
               Manage your portfolio projects
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={openCreateModal}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all mt-4 lg:mt-0"
-          >
-            <Plus className="w-4 h-4" />
-            Add Project
-          </motion.button>
+          {user?.role === "ADMIN" && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={openCreateModal}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all mt-4 lg:mt-0"
+            >
+              <Plus className="w-4 h-4" />
+              Add Project
+            </motion.button>
+          )}
         </div>
       </GlassCard>
 
@@ -353,7 +356,7 @@ export default function AdminDashboard() {
                     project.id,
                     projectType === "minor"
                       ? (project as MinorProject).header
-                      : (project as MajorProject).title
+                      : (project as MajorProject).title,
                   )
                 }
               />

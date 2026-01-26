@@ -9,89 +9,57 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/**
- * Upload file buffer to Cloudinary in portfolio folder
- * @param {Buffer} fileBuffer - File buffer from multer
- * @param {string} subfolder - Subfolder inside portfolio (e.g., 'minor-projects', 'major-projects')
- * @returns {Promise<Object>} - Cloudinary upload result
- */
-export const uploadToCloudinary = (fileBuffer, subfolder = "projects") => {
+export const uploadToCloudinary = (buffer, folder = "misc", mimetype) => {
   return new Promise((resolve, reject) => {
-    // Folder structure: portfolio/minor-projects or portfolio/major-projects
-    const folderPath = `portfolio/${subfolder}`;
-    
+    const isPDF = mimetype === "application/pdf";
+
+    const options = {
+      folder: `portfolio/${folder}`,
+      use_filename: true,
+      unique_filename: true,
+      resource_type: "image",
+      format: isPDF ? "pdf" : undefined,
+    };
+
+    if (!isPDF) {
+      options.transformation = [
+        { width: 1200, height: 800, crop: "limit" },
+        { quality: "auto:good" },
+      ];
+    }
+
     const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        folder: folderPath, // Upload to portfolio folder
-        resource_type: "auto",
-        transformation: [
-          { width: 1200, height: 800, crop: "limit" },
-          { quality: "auto:good" },
-          { fetch_format: "auto" },
-        ],
-        // Optional: Generate unique filename
-        use_filename: true,
-        unique_filename: true,
+      options,
+      (err, result) => {
+        if (err) reject(new Error("Cloudinary upload failed: " + err.message));
+        resolve(result);
       },
-      (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      }
     );
 
-    uploadStream.end(fileBuffer);
+    uploadStream.end(buffer);
   });
 };
 
-/**
- * Delete file from Cloudinary
- * @param {string} publicId - Cloudinary public ID (includes folder path)
- * @returns {Promise<Object>}
- */
 export const deleteFromCloudinary = async (publicId) => {
   try {
-    const result = await cloudinary.uploader.destroy(publicId, {
-      invalidate: true, // Invalidate CDN cache
+    return await cloudinary.uploader.destroy(publicId, {
+      invalidate: true,
     });
-    return result;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw new Error("Failed to delete Cloudinary asset: " + err.message);
   }
 };
 
-/**
- * Extract public ID from Cloudinary URL
- * @param {string} url - Cloudinary URL
- * @returns {string|null} - Public ID with folder path
- * 
- * Example URL: https://res.cloudinary.com/demo/image/upload/v1234567890/portfolio/minor-projects/image.jpg
- * Returns: portfolio/minor-projects/image
- */
 export const getPublicIdFromUrl = (url) => {
   try {
-    // Match pattern: /upload/v{version}/{folder}/{filename}.{ext}
-    const regex = /\/upload\/(?:v\d+\/)?(.*)\.(jpg|jpeg|png|gif|webp|svg)$/i;
+    const regex = /\/upload\/(?:v\d+\/)?(.+?)\.[a-zA-Z0-9]+$/;
     const match = url.match(regex);
-    
-    if (match && match[1]) {
-      return match[1]; // Returns full path: portfolio/minor-projects/image
-    }
-    
-    return null;
-  } catch (error) {
-    console.error("Error extracting public ID:", error);
+    return match ? match[1] : null;
+  } catch (err) {
     return null;
   }
 };
 
-/**
- * Get all assets from a specific folder
- * @param {string} folderPath - Folder path (e.g., 'portfolio/minor-projects')
- * @returns {Promise<Array>}
- */
 export const getAssetsByFolder = async (folderPath) => {
   try {
     const result = await cloudinary.api.resources({
@@ -100,8 +68,8 @@ export const getAssetsByFolder = async (folderPath) => {
       max_results: 100,
     });
     return result.resources;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw new Error("Failed to fetch Cloudinary assets: " + err.message);
   }
 };
 

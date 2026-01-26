@@ -1,5 +1,5 @@
 "use client";
-
+import { AuthUser } from "@/types/auth";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -13,6 +13,10 @@ import {
   Instagram,
 } from "lucide-react";
 
+interface PortfolioPageProps {
+  user: AuthUser;
+}
+
 import GlassCard from "../components/GlassCard";
 import FormInput from "../components/FormInput";
 import ImageUpload from "../components/ImageUpload";
@@ -21,11 +25,8 @@ import { portfolioInfoService } from "../../../../services/portfolio.service";
 import Image from "next/image";
 import { PortfolioInfo } from "@/types/portfolio";
 
-
-
-export default function PortfolioInfoPage() {
+export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
   const { showToast } = useToast();
-
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -107,70 +108,71 @@ export default function PortfolioInfoPage() {
   return (
     <div className="space-y-6">
       {!isEditing && (
-  <GlassCard>
-    <div className="flex flex-col md:flex-row gap-6">
-      {/* IMAGE SECTION */}
-      {typeof formData.profileImage === "string" &&
-        formData.profileImage && (
-          <div className="w-full md:w-1/3">
-            <Image
-              src={formData.profileImage}
-              width={300}
-              height={300}
-              alt="Profile"
-              priority
-              className="
+        <GlassCard>
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* IMAGE SECTION */}
+            {typeof formData.profileImage === "string" &&
+              formData.profileImage && (
+                <div className="w-full md:w-1/3">
+                  <Image
+                    src={formData.profileImage}
+                    width={300}
+                    height={300}
+                    alt="Profile"
+                    priority
+                    className="
                 w-full
                 h-64
                 md:h-60
                 rounded-2xl
                 object-cover
               "
-            />
-          </div>
-        )}
+                  />
+                </div>
+              )}
 
-      {/* INFO SECTION */}
-      <div className="flex-1 space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Info label="Email" value={formData.email} />
-          <Info label="Phone" value={formData.phone} />
-          <Info label="Location" value={formData.location} />
-        </div>
+            {/* INFO SECTION */}
+            <div className="flex-1 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Info label="Email" value={formData.email} />
+                <Info label="Phone" value={formData.phone} />
+                <Info label="Location" value={formData.location} />
+              </div>
 
-        {/* SOCIAL LINKS */}
-        <div className="flex flex-wrap gap-3 pt-2">
-          {formData.socialLinks.github && (
-            <Social
-              icon={<Github size={18} />}
-              url={formData.socialLinks.github}
-            />
-          )}
-          {formData.socialLinks.linkedin && (
-            <Social
-              icon={<Linkedin size={18} />}
-              url={formData.socialLinks.linkedin}
-            />
-          )}
-          {formData.socialLinks.twitter && (
-            <Social
-              icon={<Twitter size={18} />}
-              url={formData.socialLinks.twitter}
-            />
-          )}
-          {formData.socialLinks.instagram && (
-            <Social
-              icon={<Instagram size={18} />}
-              url={formData.socialLinks.instagram}
-            />
-          )}
-        </div>
+              {/* SOCIAL LINKS */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                {formData.socialLinks.github && (
+                  <Social
+                    icon={<Github size={18} />}
+                    url={formData.socialLinks.github}
+                  />
+                )}
+                {formData.socialLinks.linkedin && (
+                  <Social
+                    icon={<Linkedin size={18} />}
+                    url={formData.socialLinks.linkedin}
+                  />
+                )}
+                {formData.socialLinks.twitter && (
+                  <Social
+                    icon={<Twitter size={18} />}
+                    url={formData.socialLinks.twitter}
+                  />
+                )}
+                {formData.socialLinks.instagram && (
+                  <Social
+                    icon={<Instagram size={18} />}
+                    url={formData.socialLinks.instagram}
+                  />
+                )}
+              </div>
 
-        {/* EDIT BUTTON */}
-        <div className="pt-4">
-          <button
-            onClick={startEdit}
-            className="
+              {/* EDIT BUTTON */}
+              {user?.role === "ADMIN" && (
+                <div className="pt-4">
+                  <button
+                    onClick={startEdit}
+                    className="
               inline-flex
               items-center
               gap-2
@@ -184,118 +186,110 @@ export default function PortfolioInfoPage() {
               hover:shadow-lg
               transition
             "
-          >
-            <Edit className="w-4 h-4" />
-            Edit Profile
-          </button>
-        </div>
-      </div>
-    </div>
-  </GlassCard>
-)}
-
+                  >
+                    <Edit className="w-4 h-4" />
+                    Edit Profile
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </GlassCard>
+      )}
 
       {/* EDIT MODE */}
-     {isEditing && (
-  <GlassCard>
-    <div className="space-y-6">
-      {/* BASIC INFO */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormInput
-          label="Email"
-          value={formData.email}
-          onChange={(v) =>
-            setFormData({ ...formData, email: v })
-          }
-        />
-        <FormInput
-          label="Phone"
-          value={formData.phone}
-          onChange={(v) =>
-            setFormData({ ...formData, phone: v })
-          }
-        />
-        <FormInput
-          label="Location"
-          value={formData.location}
-          onChange={(v) =>
-            setFormData({ ...formData, location: v })
-          }
-        />
-      </div>
+      {isEditing && (
+        <GlassCard>
+          <div className="space-y-6">
+            {/* BASIC INFO */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormInput
+                label="Email"
+                value={formData.email}
+                onChange={(v) => setFormData({ ...formData, email: v })}
+              />
+              <FormInput
+                label="Phone"
+                value={formData.phone}
+                onChange={(v) => setFormData({ ...formData, phone: v })}
+              />
+              <FormInput
+                label="Location"
+                value={formData.location}
+                onChange={(v) => setFormData({ ...formData, location: v })}
+              />
+            </div>
 
-      {/* IMAGE UPLOAD – FULL WIDTH ON MOBILE */}
-      <div className="w-full">
-        <ImageUpload
-          label="Profile Image"
-          value={formData.profileImage}
-          onChange={(v) =>
-            setFormData({ ...formData, profileImage: v })
-          }
-        />
-      </div>
+            {/* IMAGE UPLOAD – FULL WIDTH ON MOBILE */}
+            <div className="w-full">
+              <ImageUpload
+                label="Profile Image"
+                value={formData.profileImage}
+                onChange={(v) => setFormData({ ...formData, profileImage: v })}
+              />
+            </div>
 
-      {/* SOCIAL LINKS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormInput
-          label="GitHub"
-          value={formData.socialLinks.github || ""}
-          onChange={(v) =>
-            setFormData({
-              ...formData,
-              socialLinks: {
-                ...formData.socialLinks,
-                github: v,
-              },
-            })
-          }
-        />
-        <FormInput
-          label="LinkedIn"
-          value={formData.socialLinks.linkedin || ""}
-          onChange={(v) =>
-            setFormData({
-              ...formData,
-              socialLinks: {
-                ...formData.socialLinks,
-                linkedin: v,
-              },
-            })
-          }
-        />
-        <FormInput
-          label="Twitter"
-          value={formData.socialLinks.twitter || ""}
-          onChange={(v) =>
-            setFormData({
-              ...formData,
-              socialLinks: {
-                ...formData.socialLinks,
-                twitter: v,
-              },
-            })
-          }
-        />
-        <FormInput
-          label="Instagram"
-          value={formData.socialLinks.instagram || ""}
-          onChange={(v) =>
-            setFormData({
-              ...formData,
-              socialLinks: {
-                ...formData.socialLinks,
-                instagram: v,
-              },
-            })
-          }
-        />
-      </div>
+            {/* SOCIAL LINKS */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormInput
+                label="GitHub"
+                value={formData.socialLinks.github || ""}
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    socialLinks: {
+                      ...formData.socialLinks,
+                      github: v,
+                    },
+                  })
+                }
+              />
+              <FormInput
+                label="LinkedIn"
+                value={formData.socialLinks.linkedin || ""}
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    socialLinks: {
+                      ...formData.socialLinks,
+                      linkedin: v,
+                    },
+                  })
+                }
+              />
+              <FormInput
+                label="Twitter"
+                value={formData.socialLinks.twitter || ""}
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    socialLinks: {
+                      ...formData.socialLinks,
+                      twitter: v,
+                    },
+                  })
+                }
+              />
+              <FormInput
+                label="Instagram"
+                value={formData.socialLinks.instagram || ""}
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    socialLinks: {
+                      ...formData.socialLinks,
+                      instagram: v,
+                    },
+                  })
+                }
+              />
+            </div>
 
-      {/* ACTIONS */}
-      <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
-        <button
-          onClick={handleCancel}
-          className="
+            {/* ACTIONS */}
+            <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
+              <button
+                onClick={handleCancel}
+                className="
             flex
             items-center
             justify-center
@@ -306,16 +300,16 @@ export default function PortfolioInfoPage() {
             text-white
             rounded-xl
           "
-        >
-          <X className="w-4 h-4" />
-          Cancel
-        </button>
+              >
+                <X className="w-4 h-4" />
+                Cancel
+              </button>
 
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={handleSave}
-          disabled={loading}
-          className="
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSave}
+                disabled={loading}
+                className="
             flex
             items-center
             justify-center
@@ -326,24 +320,23 @@ export default function PortfolioInfoPage() {
             text-white
             rounded-xl
           "
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            <>
-              <Save className="w-4 h-4" />
-              Save Changes
-            </>
-          )}
-        </motion.button>
-      </div>
-    </div>
-  </GlassCard>
-)}
-
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4" />
+                    Save Changes
+                  </>
+                )}
+              </motion.button>
+            </div>
+          </div>
+        </GlassCard>
+      )}
     </div>
   );
 }

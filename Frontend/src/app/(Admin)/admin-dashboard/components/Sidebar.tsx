@@ -101,14 +101,6 @@ const MENU_ITEMS: MenuItem[] = [
     category: "main",
   },
   {
-    icon: Plane,
-    label: "Flight Booking",
-    href: "/admin-dashboard/services/flight-booking",
-    roles: ["ADMIN"],
-    color: "#1E40AF",
-    category: "service",
-  },
-  {
     icon: Github,
     label: "GitHub",
     href: "/admin-dashboard/services/github",

@@ -24,8 +24,7 @@ import LogoLoop from "../components/LogoLoop";
 import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
 import { aboutService } from "@/services/aboutSection.service";
 import useFetch from "@/hooks/useFetch";
-import type { aboutInfo } from '@/services/aboutSection.service';
-
+import type { aboutInfo } from "@/services/aboutSection.service";
 
 import { PDFModal } from "../components/ui/PDFModal";
 
@@ -79,20 +78,12 @@ const About = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPDF, setSelectedPDF] = useState({ url: "", title: "" });
 
-  const {
-  data: myBio,
-  error,
-} = useFetch<aboutInfo>(aboutService.getInfo);
-
+  const { data: myBio, error } = useFetch<aboutInfo>(aboutService.getInfo);
 
   const openPDFModal = (url: string, title: string) => {
     setSelectedPDF({ url, title });
     setIsModalOpen(true);
   };
-
- 
-
-
 
   return (
     <motion.div
@@ -226,36 +217,39 @@ const About = () => {
           Documents
         </h3>
 
-        {myBio?.documents && myBio?.documents.length > 0 ? (
-          myBio?.documents.map((doc, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center justify-between p-4 border border-pink-100 rounded-lg transition-colors mb-4"
-              whileHover={{ borderColor: "#ec4899" }}
+        {myBio?.documents && myBio?.documents.fileUrl ? (
+          <motion.div
+            className="flex items-center justify-between p-4 border border-pink-100 rounded-lg transition-colors mb-4"
+            whileHover={{ borderColor: "#ec4899" }}
+          >
+            <span className="font-medium text-gray-700 dark:text-gray-100 truncate">
+              {myBio.documents.title}
+            </span>
+
+            <motion.button
+              onClick={() =>
+                openPDFModal(
+                  myBio.documents.fileUrl || "",
+                  myBio.documents.title,
+                )
+              }
+              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors relative overflow-hidden"
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(236, 72, 153, 0.4)",
+                  "0 0 20px rgba(236, 72, 153, 0.6), 0 0 30px rgba(236, 72, 153, 0.4)",
+                  "0 0 0px rgba(236, 72, 153, 0.4)",
+                ],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
-              <span className="font-medium text-gray-700 dark:text-gray-100 truncate">
-                {doc.title}
-              </span>
-              <motion.button
-                onClick={() => openPDFModal(doc.fileUrl, doc.title)}
-                className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors relative overflow-hidden"
-                animate={{
-                  boxShadow: [
-                    "0 0 0px rgba(236, 72, 153, 0.4)",
-                    "0 0 20px rgba(236, 72, 153, 0.6), 0 0 30px rgba(236, 72, 153, 0.4)",
-                    "0 0 0px rgba(236, 72, 153, 0.4)",
-                  ],
-                }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                View
-              </motion.button>
-            </motion.div>
-          ))
+              View
+            </motion.button>
+          </motion.div>
         ) : (
           <p className="text-gray-500 dark:text-gray-400">
             No documents available

@@ -25,8 +25,9 @@ import ConfirmModal from "../components/ConfirmModal";
 import FormInput from "../components/FormInput";
 import MultiSelectInput from "../components/MultiSelectInput";
 import ImageUpload from "../components/ImageUpload";
-
+import { useAuth } from "@/app/context/AuthContext";
 export default function EducationPage() {
+  const { user } = useAuth();
   const { showToast } = useToast();
   const { modalState, openConfirm, closeConfirm } = useConfirmModal();
 
@@ -110,11 +111,11 @@ export default function EducationPage() {
 
       const updated = await educationService.updateInfo(
         isEditing,
-        buildPayload()
+        buildPayload(),
       );
 
       setEducations((prev) =>
-        prev.map((e) => (e.id === isEditing ? updated : e))
+        prev.map((e) => (e.id === isEditing ? updated : e)),
       );
 
       setIsEditing(null);
@@ -190,15 +191,17 @@ export default function EducationPage() {
               Manage your educational background and qualifications
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsCreating(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            Add Education
-          </motion.button>
+          {user?.role === "ADMIN" && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsCreating(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all"
+            >
+              <Plus className="w-4 h-4" />
+              Add Education
+            </motion.button>
+          )}
         </div>
       </GlassCard>
 
@@ -360,26 +363,29 @@ export default function EducationPage() {
                       <span>{education.duration}</span>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => startEdit(education)}
-                      className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() =>
-                        handleDelete(education.id, education.collageName)
-                      }
-                      className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </motion.button>
-                  </div>
+                  {user?.role === "ADMIN" && (
+                    <div className="flex gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => startEdit(education)}
+                        className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() =>
+                          handleDelete(education.id, education.collageName)
+                        }
+                        className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </motion.button>
+                    </div>
+                  )}
                 </div>
 
                 {education.subjects.length > 0 && (
