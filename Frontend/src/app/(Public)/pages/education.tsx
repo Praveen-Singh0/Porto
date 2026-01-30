@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { educationService, educationInfo } from "@/services/education.service";
@@ -17,7 +17,7 @@ const EducationSection = () => {
 
   useEffect(() => {
     if (educationList && educationList.length > 0) {
-      setSelectedCard(educationList[0]);
+      setSelectedCard(educationList[1]);
     }
   }, [educationList]);
 
