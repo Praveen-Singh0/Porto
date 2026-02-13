@@ -95,13 +95,14 @@ export default function AboutPage() {
     }
   }, [aboutData]);
 
-  if (heroError || aboutError) {
-    showToast({
-      message: "Failed to load page data",
-      type: "error",
-    });
-    return null;
-  }
+  useEffect(() => {
+    if (heroError || aboutError) {
+      showToast({
+        message: "API not responding. Showing empty state.",
+        type: "error",
+      });
+    }
+  }, [heroError, aboutError]);
 
   const handleUpdateHero = async () => {
     if (!heroFormData.bio.trim()) {
@@ -209,7 +210,6 @@ export default function AboutPage() {
       },
     });
   };
-
 
   if (!user) return null;
 
@@ -387,105 +387,140 @@ export default function AboutPage() {
         )}
 
         {/* About Display */}
-        {aboutData && !isEditingAbout && (
+        {/* About Display */}
+        {!isEditingAbout && (
           <GlassCard delay={0.2}>
-            <div className="sm:flex block gap-6">
-              {aboutData.imageUrl && (
-                <div className="flex-shrink-0">
-                  <img
-                    src={aboutData.imageUrl}
-                    alt="Profile"
-                    className="w-32 h-32 rounded-lg object-cover border-4 border-white dark:border-gray-700 shadow-lg"
-                  />
-                </div>
-              )}
-
-              <div className="flex-1">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                      About Me
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Last updated:{" "}
-                      {new Date(aboutData.updatedAt).toLocaleDateString()}
-                    </p>
+            {aboutData ? (
+              <div className="sm:flex block gap-6">
+                {/* Profile Image */}
+                {aboutData.imageUrl && (
+                  <div className="flex-shrink-0">
+                    <img
+                      src={aboutData.imageUrl}
+                      alt="Profile"
+                      className="w-32 h-32 rounded-lg object-cover border-4 border-white dark:border-gray-700 shadow-lg"
+                    />
                   </div>
-                  {user?.role === "ADMIN" && (
-                    <button
-                      onClick={startEditAbout}
-                      className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
+                )}
 
-                <div className="space-y-4">
-                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <FileText className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Bio
-                      </span>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {aboutData.bio}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <User className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Specialization
-                        </span>
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {aboutData.specialization}
+                <div className="flex-1">
+                  {/* Header */}
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        About Me
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Last updated:{" "}
+                        {aboutData.updatedAt
+                          ? new Date(aboutData.updatedAt).toLocaleDateString()
+                          : "N/A"}
                       </p>
                     </div>
 
-                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <GraduationCap className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Education
-                        </span>
-                      </div>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {aboutData.education}
-                      </p>
-                    </div>
+                    {user?.role === "ADMIN" && (
+                      <button
+                        onClick={startEditAbout}
+                        className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
-                  {aboutData.documents && (
+                  <div className="space-y-4">
+                    {/* Bio */}
                     <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Download className="w-4 h-4 text-gray-500" />
+                      <div className="flex items-center gap-2 mb-2">
+                        <FileText className="w-4 h-4 text-gray-500" />
                         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          Document
+                          Bio
                         </span>
                       </div>
+                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {aboutData.bio || "No bio available."}
+                      </p>
+                    </div>
 
-                      <div className="flex items-center gap-2">
-                        <Award className="w-4 h-4 text-green-600" />
+                    {/* Specialization & Education */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <User className="w-4 h-4 text-gray-500" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Specialization
+                          </span>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          {aboutData.specialization || "Not specified"}
+                        </p>
+                      </div>
 
-                        <a
-                          href={aboutData.documents.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-green-600 hover:text-green-700 transition-colors"
-                        >
-                          {aboutData.documents.title || "View Document"}
-                        </a>
+                      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <GraduationCap className="w-4 h-4 text-gray-500" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Education
+                          </span>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          {aboutData.education || "Not specified"}
+                        </p>
                       </div>
                     </div>
-                  )}
+
+                    {/* Document */}
+                    {aboutData.documents?.fileUrl && (
+                      <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Download className="w-4 h-4 text-gray-500" />
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Document
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <Award className="w-4 h-4 text-green-600" />
+
+                          <a
+                            href={aboutData.documents.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-green-600 hover:text-green-700 transition-colors"
+                          >
+                            {aboutData.documents.title || "View Document"}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              /* EMPTY STATE */
+              <div className="text-center py-12">
+                <div className="mb-4 text-gray-400">
+                  <User className="w-12 h-12 mx-auto opacity-40" />
+                </div>
+
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                  No About Information Found
+                </h3>
+
+                <p className="text-sm text-gray-500 mt-2">
+                  API not responding or no data available in database.
+                </p>
+
+                {user?.role === "ADMIN" && (
+                  <button
+                    onClick={() => setIsEditingAbout(true)}
+                    className="mt-6 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Add About Info
+                  </button>
+                )}
+              </div>
+            )}
           </GlassCard>
         )}
       </div>
@@ -497,81 +532,114 @@ export default function AboutPage() {
           Hero Section
         </h2>
 
-        {heroData && (
-          <GlassCard delay={0.1}>
-            {isEditingHero ? (
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Edit Hero Bio
-                </h3>
-                <div>
-                  <FormTextarea
-                    label="Bio Description"
-                    value={heroFormData.bio}
-                    onChange={(value) => setHeroFormData({ bio: value })}
-                    rows={4}
-                    placeholder="Enter hero bio..."
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleUpdateHero}
-                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Save className="w-4 h-4" />
-                    Update
-                  </button>
-                  <button
-                    onClick={cancelEditHero}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50"
-                  >
-                    <X className="w-4 h-4" />
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
+        {/* Hero Section Display */}
+        <GlassCard delay={0.1}>
+          {isEditingHero ? (
+            /* ================= EDIT MODE ================= */
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Edit Hero Bio
+              </h3>
+
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-r from-violet-600 to-pink-600 rounded-full flex items-center justify-center">
-                      <Sparkles className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                        Hero Bio
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Last updated:{" "}
-                        {new Date(heroData.updatedAt).toLocaleDateString()}
-                      </p>
-                    </div>
+                <FormTextarea
+                  label="Bio Description"
+                  value={heroFormData.bio}
+                  onChange={(value) => setHeroFormData({ bio: value })}
+                  rows={4}
+                  placeholder="Enter hero bio..."
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={handleUpdateHero}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Save className="w-4 h-4" />
+                  Update
+                </button>
+
+                <button
+                  onClick={cancelEditHero}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : heroData ? (
+            /* ================= DISPLAY MODE ================= */
+            <div>
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-violet-600 to-pink-600 rounded-full flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-white" />
                   </div>
-                  {user?.role === "ADMIN" && (
-                    <button
-                      onClick={startEditHero}
-                      className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                  )}
+
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                      Hero Bio
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Last updated:{" "}
+                      {heroData.updatedAt
+                        ? new Date(heroData.updatedAt).toLocaleDateString()
+                        : "N/A"}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <FileText className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Bio Content
-                    </span>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
-                    {heroData.bio}
-                  </p>
-                </div>
+                {user?.role === "ADMIN" && (
+                  <button
+                    onClick={startEditHero}
+                    className="p-2 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+                )}
               </div>
-            )}
-          </GlassCard>
-        )}
+
+              <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <FileText className="w-4 h-4 text-gray-500" />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Bio Content
+                  </span>
+                </div>
+
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
+                  {heroData.bio || "No hero bio available."}
+                </p>
+              </div>
+            </div>
+          ) : (
+            /* ================= EMPTY STATE ================= */
+            <div className="text-center py-12">
+              <div className="mb-4 text-gray-400">
+                <Sparkles className="w-12 h-12 mx-auto opacity-40" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                No Hero Bio Found
+              </h3>
+
+              <p className="text-sm text-gray-500 mt-2">
+                API not responding or no data available in database.
+              </p>
+
+              {user?.role === "ADMIN" && (
+                <button
+                  onClick={() => setIsEditingHero(true)}
+                  className="mt-6 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Add Hero Bio
+                </button>
+              )}
+            </div>
+          )}
+        </GlassCard>
       </div>
 
       <div className="space-y-6">
