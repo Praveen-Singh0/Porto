@@ -183,25 +183,6 @@ const SkillsSection = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 md:py-16 lg:py-14">
-      {/* Animated background blobs */}
-      <motion.div
-        variants={blobVariants}
-        animate="animate"
-        className="absolute top-20 left-10 w-64 h-64 md:w-96 md:h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-      />
-      <motion.div
-        variants={blobVariants}
-        animate="animate"
-        style={{ animationDelay: "2s" }}
-        className="absolute bottom-20 right-20 w-64 h-64 md:w-96 md:h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-      />
-      <motion.div
-        variants={blobVariants}
-        animate="animate"
-        style={{ animationDelay: "4s" }}
-        className="absolute top-1/2 left-1/2 w-64 h-64 md:w-96 md:h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15"
-      />
-
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header - Compact for mobile */}
         <motion.div
@@ -210,39 +191,22 @@ const SkillsSection = () => {
           initial="hidden"
           animate="visible"
         >
-          <motion.div
-            className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-100 dark:border-pink-800"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <div className="inline-block px-3 py-1.5 md:px-4 md:py-2 bg-pink-50 dark:bg-pink-900/30 rounded-full border border-pink-100 dark:border-pink-800">
             <span className="text-pink-600 dark:text-pink-400 font-semibold text-xs md:text-sm tracking-wide">
               EXPERTISE
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            className="text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 px-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-          >
+          <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 px-4">
             My{" "}
             <span className="bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
               Skills
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base md:text-lg px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base md:text-lg px-4">
             Technologies and tools I use to bring ideas to life
-          </motion.p>
+          </p>
         </motion.div>
 
         {/* Filter Tabs - Compact scrollable for mobile */}
@@ -254,7 +218,7 @@ const SkillsSection = () => {
         >
           <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide -webkit-overflow-scrolling-touch">
             {categories.map((category, index) => (
-              <motion.button
+              <button
                 key={category}
                 onClick={() => setFilter(category)}
                 className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap flex-shrink-0 ${
@@ -262,11 +226,6 @@ const SkillsSection = () => {
                     ? "text-white"
                     : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                 }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + index * 0.05 }}
               >
                 {category}
                 {filter === category && (
@@ -276,31 +235,21 @@ const SkillsSection = () => {
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-              </motion.button>
+              </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Skills Grid - 2 columns on mobile, responsive scaling */}
         <AnimatePresence mode="wait">
-          <motion.div
+          <div
             key={filter}
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
           >
             {filteredSkills?.map((skill, index) => {
-              const IconComponent = iconMap[skill.icon || ""];
-
               return (
-                <motion.div
+                <div
                   key={skill.id}
-                  variants={cardVariants}
                   className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
-                  initial="rest"
-                  whileHover="hover"
-                  animate="rest"
                 >
                   {/* Gradient overlay on hover */}
                   <motion.div
@@ -366,26 +315,14 @@ const SkillsSection = () => {
                     {skill.name}
                   </motion.h3>
 
-                  {/* Proficiency bar - Compact on mobile */}
                   <div className="space-y-1 md:space-y-2 relative z-10">
                     <div className="flex justify-between items-center">
-                      <motion.span
-                        className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium"
-                        variants={{
-                          rest: { x: 0 },
-                          hover: { x: 3, transition: { duration: 0.2 } },
-                        }}
-                      >
+                      <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">
                         Proficiency
-                      </motion.span>
-                      <motion.span
-                        className="text-xs md:text-sm font-bold text-pink-600"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8 + index * 0.05 }}
-                      >
+                      </span>
+                      <span className="text-xs md:text-sm font-bold text-pink-600">
                         {skill.proficiency}%
-                      </motion.span>
+                      </span>
                     </div>
 
                     {/* Progress bar container */}
@@ -397,23 +334,12 @@ const SkillsSection = () => {
                         }}
                         initial={{ width: 0 }}
                         animate={{ width: `${skill.proficiency}%` }}
-                        transition={{
-                          duration: 1.2,
-                          delay: 0.8 + index * 0.05,
-                          ease: "easeOut",
-                        }}
                       >
                         {/* Shimmer effect */}
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                           animate={{
                             x: ["-100%", "200%"],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                            delay: 1.5 + index * 0.05,
                           }}
                         />
                       </motion.div>
@@ -435,16 +361,13 @@ const SkillsSection = () => {
                     }}
                     style={{ pointerEvents: "none" }}
                   />
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         </AnimatePresence>
 
-        {/* Stats Section - 2 cols mobile, 3 cols tablet, 6 cols desktop */}
-        <div
-          className="mt-12 md:mt-16 lg:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6"
-        >
+        <div className="mt-12 md:mt-16 lg:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6">
           {[
             { label: "Total Skills", value: skills?.length, icon: "🚀" },
             {
