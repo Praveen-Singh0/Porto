@@ -50,7 +50,6 @@ export const signup = asyncHandler(async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "ADMIN",
     },
     select: {
       id: true,
