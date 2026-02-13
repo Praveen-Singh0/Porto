@@ -50,6 +50,7 @@ export const signup = asyncHandler(async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role: "ADMIN",
     },
     select: {
       id: true,
@@ -113,7 +114,7 @@ export const login = asyncHandler(async (req, res) => {
       email: user.email,
       role: user.role,
       lastLoginAt: istTime,
-    })
+    }),
   );
 });
 
@@ -209,7 +210,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
         role: user.role,
         lastLoginAt: istTime,
       },
-    })
+    }),
   );
 });
 
