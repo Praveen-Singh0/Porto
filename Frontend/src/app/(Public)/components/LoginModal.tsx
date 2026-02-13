@@ -6,7 +6,6 @@ import { authService } from "@/services/auth.service";
 import { useToast } from "../../context/ToastContext";
 import { useRouter } from "next/navigation";
 
-
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,7 +17,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
   onClose,
   onSignup,
 }) => {
-    const router = useRouter();
+  const router = useRouter();
 
   const { login, verify_Its_Me } = authService;
   const { showToast } = useToast();
@@ -82,35 +81,17 @@ const LoginModal: React.FC<LoginModalProps> = ({
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
-        <motion.div
+        <div
           className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex justify-center items-center z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
           onClick={handleClose}
         >
-          <motion.div
-            initial={{ y: "-100vh", opacity: 0, scale: 0.5 }}
-            animate={{
-              y: 0,
-              opacity: 1,
-              scale: 1,
-              transition: { type: "spring", damping: 25, stiffness: 300 },
-            }}
-            exit={{
-              y: "100vh",
-              opacity: 0,
-              scale: 0.5,
-              transition: { duration: 0.3 },
-            }}
+          <div
             onClick={(e) => e.stopPropagation()}
             className={`max-w-[450px] w-full mx-4 ${neumorphicBase} rounded-3xl dark:shadow-[0px_0px_30px_#0a0a0a,-0px_-0px_30px_#2a2a2a] overflow-hidden relative`}
           >
-            <motion.button
+            <button
               onClick={handleClose}
               className={`absolute top-4 right-4 p-2 rounded-full ${neumorphicBase} shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] dark:shadow-[5px_5px_10px_#0a0a0a,-5px_-5px_10px_#2a2a2a] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] dark:hover:shadow-[inset_5px_5px_10px_#0a0a0a,inset_-5px_-5px_10px_#2a2a2a] transition-all duration-300 z-10`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -126,7 +107,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </motion.button>
+            </button>
 
             <div className="p-8 md:p-10">
               <motion.div
@@ -296,8 +277,8 @@ const LoginModal: React.FC<LoginModalProps> = ({
                 </motion.p>
               </form>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
     </AnimatePresence>
   );
