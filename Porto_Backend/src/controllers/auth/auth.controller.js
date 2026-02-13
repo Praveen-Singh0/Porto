@@ -152,6 +152,8 @@ export const getUser = asyncHandler(async (req, res) => {
 export const verify_Its_Me = asyncHandler(async (req, res) => {
   const token = req.cookies?.token;
 
+  console.log("token", token)
+
   if (!token) {
     throw new ApiError(401, "Not authenticated");
   }
