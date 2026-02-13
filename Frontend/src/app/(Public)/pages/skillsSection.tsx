@@ -74,14 +74,11 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
 
 const SkillsSection = () => {
   const [filter, setFilter] = useState("BACKEND");
-  const {
-  data: skills,
-  error,
-} = useFetch(skillsService.getInfo);
+  const { data: skills, error } = useFetch(skillsService.getInfo);
 
-
-
-  const categories = Array.from(new Set(skills?.map((skill) => skill.category)));
+  const categories = Array.from(
+    new Set(skills?.map((skill) => skill.category)),
+  );
 
   const filteredSkills = skills?.filter((skill) => skill.category === filter);
 
@@ -159,46 +156,30 @@ const SkillsSection = () => {
     },
   };
 
-  const statVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: 30 },
-    visible: (i: number) => ({
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    }),
-  };
-
   const SkillIcon = ({ skill }: { skill: SkillInfo }) => {
-  const IconComponent = skill.icon ? iconMap[skill.icon] : null;
+    const IconComponent = skill.icon ? iconMap[skill.icon] : null;
 
-  if (skill.icon) {
-    // Case 1: React icon exists
-    if (IconComponent) {
-      return (
-        <IconComponent
-          className="text-2xl md:text-3xl lg:text-4xl"
-          style={{ color: skill.color }}
-        />
-      );
+    if (skill.icon) {
+      // Case 1: React icon exists
+      if (IconComponent) {
+        return (
+          <IconComponent
+            className="text-2xl md:text-3xl lg:text-4xl"
+            style={{ color: skill.color }}
+          />
+        );
+      }
     }
-  }
-  // Fallback: first letter of name
-  return (
-    <span
-      className="text-2xl md:text-3xl lg:text-4xl font-semibold"
-      style={{ color: skill.color }}
-    >
-      {skill.name?.charAt(0)}
-    </span>
-  );
-};
-
-
+    // Fallback: first letter of name
+    return (
+      <span
+        className="text-2xl md:text-3xl lg:text-4xl font-semibold"
+        style={{ color: skill.color }}
+      >
+        {skill.name?.charAt(0)}
+      </span>
+    );
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 md:py-16 lg:py-14">
@@ -265,40 +246,40 @@ const SkillsSection = () => {
         </motion.div>
 
         {/* Filter Tabs - Compact scrollable for mobile */}
-       <motion.div
-  className="flex justify-center mb-8 md:mb-12 pb-2 w-full overflow-x-auto"
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.4 }}
->
-  <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide -webkit-overflow-scrolling-touch">
-    {categories.map((category, index) => (
-      <motion.button
-        key={category}
-        onClick={() => setFilter(category)}
-        className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap flex-shrink-0 ${
-          filter === category
-            ? "text-white"
-            : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
-        }`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 + index * 0.05 }}
-      >
-        {category}
-        {filter === category && (
-          <motion.span
-            layoutId="activeFilter"
-            className="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg md:rounded-xl shadow-lg shadow-pink-200 -z-10"
-            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-          />
-        )}
-      </motion.button>
-    ))}
-  </div>
-</motion.div>
+        <motion.div
+          className="flex justify-center mb-8 md:mb-12 pb-2 w-full overflow-x-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <div className="inline-flex gap-2 p-1.5 md:p-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide -webkit-overflow-scrolling-touch">
+            {categories.map((category, index) => (
+              <motion.button
+                key={category}
+                onClick={() => setFilter(category)}
+                className={`relative px-4 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors duration-300 whitespace-nowrap flex-shrink-0 ${
+                  filter === category
+                    ? "text-white"
+                    : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + index * 0.05 }}
+              >
+                {category}
+                {filter === category && (
+                  <motion.span
+                    layoutId="activeFilter"
+                    className="absolute inset-0 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg md:rounded-xl shadow-lg shadow-pink-200 -z-10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Skills Grid - 2 columns on mobile, responsive scaling */}
         <AnimatePresence mode="wait">
@@ -341,19 +322,18 @@ const SkillsSection = () => {
                       }}
                       variants={iconVariants}
                     >
-                       <motion.div
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{
-                            delay: 0.6 + index * 0.05,
-                            type: "spring",
-                            stiffness: 200,
-                            damping: 15,
-                          }}
-                        >
-                          <SkillIcon skill={skill} />
-                        </motion.div>
-                      
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                          delay: 0.6 + index * 0.05,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15,
+                        }}
+                      >
+                        <SkillIcon skill={skill} />
+                      </motion.div>
                     </motion.div>
 
                     {/* Category badge - Hidden on mobile, visible on md+ */}
@@ -462,20 +442,8 @@ const SkillsSection = () => {
         </AnimatePresence>
 
         {/* Stats Section - 2 cols mobile, 3 cols tablet, 6 cols desktop */}
-        <motion.div
+        <div
           className="mt-12 md:mt-16 lg:mt-20 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.1,
-                delayChildren: 1.2,
-              },
-            },
-          }}
         >
           {[
             { label: "Total Skills", value: skills?.length, icon: "🚀" },
@@ -505,55 +473,22 @@ const SkillsSection = () => {
               icon: "⭐",
             },
           ].map((stat, index) => (
-            <motion.div
+            <div
               key={stat.label}
-              custom={index}
-              variants={statVariants}
               className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-5 lg:p-6 text-center shadow-lg border border-gray-100 dark:border-gray-700"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 20px 25px -5px rgba(236, 72, 153, 0.2)",
-                borderColor: "rgba(236, 72, 153, 0.3)",
-                transition: { duration: 0.3 },
-              }}
             >
-              <motion.div
-                className="text-2xl md:text-3xl lg:text-4xl mb-1 md:mb-2"
-                animate={{
-                  y: [0, -5, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: index * 0.2,
-                }}
-              >
+              <div className="text-2xl md:text-3xl lg:text-4xl mb-1 md:mb-2">
                 {stat.icon}
-              </motion.div>
-              <motion.div
-                className="text-2xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-0.5 md:mb-1"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  delay: 1.3 + index * 0.1,
-                  type: "spring",
-                  stiffness: 200,
-                }}
-              >
+              </div>
+              <div className="text-2xl md:text-2xl lg:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-0.5 md:mb-1">
                 {stat.value}
-              </motion.div>
-              <motion.div
-                className="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.4 + index * 0.1 }}
-              >
+              </div>
+              <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 font-medium">
                 {stat.label}
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
