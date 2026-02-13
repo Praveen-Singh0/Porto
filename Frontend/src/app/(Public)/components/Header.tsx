@@ -17,13 +17,12 @@ const Header = () => {
   const [authOpen, setAuthOpen] = useState(false);
 
   const handleLoginClick = async () => {
-    setAuthOpen(true);
     try {
       await verify_Its_Me();
-      setAuthOpen(false);
-
       router.push("/admin-dashboard");
-    } catch {}
+    } catch {
+      setAuthOpen(true);
+    }
   };
 
   const navItems = [

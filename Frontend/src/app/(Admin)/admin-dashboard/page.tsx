@@ -6,7 +6,6 @@ import {
   Brain,
   Github,
   MessageCircle,
-  Plane,
   Activity,
   Zap,
   Database,

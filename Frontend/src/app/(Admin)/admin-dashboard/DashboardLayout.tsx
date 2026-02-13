@@ -1,21 +1,13 @@
 // components/DashboardLayout.tsx
 "use client";
 import { motion } from "framer-motion";
-import { useState, useEffect, ReactNode, useCallback, memo } from "react";
+import { useState, ReactNode, useCallback, memo } from "react";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import { useAuth } from "@/app/context/AuthContext";
 
 interface DashboardLayoutProps {
   children: ReactNode;
-}
-
-interface UserInfo {
-  id: number;
-  name: string;
-  email: string;
-  role: "ADMIN" | "GUEST";
-  lastLoginAt: string | null;
 }
 
 const MemoizedNavbar = memo(Navbar);
