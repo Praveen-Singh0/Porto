@@ -98,11 +98,12 @@ export const login = asyncHandler(async (req, res) => {
 
   const token = generateToken(user);
 
-  // 6️⃣ Set httpOnly cookie
+  const isProduction = process.env.NODE_ENV === "production";
+
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "strict",
     maxAge: 24 * 60 * 60 * 1000,
   });
 
@@ -118,9 +119,11 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 export const logout = asyncHandler(async (_req, res) => {
+  const isProduction = process.env.NODE_ENV === "production";
+
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "none",
+    sameSite: isProduction ? "none" : "strict",
     secure: process.env.NODE_ENV === "production",
   });
 
@@ -151,7 +154,7 @@ export const getUser = asyncHandler(async (req, res) => {
 export const verify_Its_Me = asyncHandler(async (req, res) => {
   const token = req.cookies?.token;
 
-  console.log("token", token)
+  console.log("token", token);
 
   if (!token) {
     throw new ApiError(401, "Not authenticated");
