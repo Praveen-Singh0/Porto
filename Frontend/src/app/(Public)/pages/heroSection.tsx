@@ -11,9 +11,18 @@ import {
 import Image from "next/image";
 import { motion, useSpring } from "framer-motion";
 import Button from "../components/ui/Button";
-import { heroService } from "@/services/heroSection.service";
+// import { heroService } from "@/services/heroSection.service";
 import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
 import useFetch from "@/hooks/useFetch";
+
+import { heroInfo } from "@/services/heroSection.service";
+import { PortfolioInfo } from "@/types/portfolio";
+
+interface TopPageProps {
+  heroData: heroInfo;
+  portfolioInfo: PortfolioInfo;
+}
+
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
@@ -21,10 +30,17 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay },
 });
 
-const TopPage = () => {
-  const { info } = usePortfolioInfoContext();
 
-  const { data: bioContent, error } = useFetch(heroService.getInfo);
+
+const TopPage = ({ heroData, portfolioInfo } : TopPageProps) => {
+  
+
+  const info = portfolioInfo;
+  const bioContent = heroData;
+
+  // const { info } = usePortfolioInfoContext();
+
+  // const { data: bioContent, error } = useFetch(heroService.getInfo);
 
   // 3D Tilt effect for image card
   const imageCardRef = useRef<HTMLDivElement>(null);
@@ -175,18 +191,6 @@ const TopPage = () => {
                         priority
                       />
                     )}
-
-                    {/* here  */}
-                    {/* <img
-                      src={info.profileImageUrl}
-                      alt="profile"
-                      style={{
-                        width: "100%",
-                        height: "350px",
-                      }}
-                      className="hero-profile-image"
-                    /> */}
-
                     {/* Floating Tech Icons */}
                     <span className="circle circle2"></span>
                     <span className="circle circle3"></span>

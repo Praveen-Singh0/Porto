@@ -3,18 +3,12 @@ import { FaCode } from "react-icons/fa";
 import { ScrollStackContainer } from "../../utils/ScrollStack";
 import {
   experienceInfo,
-  experienceService,
 } from "@/services/experience.service";
-import useFetch from "@/hooks/useFetch";
-
-const ExperienceSection = () => {
-
-  const {
-  data: experiences,
-  error,
-} = useFetch(experienceService.getInfo);
 
 
+const ExperienceSection = ({ data }: { data: experienceInfo[] } ) => {
+
+ const experiences = data;
 
   return (
     <div className="mt-16 mx-auto max-w-7xl relative">

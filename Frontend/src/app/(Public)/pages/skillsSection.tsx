@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AiFillHtml5, AiFillGithub, AiFillApi } from "react-icons/ai";
 import { BiLogoTailwindCss, BiLogoNodejs } from "react-icons/bi";
 import { BsFiletypeCss, BsBootstrap } from "react-icons/bs";
-import { skillsService, SkillInfo } from "@/services/skillSection.service";
-import useFetch from "@/hooks/useFetch";
+import {  SkillInfo } from "@/services/skillSection.service";
 
 import {
   FaReact,
@@ -72,9 +71,10 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
   SiPostman,
 };
 
-const SkillsSection = () => {
+const SkillsSection = ({data} : {data : SkillInfo[]}) => {
+
+  const skills = data;
   const [filter, setFilter] = useState("BACKEND");
-  const { data: skills, error } = useFetch(skillsService.getInfo);
 
   const categories = Array.from(
     new Set(skills?.map((skill) => skill.category)),

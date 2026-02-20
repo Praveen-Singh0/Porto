@@ -3,15 +3,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { educationService, educationInfo } from "@/services/education.service";
-import useFetch from "@/hooks/useFetch";
+import {  educationInfo } from "@/services/education.service";
 
-const EducationSection = () => {
 
-    const {
-  data: educationList,
-  error,
-} = useFetch(educationService.getInfo);
+const EducationSection = ({data} : {data : educationInfo[]}) => {
+
+  const educationList = data;
+
 
   const [selectedCard, setSelectedCard] = useState<educationInfo | null>(null);
 

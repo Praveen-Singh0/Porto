@@ -26,30 +26,12 @@ const itemVariants = {
   }
 };
 
-export default function MajorProjects() {
-  // ✅ State for API data
-  const [projects, setProjects] = useState<MajorProject[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default function MajorProjects({ data }: { data: MajorProject[] }) {
 
-  // ✅ Fetch projects from API
-  useEffect(() => {
-    loadProjects();
-  }, []);
+  const projects = data;
 
-  const loadProjects = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await majorProjectService.getAll();
-      setProjects(data);
-    } catch (error: any) {
-      console.error("Error loading major projects:", error);
-      setError(error.message || "Failed to load projects");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
+  
 
   return (
     <section className="major-projects-section">
@@ -82,28 +64,11 @@ export default function MajorProjects() {
         <div className="title-underline" />
       </motion.div>
 
-      {/* ✅ Loading State */}
-      {isLoading && (
-        <div className="flex justify-center items-center py-20">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-pink-500"></div>
-        </div>
-      )}
+     
 
-      {/* ✅ Error State */}
-      {error && (
-        <div className="text-center py-20">
-          <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
-          <button 
-            onClick={loadProjects}
-            className="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition"
-          >
-            Retry
-          </button>
-        </div>
-      )}
+      
 
       {/* ✅ Projects Grid */}
-      {!isLoading && !error && (
         <motion.div
           className="projects-grid"
           variants={containerVariants}
@@ -111,7 +76,7 @@ export default function MajorProjects() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {projects.map((project) => (
+          {projects.map((project : any) => (
             <motion.div key={project.id} variants={itemVariants}>
               <TiltedCard
                 imageSrc={project.image}
@@ -126,14 +91,9 @@ export default function MajorProjects() {
             </motion.div>
           ))}
         </motion.div>
-      )}
+      
 
-      {/* ✅ Empty State */}
-      {!isLoading && !error && projects.length === 0 && (
-        <div className="text-center py-20">
-          <p className="text-gray-600 dark:text-gray-300 text-lg">No major projects found</p>
-        </div>
-      )}
+    
     </section>
   );
 }

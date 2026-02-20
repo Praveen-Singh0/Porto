@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, } from "react";
 import {
   SiReact,
   SiNextdotjs,
@@ -21,10 +21,15 @@ import {
   SiPython,
 } from "react-icons/si";
 import LogoLoop from "../components/LogoLoop";
-import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
-import { aboutService } from "@/services/aboutSection.service";
-import useFetch from "@/hooks/useFetch";
-import type { aboutInfo } from "@/services/aboutSection.service";
+
+import { aboutInfo } from "@/services/aboutSection.service";
+import { PortfolioInfo } from "@/types/portfolio";
+
+
+interface aboutProps {
+  aboutData: aboutInfo;
+  portfolioInfo: PortfolioInfo;
+}
 
 import { PDFModal } from "../components/ui/PDFModal";
 
@@ -73,12 +78,14 @@ export const techLogos = [
   },
 ];
 
-const About = () => {
-  const { info } = usePortfolioInfoContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const About = ({ aboutData, portfolioInfo } : aboutProps) => {
+
+const info = portfolioInfo;
+
+const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPDF, setSelectedPDF] = useState({ url: "", title: "" });
 
-  const { data: myBio, error } = useFetch<aboutInfo>(aboutService.getInfo);
+const myBio = aboutData;
 
   const openPDFModal = (url: string, title: string) => {
     setSelectedPDF({ url, title });
