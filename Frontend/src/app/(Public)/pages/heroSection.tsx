@@ -209,21 +209,32 @@ const TopPage = () => {
                       <span className="hero-title">Connect with me</span>
                       {/* Social Buttons */}
                       <div className="hero-social-buttons">
-                        <Button className="hero-social-btn">
-                          <a target="_blank" href={info?.socialLinks?.twitter}>
-                            <AiOutlineClose />
-                          </a>
-                        </Button>
-                        <Button className="hero-social-btn linkedin">
-                          <a target="_blank" href={info?.socialLinks?.linkedin}>
-                            <AiFillLinkedin className="text-sky-600" />
-                          </a>
-                        </Button>
-                        <Button className="hero-social-btn github">
-                          <a target="_blank" href={info?.socialLinks?.github}>
-                            <AiFillGithub />
-                          </a>
-                        </Button>
+                        <a
+                          target="_blank"
+                          href={info?.socialLinks?.twitter}
+                          aria-label="Open Twitter profile"
+                          className="hero-social-btn inline-flex items-center justify-center"
+                        >
+                          <AiOutlineClose />
+                        </a>
+
+                        <a
+                          target="_blank"
+                          href={info?.socialLinks?.linkedin}
+                          aria-label="Open LinkedIn profile"
+                          className="hero-social-btn linkedin inline-flex items-center justify-center"
+                        >
+                          <AiFillLinkedin className="text-sky-600" />
+                        </a>
+
+                        <a
+                          target="_blank"
+                          href={info?.socialLinks?.github}
+                          aria-label="Open GitHub profile"
+                          className="hero-social-btn github inline-flex items-center justify-center"
+                        >
+                          <AiFillGithub />
+                        </a>
                       </div>
                     </div>
                   </div>

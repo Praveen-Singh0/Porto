@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/error.middleware.js";
-import { connectDB } from "../lib/prisma.js";
 import infoRouters from './routers/info.routes.js';
 import heroRouters from './routers/general/hero.routes.js';
 import aboutRouters from './routers/general/about.routes.js';
@@ -19,8 +18,6 @@ import uploadRoutes from "./routers/upload/upload.routes.js";
 dotenv.config();
 
 const app = express();
-
-await connectDB();
 
 app.use(
   cors({
