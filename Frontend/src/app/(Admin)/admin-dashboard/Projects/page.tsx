@@ -10,11 +10,12 @@ import ConfirmModal from "../components/ConfirmModal";
 import {
   minorProjectService,
   majorProjectService,
-  MinorProject,
-  MajorProject,
+  minorProjectInfo,
+  MajorProjectInfo,
 } from "@/services/projectService";
 import { useToast } from "@/app/context/ToastContext";
 import { useAuth } from "@/app/context/AuthContext";
+import Loader from "@/app/Loader";
 
 type ProjectType = "minor" | "major";
 
@@ -40,8 +41,8 @@ export default function AdminDashboard() {
   const { modalState, openConfirm, closeConfirm } = useConfirmModal();
 
   const [projectType, setProjectType] = useState<ProjectType>("minor");
-  const [minorProjects, setMinorProjects] = useState<MinorProject[]>([]);
-  const [majorProjects, setMajorProjects] = useState<MajorProject[]>([]);
+  const [minorProjects, setMinorProjects] = useState<minorProjectInfo[]>([]);
+  const [majorProjects, setMajorProjects] = useState<MajorProjectInfo[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"create" | "edit">("create");
@@ -234,13 +235,13 @@ export default function AdminDashboard() {
 
     return projects.filter((project) => {
       if (projectType === "minor") {
-        const p = project as MinorProject;
+        const p = project as minorProjectInfo;
         return (
           p.header.toLowerCase().includes(searchQuery.toLowerCase()) ||
           p.content.toLowerCase().includes(searchQuery.toLowerCase())
         );
       } else {
-        const p = project as MajorProject;
+        const p = project as MajorProjectInfo;
         return (
           p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -254,19 +255,6 @@ export default function AdminDashboard() {
 
   const filteredProjects = getFilteredProjects();
 
-  // ✅ Show loading only on initial load
-  if (initialLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">
-            Loading projects...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen space-y-4 sm:space-y-6 sm:px-0">
@@ -355,8 +343,8 @@ export default function AdminDashboard() {
                   handleDelete(
                     project.id,
                     projectType === "minor"
-                      ? (project as MinorProject).header
-                      : (project as MajorProject).title,
+                      ? (project as minorProjectInfo).header
+                      : (project as MajorProjectInfo).title,
                   )
                 }
               />
@@ -377,20 +365,9 @@ export default function AdminDashboard() {
         />
       </div>
 
-      {/* Empty State */}
       {filteredProjects.length === 0 && (
         <GlassCard delay={0.2}>
-          <div className="text-center py-12">
-            <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              No Projects Found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              {searchQuery
-                ? "Try adjusting your search terms"
-                : "Start by adding your first project"}
-            </p>
-          </div>
+          <Loader/>
         </GlassCard>
       )}
 

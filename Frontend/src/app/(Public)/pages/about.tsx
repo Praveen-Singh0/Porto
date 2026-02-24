@@ -136,7 +136,6 @@ const myBio = aboutData;
             )}
           </motion.div>
 
-          {/* Text Content */}
           <motion.div className="flex-1">
             <motion.h2 className="text-3xl font-bold mb-3">
               <span className="text-pink-500">Praveen Singh</span>
@@ -149,6 +148,8 @@ const myBio = aboutData;
             <motion.p className="text-gray-600 dark:text-gray-300 mb-6 text-lg leading-relaxed">
               {myBio?.bio || "No bio available"}
             </motion.p>
+
+          {/* <GradientBackground/> */}
 
             {/* Skills */}
             <motion.div className="flex flex-wrap gap-2 mb-6">
@@ -170,6 +171,7 @@ const myBio = aboutData;
                 </motion.span>
               ))}
             </motion.div>
+            
 
             {/* Button */}
             <motion.a
@@ -254,7 +256,7 @@ const myBio = aboutData;
                 ease: "easeInOut",
               }}
             >
-              View
+             Click to View
             </motion.button>
           </motion.div>
         ) : (

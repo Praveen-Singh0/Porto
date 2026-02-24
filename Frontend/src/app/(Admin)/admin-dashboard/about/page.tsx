@@ -25,6 +25,7 @@ import FormTextarea from "../components/FormTextarea";
 import PortfolioInfoPage from "../portfolioInfo/page";
 import ImageUpload from "../components/ImageUpload";
 import { useAuth } from "@/app/context/AuthContext";
+import Loader from "@/app/Loader";
 
 export default function AboutPage() {
   const { showToast } = useToast();
@@ -61,14 +62,12 @@ export default function AboutPage() {
 
   const {
     data: heroData,
-    loading: heroLoading,
     error: heroError,
     setData: setHeroData,
   } = useFetch<heroInfo>(heroService.getInfo);
 
   const {
     data: aboutData,
-    loading: aboutLoading,
     error: aboutError,
     setData: setAboutData,
   } = useFetch<aboutInfo>(aboutService.getInfo);
@@ -83,7 +82,7 @@ export default function AboutPage() {
     if (aboutData) {
       setAboutFormData({
         bio: aboutData.bio,
-        image: aboutData.imageUrl, // string URL
+        image: aboutData.imageUrl,
         specialization: aboutData.specialization,
         education: aboutData.education,
         documents: {
@@ -387,7 +386,7 @@ export default function AboutPage() {
         )}
 
         {/* About Display */}
-        {aboutData && !isEditingAbout && (
+        {aboutData ?  !isEditingAbout && (
           <GlassCard delay={0.2}>
             <div className="sm:flex block gap-6">
               {aboutData.imageUrl && (
@@ -487,7 +486,9 @@ export default function AboutPage() {
               </div>
             </div>
           </GlassCard>
-        )}
+        ) : 
+        <Loader/>
+        }
       </div>
 
       {/* Hero Section */}
@@ -497,7 +498,7 @@ export default function AboutPage() {
           Hero Section
         </h2>
 
-        {heroData && (
+        {heroData ? (
           <GlassCard delay={0.1}>
             {isEditingHero ? (
               <div className="space-y-4">
@@ -571,7 +572,9 @@ export default function AboutPage() {
               </div>
             )}
           </GlassCard>
-        )}
+        ) : 
+        <Loader />
+        }
       </div>
 
       <div className="space-y-6">

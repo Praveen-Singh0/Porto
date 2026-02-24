@@ -2,16 +2,8 @@
 import { AuthUser } from "@/types/auth";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Save,
-  Loader2,
-  Edit,
-  X,
-  Github,
-  Linkedin,
-  Twitter,
-  Instagram,
-} from "lucide-react";
+import { Save, Loader2, Edit, X } from "lucide-react";
+import { AiFillLinkedin, AiFillGithub, AiFillInstagram } from "react-icons/ai";
 
 interface PortfolioPageProps {
   user: AuthUser;
@@ -28,7 +20,6 @@ import { PortfolioInfo } from "@/types/portfolio";
 export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState<PortfolioInfo>({
@@ -41,7 +32,6 @@ export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
 
   const [snapshot, setSnapshot] = useState<PortfolioInfo | null>(null);
 
-  // 🔹 Load data
   useEffect(() => {
     const loadInfo = async () => {
       try {
@@ -54,9 +44,7 @@ export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
           socialLinks: data.socialLinks || {},
         });
       } catch {
-        // no data first time
       } finally {
-        setInitialLoading(false);
       }
     };
     loadInfo();
@@ -97,14 +85,6 @@ export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
     setIsEditing(true);
   };
 
-  if (initialLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Loader2 className="w-6 h-6 animate-spin text-gray-500" />
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       {!isEditing && (
@@ -143,25 +123,25 @@ export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
               <div className="flex flex-wrap gap-3 pt-2">
                 {formData.socialLinks.github && (
                   <Social
-                    icon={<Github size={18} />}
+                    icon={<AiFillGithub size={18} />}
                     url={formData.socialLinks.github}
                   />
                 )}
                 {formData.socialLinks.linkedin && (
                   <Social
-                    icon={<Linkedin size={18} />}
+                    icon={<AiFillLinkedin size={18} />}
                     url={formData.socialLinks.linkedin}
                   />
                 )}
                 {formData.socialLinks.twitter && (
                   <Social
-                    icon={<Twitter size={18} />}
+                    icon={<X size={18} />}
                     url={formData.socialLinks.twitter}
                   />
                 )}
                 {formData.socialLinks.instagram && (
                   <Social
-                    icon={<Instagram size={18} />}
+                    icon={<AiFillInstagram size={18} />}
                     url={formData.socialLinks.instagram}
                   />
                 )}

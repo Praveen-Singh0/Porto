@@ -26,6 +26,7 @@ import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import FormInput from "../components/FormInput";
 import MultiSelectInput from "../components/MultiSelectInput";
+import Loader from "@/app/Loader";
 
 const experienceTypes = [
   "Full-time",
@@ -580,35 +581,7 @@ export default function ExperiencePage() {
           </div>
         </div>
       ) : (
-        !isCreating && (
-          <GlassCard>
-            <div className="text-center py-16">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring" }}
-              >
-                <Briefcase className="w-20 h-20 text-gray-400 mx-auto mb-4" />
-              </motion.div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                No Experience Added Yet
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-                Start building your professional timeline by adding your work
-                experience and showcase your career journey.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsCreating(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-xl transition-all mx-auto font-medium"
-              >
-                <Plus className="w-5 h-5" />
-                Add Your First Experience
-              </motion.button>
-            </div>
-          </GlassCard>
-        )
+        <Loader/>
       )}
     </div>
   );

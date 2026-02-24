@@ -9,7 +9,7 @@ type AuthView = "login" | "signup";
 
 interface Props {
   isOpen: boolean;
-  onClose: () => void; // closes from Header
+  onClose: () => void; 
 }
 
 const AuthModalController: React.FC<Props> = ({ isOpen, onClose }) => {
@@ -20,7 +20,6 @@ const AuthModalController: React.FC<Props> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  // body scroll lock
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
     return () => {

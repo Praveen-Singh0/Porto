@@ -1,6 +1,6 @@
 import api from "@/lib/api";
 
-export interface MinorProject {
+export interface minorProjectInfo {
   id: number;
   header: string;
   html_url: string;
@@ -11,7 +11,7 @@ export interface MinorProject {
   updatedAt: string;
 }
 
-export interface MajorProject {
+export interface MajorProjectInfo {
   id: number;
   title: string;
   description: string;
@@ -40,7 +40,7 @@ export interface MajorProjectFormData {
 }
 
 export const minorProjectService = {
-  getAll: async (): Promise<MinorProject[]> => {
+  getAll: async (): Promise<minorProjectInfo[]> => {
     try {
       const res = await api.get("/minorProjects");
       return res.data.data;
@@ -51,7 +51,7 @@ export const minorProjectService = {
     }
   },
 
-  create: async (data: MinorProjectFormData): Promise<MinorProject> => {
+  create: async (data: MinorProjectFormData): Promise<minorProjectInfo> => {
     try {
       if (!data.image) {
         throw new Error("Image is required");
@@ -80,7 +80,7 @@ export const minorProjectService = {
   update: async (
     id: number,
     data: MinorProjectFormData
-  ): Promise<MinorProject> => {
+  ): Promise<minorProjectInfo> => {
     try {
       const formData = new FormData();
       if (data.header) formData.append("header", data.header);
@@ -116,7 +116,7 @@ export const minorProjectService = {
 // ============ MAJOR PROJECT SERVICE ============
 
 export const majorProjectService = {
-  getAll: async (): Promise<MajorProject[]> => {
+  getAll: async (): Promise<MajorProjectInfo[]> => {
     try {
       const res = await api.get("/majorProjects");
       return res.data.data;
@@ -127,7 +127,7 @@ export const majorProjectService = {
     }
   },
 
-  create: async (data: MajorProjectFormData): Promise<MajorProject> => {
+  create: async (data: MajorProjectFormData): Promise<MajorProjectInfo> => {
     try {
       if (!data.image) {
         throw new Error("Image is required");
@@ -161,7 +161,7 @@ export const majorProjectService = {
   update: async (
     id: number,
     data: MajorProjectFormData
-  ): Promise<MajorProject> => {
+  ): Promise<MajorProjectInfo> => {
     try {
       const formData = new FormData();
 

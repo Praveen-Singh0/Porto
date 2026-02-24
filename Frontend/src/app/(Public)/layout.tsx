@@ -6,7 +6,7 @@ export const metadata = {
   description:
     "Full-stack developer. I build fast, scalable, and user-focused web applications with clean UI and modern architecture.",
   icons: {
-    icon: "/assets/img/logo.png", // ✅ PNG as favicon
+    icon: "/assets/img/logo.png",
   },
 };
 

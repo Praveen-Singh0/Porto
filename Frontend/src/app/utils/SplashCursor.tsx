@@ -28,12 +28,12 @@ const SplashCursor = () => {
     const sparkles: Sparkle[] = [];
     
     const colors = [
-      "#FFD700", // Gold
-      "#FFF700", // Yellow
-      "#FFE4B5", // Light gold
-      "#FFFFE0", // Light yellow
-      "#FFA500", // Orange
-      "#FF69B4"  // Pink
+      "#FFD700",
+      "#FFF700",
+      "#FFE4B5",
+      "#FFFFE0",
+      "#FFA500",
+      "#FF69B4"
     ];
 
     const createSparkle = (x: number, y: number) => {

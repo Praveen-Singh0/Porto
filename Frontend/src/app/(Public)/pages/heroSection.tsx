@@ -10,10 +10,6 @@ import {
 } from "react-icons/ai";
 import Image from "next/image";
 import { motion, useSpring } from "framer-motion";
-import Button from "../components/ui/Button";
-// import { heroService } from "@/services/heroSection.service";
-import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
-import useFetch from "@/hooks/useFetch";
 
 import { heroInfo } from "@/services/heroSection.service";
 import { PortfolioInfo } from "@/types/portfolio";
@@ -23,26 +19,16 @@ interface TopPageProps {
   portfolioInfo: PortfolioInfo;
 }
 
-
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5, delay },
 });
 
-
-
-const TopPage = ({ heroData, portfolioInfo } : TopPageProps) => {
-  
-
+const TopPage = ({ heroData, portfolioInfo }: TopPageProps) => {
   const info = portfolioInfo;
   const bioContent = heroData;
 
-  // const { info } = usePortfolioInfoContext();
-
-  // const { data: bioContent, error } = useFetch(heroService.getInfo);
-
-  // 3D Tilt effect for image card
   const imageCardRef = useRef<HTMLDivElement>(null);
   const rotateX = useSpring(0, { damping: 30, stiffness: 100, mass: 2 });
   const rotateY = useSpring(0, { damping: 30, stiffness: 100, mass: 2 });

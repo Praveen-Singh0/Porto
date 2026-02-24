@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AiFillHtml5, AiFillGithub, AiFillApi } from "react-icons/ai";
@@ -82,35 +81,6 @@ const SkillsSection = ({data} : {data : SkillInfo[]}) => {
 
   const filteredSkills = skills?.filter((skill) => skill.category === filter);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.85,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
   const headerVariants = {
     hidden: { opacity: 0, y: -30 },
     visible: {
@@ -143,24 +113,11 @@ const SkillsSection = ({data} : {data : SkillInfo[]}) => {
     },
   };
 
-  const blobVariants = {
-    animate: {
-      scale: [1, 1.2, 1],
-      x: [0, 50, 0],
-      y: [0, 30, 0],
-      transition: {
-        duration: 8,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    },
-  };
 
   const SkillIcon = ({ skill }: { skill: SkillInfo }) => {
     const IconComponent = skill.icon ? iconMap[skill.icon] : null;
 
     if (skill.icon) {
-      // Case 1: React icon exists
       if (IconComponent) {
         return (
           <IconComponent
@@ -170,7 +127,6 @@ const SkillsSection = ({data} : {data : SkillInfo[]}) => {
         );
       }
     }
-    // Fallback: first letter of name
     return (
       <span
         className="text-2xl md:text-3xl lg:text-4xl font-semibold"
@@ -184,7 +140,6 @@ const SkillsSection = ({data} : {data : SkillInfo[]}) => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 md:py-16 lg:py-14">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header - Compact for mobile */}
         <motion.div
           className="text-center mb-8 md:mb-12 lg:mb-16 space-y-3 md:space-y-4"
           variants={headerVariants}

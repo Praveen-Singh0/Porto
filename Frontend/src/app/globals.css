@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes popup {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-popup {
+  animation: popup 0.25s ease-out;
+}
+
 @keyframes shrink {
   from {
     width: 100%;
@@ -15,7 +30,7 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-    .no-scrollbar {
+  .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
@@ -30,11 +45,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: perspective(800px) rotateY(-15deg) translateY(-30px) rotateX(10deg) scale(1);
+  transform: perspective(800px) rotateY(-15deg) translateY(-30px) rotateX(10deg)
+    scale(1);
 
   /* filter: blur(2px); */
   /* opacity: 0.5; */
-  transition: transform 0.6s ease, filter 0.6s ease, opacity 0.6s ease;
+  transition:
+    transform 0.6s ease,
+    filter 0.6s ease,
+    opacity 0.6s ease;
 }
 
 .image-container img {
@@ -44,16 +63,11 @@
   border-radius: 50%;
 }
 
-
 .image-container:hover {
   transform: perspective(800px) rotateY(25deg) scale(0.9) rotateX(10deg);
   /* filter: blur(0); */
   opacity: 1;
 }
-
-
-
-
 
 @layer base {
   :root {
@@ -110,10 +124,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-
-
-
 
 @layer base {
   * {

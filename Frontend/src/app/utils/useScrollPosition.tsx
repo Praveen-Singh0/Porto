@@ -9,8 +9,8 @@ export function useScrollPosition() {
       setIsAtTop(window.scrollY < 100);
     };
 
-    handleScroll(); // Check initial position
-    window.addEventListener('scroll', handleScroll, { passive: true }); // ✅ Added passive for performance
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

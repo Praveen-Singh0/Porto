@@ -1,24 +1,13 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import {  educationInfo } from "@/services/education.service";
+import { educationInfo } from "@/services/education.service";
 
-
-const EducationSection = ({data} : {data : educationInfo[]}) => {
-
+const EducationSection = ({ data }: { data: educationInfo[] }) => {
   const educationList = data;
 
-
-  const [selectedCard, setSelectedCard] = useState<educationInfo | null>(null);
-
-  useEffect(() => {
-    if (educationList && educationList.length > 0) {
-      setSelectedCard(educationList[1]);
-    }
-  }, [educationList]);
-
+  const [selectedCard, setSelectedCard] = useState<educationInfo | null>(educationList[1]);
 
   if (!selectedCard) return null;
 
@@ -32,18 +21,15 @@ const EducationSection = ({data} : {data : educationInfo[]}) => {
         <div className="w-56 h-56 rounded-full bg-pink-600 blur-3xl"></div>
       </div>
 
-      {/* Title */}
-      <motion.h1
-        className="text-center font-bold mb-10 text-2xl md:text-3xl lg:text-4xl text-gray-900 dark:text-gray-100"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+      <h1
+        className="text-center font-bold mb-8 relative
+        text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-bold text-gray-900 dark:text-gray-100 px-4
+        "
       >
         Education <span className="text-pink-500">Journey</span>
-        <div className="absolute w-16 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-10px]" />
-      </motion.h1>
+        <div className="absolute w-20 h-1 bg-pink-500 left-1/2 -translate-x-1/2 bottom-[-12px]"></div>
+      </h1>
 
-      {/* Tabs */}
       <div className="flex flex-wrap justify-center gap-4 mb-10">
         {educationList?.map((card) => (
           <motion.button

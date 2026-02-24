@@ -1,8 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 import TiltedCard from "../components/TiltedCard";
-import { majorProjectService, MajorProject } from '@/services/projectService';
+import { MajorProjectInfo } from '@/services/projectService';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -26,7 +25,7 @@ const itemVariants = {
   }
 };
 
-export default function MajorProjects({ data }: { data: MajorProject[] }) {
+export default function MajorProjects({ data }: { data: MajorProjectInfo[] }) {
 
   const projects = data;
 

@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import GradientBackground from "./gradientBackground";
 
 interface ScrollStackProps {
   children: React.ReactNode;
@@ -14,7 +15,6 @@ interface ScrollStackProps {
 const ScrollStackCard: React.FC<ScrollStackProps> = ({
   children,
   index,
-  total,
   range = [0, 1],
   targetScale = 0.95,
 }) => {
@@ -24,19 +24,10 @@ const ScrollStackCard: React.FC<ScrollStackProps> = ({
     offset: ["start end", "start start"],
   });
 
-  const scale = useTransform(
-    scrollYProgress,
-    range,
-    [1, targetScale]
-  );
+  const scale = useTransform(scrollYProgress, range, [1, targetScale]);
 
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],
-    [0, 1, 1]
-  );
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
 
-  // Calculate sticky top position based on index
   const topOffset = 80 + index * 25;
 
   return (
@@ -56,6 +47,7 @@ const ScrollStackCard: React.FC<ScrollStackProps> = ({
         }}
         className="relative"
       >
+        <GradientBackground marginTop="3rem" />
         {children}
       </motion.div>
     </div>

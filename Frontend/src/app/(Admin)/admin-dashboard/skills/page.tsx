@@ -15,6 +15,7 @@ import { useConfirmModal } from "../useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import FormInput from "../components/FormInput";
 import { useAuth } from "@/app/context/AuthContext";
+import Loader from "@/app/Loader";
 
 const skillCategories = ["FRONTEND", "BACKEND", "DATABASE", "DEVOPS", "OTHERS"];
 
@@ -407,25 +408,7 @@ export default function SkillsPage() {
       />
 
       {skills.length === 0 && !isCreating && (
-        <GlassCard>
-          <div className="text-center py-12">
-            <Code className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              No Skills Added
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Start building your skills portfolio by adding your technical
-              expertise.
-            </p>
-            <button
-              onClick={() => setIsCreating(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all mx-auto"
-            >
-              <Plus className="w-4 h-4" />
-              Add Your First Skill
-            </button>
-          </div>
-        </GlassCard>
+       <Loader/>
       )}
     </div>
   );
