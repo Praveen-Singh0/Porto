@@ -68,19 +68,17 @@ const Header = () => {
         transition={{ duration: 0.6 }}
       >
         <nav className="border-gray-200 px-3 md:px-6 lg:px-6 py-2.5">
-          {/* Top row: Logo + Desktop Menu + Right Actions */}
           <div className="flex flex-wrap justify-between mx-auto max-w-screen-xl items-center">
-            {/* Logo - Responsive sizing */}
             <a href="#" className="flex items-center flex-shrink-0">
               <Image
-                src="https://flowbite.com/docs/images/logo.svg"
-                className="mr-2 h-5 sm:mr-3 sm:h-7 md:h-8 lg:h-9"
+                src="/assets/img/logo001.png"
+                className="mr-2 h-9 sm:mr-3 rounded-full bg-[#4840e6] lg:h-9"
                 alt="Logo"
                 width={36}
                 height={36}
               />
-              <span className="self-center text-base sm:text-lg md:text-xl font-semibold whitespace-nowrap dark:text-white">
-                Flowbite
+              <span className="hidden sm:inline self-center text-base sm:text-lg md:text-xl font-semibold whitespace-nowrap dark:text-white">
+                Praveenio.space
               </span>
             </a>
 

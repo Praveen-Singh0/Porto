@@ -23,10 +23,7 @@ import { skillsService } from "@/services/skillSection.service";
 import { majorProjectService } from "@/services/projectService";
 import { minorProjectService } from "@/services/projectService";
 
-
-
 export default async function Home() {
-  
   const aboutData = await aboutService.getInfo();
   const heroData = await heroService.getInfo();
   const portfolioInfo = await portfolioInfoService.getInfo();
@@ -72,7 +69,9 @@ export default async function Home() {
         <ContactSection />
       </ScrollSectionClient>
 
-      <DockClient />
+      <div className="hidden sm:block">
+        <DockClient />
+      </div>
 
       <Footer />
     </>

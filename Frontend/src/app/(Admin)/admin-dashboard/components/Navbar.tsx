@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/auth.service";
 
-
 interface UserInfo {
   id: number;
   name: string;
@@ -24,11 +23,11 @@ interface NavbarProps {
 
 const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
   const router = useRouter();
-  const {logout} = authService;
+  const { logout } = authService;
 
   const handleLogout = async () => {
     try {
-      await logout()
+      await logout();
       router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -60,8 +59,8 @@ const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
           </button>
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
-              src="https://flowbite.com/docs/images/logo.svg"
-              className="mr-2 h-5 sm:mr-3 sm:h-7 md:h-8 lg:h-9"
+              src="/assets/img/logo001.png"
+              className="mr-2 h-9 sm:mr-3 rounded-full bg-[#4840e6] lg:h-9"
               alt="Logo"
               width={36}
               height={36}

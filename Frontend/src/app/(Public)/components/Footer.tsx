@@ -1,6 +1,7 @@
 "use client";
 import SplashCursor from "../../utils/SplashCursor";
 import { usePortfolioInfoContext } from "../../context/PortfolioInfoContext";
+import Image from "next/image";
 const Footer = () => {
   const { info } = usePortfolioInfoContext();
 
@@ -23,45 +24,49 @@ const Footer = () => {
       {/* 3D mesh background effect - trending in creative portfolios */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] mix-blend-soft-light"></div>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-16">
+      <div className="relative mx-auto max-w-7xl px-4 sm:py-16">
         {/* Top section with personal branding */}
         <div className="mb-16 flex flex-col items-center text-center">
           {/* Portfolio logo/signature */}
-          <div className="mb-6 text-3xl font-bold tracking-tight sm:text-4xl">
-            <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Praveen_Singh
-            </span>
-          </div>
-
-          <a
-            href={`tel:${info?.phone}`}
-            className="group relative inline-flex items-center overflow-hidden rounded-full bg-white/10 px-8 py-3 backdrop-blur-sm transition duration-300 hover:bg-white/20"
-          >
-            <span className="absolute -end-full transition-all group-hover:end-4">
-              <svg
-                className="h-5 w-5 rtl:rotate-180"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
-              </svg>
-            </span>
-            <span className="font-medium transition-all group-hover:me-4">
-              Call me
-            </span>
-          </a>
         </div>
 
         {/* Main footer content */}
-        <div className="grid grid-cols-1 gap-12 pb-16 md:grid-cols-3">
-          {/* About column */}
+        <div className="grid grid-cols-1 gap-12 pb-16 md:grid-cols-4">
+          <div className="flex flex-col items-center md:items-center text-center md:text-right">
+            <Image
+              src="/assets/img/logo11.png"
+              className="mb-4 md:mb-6"
+              alt="Logo"
+              width={150}
+              height={150}
+            />
+
+            <a
+              href={`tel:${info?.phone}`}
+              className="group relative inline-flex items-center overflow-hidden rounded-full bg-white/10 px-8 py-3 backdrop-blur-sm transition duration-300 hover:bg-white/20"
+            >
+              <span className="absolute -end-full transition-all group-hover:end-4">
+                <svg
+                  className="h-5 w-5 rtl:rotate-180"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </span>
+
+              <span className="font-medium transition-all group-hover:me-4">
+                Call me
+              </span>
+            </a>
+          </div>
           <div>
             <h3 className="mb-6 text-lg font-semibold">About Me</h3>
             <p className="mb-4 text-sm leading-relaxed text-gray-300">
@@ -84,7 +89,7 @@ const Footer = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>San Francisco, CA</span>
+              <span>{info?.location}</span>
             </div>
           </div>
 
@@ -197,7 +202,6 @@ const Footer = () => {
               </li>
             </ul>
 
-            {/* Social icons with hover effects - modern interaction design */}
             <div className="mt-6 flex space-x-4">
               <a
                 href={`${info?.socialLinks?.twitter}`}
@@ -283,18 +287,6 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Subtle wave decoration at bottom - organic shapes trend */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg
-          className="w-full text-black/5"
-          viewBox="0 0 1440 120"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M0 0L48 8.3C96 17.7 192 33.3 288 33.3C384 33.3 480 17.7 576 17.7C672 17.7 768 33.3 864 53.3C960 71.7 1056 93.3 1152 93.3C1248 93.3 1344 71.7 1392 60L1440 48V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0V0Z"></path>
-        </svg>
       </div>
     </footer>
   );
