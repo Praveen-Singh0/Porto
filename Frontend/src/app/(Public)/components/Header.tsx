@@ -103,7 +103,6 @@ const Header = () => {
               </ul>
             </div>
 
-            {/* Right Actions - Responsive spacing and sizing */}
             <div className="flex items-center lg:order-2 gap-2 sm:gap-3 flex-shrink-0">
               <ThemeToggle />
               <Button
@@ -114,17 +113,17 @@ const Header = () => {
                 Log in
               </Button>
 
-              {/* Avatar - Responsive sizing */}
               <div className="relative">
-                <img
+                <Image
                   className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-gray-200 dark:border-gray-700"
                   src="/assets/img/avatar.jpg"
                   alt="Avatar"
+                  width={50}
+                  height={50}
                 />
                 <span className="top-0 left-5 sm:left-6 md:left-7 absolute w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
               </div>
 
-              {/* Mobile/Tablet Hamburger - Visible below lg (1024px) */}
               <Button
                 variant="ghost"
                 onClick={() => setOpen(!open)}

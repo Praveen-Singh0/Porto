@@ -1,4 +1,3 @@
-// components/DashboardLayout.tsx
 "use client";
 import { motion } from "framer-motion";
 import { useState, ReactNode, useCallback, memo } from "react";
@@ -17,7 +16,7 @@ const DashboardLayout = memo(function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
 
-    const { user, loading } = useAuth();
+    const { user } = useAuth();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 

@@ -22,7 +22,7 @@ import {
 import { useToast } from "@/app/context/ToastContext";
 import { useAuth } from "@/app/context/AuthContext";
 
-import { useConfirmModal } from "../useConfirmModal";
+import { useConfirmModal } from "../components/useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import FormInput from "../components/FormInput";
 import MultiSelectInput from "../components/MultiSelectInput";

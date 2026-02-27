@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Bell, Search, Menu, LogOut } from "lucide-react";
 import ThemeToggle from "@/app/utils/ThemeToggle";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,6 +33,16 @@ const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
       console.error("Logout failed:", error);
     }
   };
+
+
+ function getGreeting(): string {
+  const hour = new Date().getHours();
+
+  if (hour < 12) return "Good morning !";
+  if (hour < 17) return "Good afternoon !";
+  if (hour < 21) return "Good evening !";
+  return "Working Hard !";
+}
 
   return (
     <motion.nav
@@ -68,7 +78,7 @@ const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
           </Link>
 
           <h1 className="hidden sm:block  text-2xl md:text-4xl tracking-tight text-gray-900 dark:text-gray-100">
-            <span className="font-light">Good morning!</span>{" "}
+            <span className="font-light">{getGreeting()}</span>{" "}
             <span className="font-semibold">{user?.name}</span>
           </h1>
 
@@ -95,7 +105,7 @@ const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
           </button>
 
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-violet-600 to-pink-600 flex items-center justify-center text-white font-semibold">
-            AD
+            PS
           </div>
 
           <button

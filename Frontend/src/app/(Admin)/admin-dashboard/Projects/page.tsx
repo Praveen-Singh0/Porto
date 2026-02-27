@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Search, Filter } from "lucide-react";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
-import { useConfirmModal } from "../useConfirmModal";
+import { useConfirmModal } from "../components/useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import {
   minorProjectService,

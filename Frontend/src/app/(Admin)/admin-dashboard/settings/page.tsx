@@ -16,7 +16,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useToast } from "@/app/context/ToastContext";
-import { useConfirmModal } from "../useConfirmModal";
+import { useConfirmModal } from "../components/useConfirmModal";
 import ConfirmModal from "../components/ConfirmModal";
 import { useAuth } from "@/app/context/AuthContext";
 
