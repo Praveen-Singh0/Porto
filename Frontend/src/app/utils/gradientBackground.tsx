@@ -1,12 +1,18 @@
 
-const GradientBackground = () => {
+interface GradientBackgroundProps {
+  marginTop?: string;
+}
+
+const GradientBackground: React.FC<GradientBackgroundProps> = ({
+  marginTop = "0rem",
+}) => {
   return (
     <>
       <div
         className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url("/assets/img/Banner.webp")`,
-          marginTop : "0rem"
+          marginTop: marginTop,
         }}
       ></div>
 
