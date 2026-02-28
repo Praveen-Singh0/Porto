@@ -11,3 +11,7 @@ const adapter = new PrismaPg({
 export const prisma = new PrismaClient({
   adapter,
 });
+
+prisma.$connect()
+  .then(() => console.log("🚀 Prisma connected to PostgreSQL"))
+  .catch((err) => console.error("❌ Prisma connection failed:", err));
