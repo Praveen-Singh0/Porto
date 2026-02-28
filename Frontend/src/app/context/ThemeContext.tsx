@@ -32,8 +32,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       const savedTheme = localStorage.getItem("theme") as Theme;
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
-        ? "light"
-        : "dark";
+        ? "dark"
+        : "light";
       const initialTheme = savedTheme || systemTheme;
       setThemeState(initialTheme);
     } catch (error) {
