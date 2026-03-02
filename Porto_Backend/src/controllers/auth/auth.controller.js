@@ -5,6 +5,8 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import { ApiError } from "../../utils/ApiErrors.js";
 import { prisma } from "../../../lib/prisma.js";
 
+import redis from "../../../lib/redis.js";
+
 const generateToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -151,7 +153,13 @@ export const getUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Users fetched successfully", users));
 });
 
+
+
+
+
+
 export const verify_Its_Me = asyncHandler(async (req, res) => {
+
   const token = req.cookies?.token;
 
   if (!token) {
@@ -164,6 +172,28 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
   } catch {
     throw new ApiError(401, "Invalid or expired token");
   }
+
+    const redisKey = `session:user:${decoded.id}`;
+// 1️⃣ Try Redis first (FAST path)
+  const cachedUser = await redis.get(redisKey);
+
+  console.log("cachedUser :", cachedUser);
+
+  if (cachedUser) {
+  const user = JSON.parse(cachedUser);
+    return res.status(200).json(
+      new ApiResponse(200, "Authenticated (from Redis)", {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          lastLoginAt: user.lastLoginAt,
+        }
+      })
+    );
+  }
+
 
   const user = await prisma.user.findUnique({
     where: { id: decoded.id },
@@ -178,6 +208,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
       updatedAt: true,
     },
   });
+
 
   if (!user) {
     res.clearCookie("token", {
@@ -203,6 +234,19 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
       })
     : null;
 
+    const safeUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    lastLoginAt: istTime,
+  };
+
+
+    // 3️⃣ Save user in Redis for next time (fast!)
+    await redis.set(redisKey, JSON.stringify(safeUser), "EX", 1800); // 30 min
+
+
   return res.status(200).json(
     new ApiResponse(200, "Authenticated", {
       user: {
@@ -215,6 +259,11 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
     }),
   );
 });
+
+
+
+
+
 
 export const deleteUser = asyncHandler(async (req, res) => {
   const userId = Number(req.params.id);
