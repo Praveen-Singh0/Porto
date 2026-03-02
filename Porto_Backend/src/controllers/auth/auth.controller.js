@@ -120,18 +120,29 @@ export const login = asyncHandler(async (req, res) => {
   );
 });
 
-export const logout = asyncHandler(async (_req, res) => {
+export const logout = asyncHandler(async (req, res) => {
+  const token = req.cookies?.token;
+
   const isProduction = process.env.NODE_ENV === "production";
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      await redis.del(`session:user:${decoded.id}`);
+    } catch (err) {
+    }
+  }
 
   res.clearCookie("token", {
     httpOnly: true,
     sameSite: isProduction ? "none" : "strict",
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
   });
 
-  return res.status(200).json(new ApiResponse(200, "Logout successful"));
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Logout successful (session removed)"));
 });
-
 export const getUser = asyncHandler(async (req, res) => {
   const users = await prisma.user.findMany({
     select: {
@@ -153,13 +164,7 @@ export const getUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Users fetched successfully", users));
 });
 
-
-
-
-
-
 export const verify_Its_Me = asyncHandler(async (req, res) => {
-
   const token = req.cookies?.token;
 
   if (!token) {
@@ -173,14 +178,11 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Invalid or expired token");
   }
 
-    const redisKey = `session:user:${decoded.id}`;
-// 1️⃣ Try Redis first (FAST path)
+  const redisKey = `session:user:${decoded.id}`;
   const cachedUser = await redis.get(redisKey);
 
-  console.log("cachedUser :", cachedUser);
-
   if (cachedUser) {
-  const user = JSON.parse(cachedUser);
+    const user = JSON.parse(cachedUser);
     return res.status(200).json(
       new ApiResponse(200, "Authenticated (from Redis)", {
         user: {
@@ -188,12 +190,12 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
           name: user.name,
           email: user.email,
           role: user.role,
+          isActive: user.isActive,
           lastLoginAt: user.lastLoginAt,
-        }
-      })
+        },
+      }),
     );
   }
-
 
   const user = await prisma.user.findUnique({
     where: { id: decoded.id },
@@ -208,7 +210,6 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
       updatedAt: true,
     },
   });
-
 
   if (!user) {
     res.clearCookie("token", {
@@ -234,18 +235,16 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
       })
     : null;
 
-    const safeUser = {
+  const safeUser = {
     id: user.id,
     name: user.name,
     email: user.email,
     role: user.role,
+    isActive: user.isActive,
     lastLoginAt: istTime,
   };
 
-
-    // 3️⃣ Save user in Redis for next time (fast!)
-    await redis.set(redisKey, JSON.stringify(safeUser), "EX", 1800); // 30 min
-
+  await redis.set(redisKey, JSON.stringify(safeUser), "EX", 1800); // 30 min
 
   return res.status(200).json(
     new ApiResponse(200, "Authenticated", {
@@ -259,11 +258,6 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
     }),
   );
 });
-
-
-
-
-
 
 export const deleteUser = asyncHandler(async (req, res) => {
   const userId = Number(req.params.id);

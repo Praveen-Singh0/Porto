@@ -7,6 +7,7 @@ import {
   deleteFromCloudinary,
   getPublicIdFromUrl,
 } from "../utils/cloudinary.js";
+import redis from "../../lib/redis.js";
 
 export const createOrUpdateInfo = asyncHandler(async (req, res) => {
   const { email, phone, location, socialLinks } = req.body;
@@ -27,7 +28,7 @@ export const createOrUpdateInfo = asyncHandler(async (req, res) => {
 
     const cloudinaryResult = await uploadToCloudinary(
       req.file.buffer,
-      "profile"
+      "profile",
     );
 
     profileImageUrl = cloudinaryResult.secure_url;
@@ -58,6 +59,16 @@ export const createOrUpdateInfo = asyncHandler(async (req, res) => {
 });
 
 export const getInfo = asyncHandler(async (req, res) => {
+  const cacheKey = "portfolio:info";
+
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    const info = JSON.parse(cached);
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "Portfolio info retrieved (Redis)", info));
+  }
+
   const info = await prisma.portfolioInfo.findUnique({
     where: { id: 1 },
   });
@@ -66,7 +77,9 @@ export const getInfo = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Portfolio info not found");
   }
 
+  await redis.set(cacheKey, JSON.stringify(info), "EX", 300); // TTL = 5 mins
+
   return res
     .status(200)
-    .json(new ApiResponse(200, "Portfolio info retrieved", info));
+    .json(new ApiResponse(200, "Portfolio info retrieved (DB)", info));
 });
