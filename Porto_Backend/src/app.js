@@ -1,4 +1,6 @@
 import express from "express";
+import session from "express-session";
+import passport from "passport";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -13,6 +15,8 @@ import authRouters from './routers/auth/auth.routes.js';
 import majorProjectsRoutes from './routers/projects/majorProject.routes.js'
 import minorProjectsRoutes from './routers/projects/minorProject.routes.js'
 import uploadRoutes from "./routers/upload/upload.routes.js";
+import googleRoutes from "./routers/auth/google.route.js";
+
 
 
 dotenv.config();
@@ -33,6 +37,23 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
+
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "supersecretkey",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.get("/", (req, res) => {
   res.send("API IS RUNNING");
 });
@@ -44,6 +65,7 @@ app.use("/api/experience", experienceRouters);
 app.use("/api/education", educationRouters);
 app.use("/api/skills", skillsRouters);
 app.use("/api/auth", authRouters);
+app.use("/api/auth", googleRoutes);
 app.use("/api/majorProjects", majorProjectsRoutes);
 app.use("/api/minorProjects", minorProjectsRoutes);
 app.use("/api/upload", uploadRoutes);

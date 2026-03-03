@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { authService } from "@/services/auth.service";
 import { useToast } from "../../context/ToastContext";
 import { useRouter } from "next/navigation";
+import GoogleButton from "./ui/GoogleButton";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -26,6 +27,10 @@ const LoginModal: React.FC<LoginModalProps> = ({
   const [loading, setLoading] = useState(false);
 
   const isFormValid = email && password;
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,25 +179,8 @@ const LoginModal: React.FC<LoginModalProps> = ({
               </div>
             </div>
 
-            {/* Social Login */}
             <div className="flex gap-4">
-              {["Google", "Apple"].map((provider) => (
-                <button
-                  key={provider}
-                  type="button"
-                  onClick={() => console.log(provider)}
-                  className={`flex-1 py-3 px-4 rounded-xl ${neumorphicBase} ${neumorphicShadow} ${neumorphicHover}
-                    transition-all duration-200 flex items-center justify-center gap-2 
-                    text-gray-700 dark:text-gray-300 font-medium`}
-                >
-                  <img
-                    src={`/assets/img/${provider.toLowerCase()}Icon.png`}
-                    alt={provider}
-                    className="w-5 h-5"
-                  />
-                  {provider}
-                </button>
-              ))}
+              <GoogleButton onClick={handleGoogleLogin} />
             </div>
 
             {/* Signup Link */}

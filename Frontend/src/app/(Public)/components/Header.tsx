@@ -28,9 +28,9 @@ const Header = () => {
   const navItems = [
     { name: "Home", current: true },
     { name: "About", current: false },
-    { name: "Experience", current: false },
-    { name: "Education", current: false },
-    { name: "Skills", current: false },
+    { name: "Github", current: false },
+    { name: "Payment", current: false },
+    { name: "Chat", current: false },
     { name: "Projects", current: false },
     { name: "Contact", current: false },
   ];

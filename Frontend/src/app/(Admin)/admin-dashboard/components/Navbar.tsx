@@ -13,6 +13,7 @@ interface UserInfo {
   name: string;
   email: string;
   role: "ADMIN" | "GUEST";
+  picture: string | null;
   lastLoginAt: string | null;
 }
 
@@ -34,15 +35,14 @@ const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
     }
   };
 
+  function getGreeting(): string {
+    const hour = new Date().getHours();
 
- function getGreeting(): string {
-  const hour = new Date().getHours();
-
-  if (hour < 12) return "Good morning !";
-  if (hour < 17) return "Good afternoon !";
-  if (hour < 21) return "Good evening !";
-  return "Working Hard !";
-}
+    if (hour < 12) return "Good morning !";
+    if (hour < 17) return "Good afternoon !";
+    if (hour < 21) return "Good evening !";
+    return "Working Hard !";
+  }
 
   return (
     <motion.nav
@@ -105,7 +105,17 @@ const Navbar = memo(function Navbar({ user, onToggleSidebar }: NavbarProps) {
           </button>
 
           <div className="w-8 h-8 rounded-full bg-gradient-to-r from-violet-600 to-pink-600 flex items-center justify-center text-white font-semibold">
-            PS
+            {user?.picture ? (
+              <Image
+                src={user.picture}
+                alt="User Picture"
+                className="rounded-full"
+                width={32}
+                height={32}
+              />
+            ) : (
+              <span>{user?.name.charAt(0)}</span>
+            )}
           </div>
 
           <button

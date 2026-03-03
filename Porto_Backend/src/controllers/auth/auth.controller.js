@@ -7,7 +7,7 @@ import { prisma } from "../../../lib/prisma.js";
 
 import redis from "../../../lib/redis.js";
 
-const generateToken = (user) => {
+export const generateToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
@@ -129,8 +129,7 @@ export const logout = asyncHandler(async (req, res) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       await redis.del(`session:user:${decoded.id}`);
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   res.clearCookie("token", {
@@ -181,6 +180,8 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
   const redisKey = `session:user:${decoded.id}`;
   const cachedUser = await redis.get(redisKey);
 
+  console.log("cachedUser:", cachedUser);
+
   if (cachedUser) {
     const user = JSON.parse(cachedUser);
     return res.status(200).json(
@@ -191,6 +192,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
           email: user.email,
           role: user.role,
           isActive: user.isActive,
+          picture: user.picture,
           lastLoginAt: user.lastLoginAt,
         },
       }),
@@ -205,6 +207,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
       email: true,
       role: true,
       isActive: true,
+      picture: true,
       lastLoginAt: true,
       createdAt: true,
       updatedAt: true,
@@ -240,6 +243,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
     name: user.name,
     email: user.email,
     role: user.role,
+    picture: user.picture,
     isActive: user.isActive,
     lastLoginAt: istTime,
   };
@@ -253,6 +257,7 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        picture: user.picture,
         lastLoginAt: istTime,
       },
     }),

@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { Eye, EyeOff, Github } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/app/context/ToastContext";
 import { authService } from "@/services/auth.service";
+
+import GoogleButton from "./GoogleButton";
 
 interface SignUpModalProps {
   isOpen: boolean;
@@ -27,6 +29,10 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
   const onChange =
     (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((p) => ({ ...p, [key]: e.target.value }));
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -215,29 +221,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 
             {/* Google + GitHub */}
             <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={() => console.log("Google signup")}
-                className={`flex-1 py-3 px-4 rounded-xl ${neumorphicBase} ${neumorphicShadow} ${neumorphicHover}
-                  flex items-center justify-center gap-2 text-gray-700 dark:text-gray-300 font-medium`}
-              >
-                <img
-                  src="/assets/img/googleIcon.png"
-                  alt="Google"
-                  className="w-5 h-5"
-                />
-                Google
-              </button>
-
-              <button
-                type="button"
-                onClick={() => console.log("GitHub signup")}
-                className={`flex-1 py-3 px-4 rounded-xl ${neumorphicBase} ${neumorphicShadow} ${neumorphicHover}
-                  flex items-center justify-center gap-2 text-gray-700 dark:text-gray-300 font-medium`}
-              >
-                <Github size={18} />
-                GitHub
-              </button>
+              <GoogleButton onClick={handleGoogleLogin} />
             </div>
 
             {/* Login */}
