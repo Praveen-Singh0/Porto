@@ -25,7 +25,6 @@ passport.use(
               name,
               email,
               picture,
-              role: "ADMIN"
             },
           });
           }
