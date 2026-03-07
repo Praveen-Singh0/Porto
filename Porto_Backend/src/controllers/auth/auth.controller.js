@@ -180,8 +180,6 @@ export const verify_Its_Me = asyncHandler(async (req, res) => {
   const redisKey = `session:user:${decoded.id}`;
   const cachedUser = await redis.get(redisKey);
 
-  console.log("cachedUser:", cachedUser);
-
   if (cachedUser) {
     const user = JSON.parse(cachedUser);
     return res.status(200).json(

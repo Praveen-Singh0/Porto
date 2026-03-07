@@ -41,7 +41,7 @@ updateInfo: async (data: AboutFormData): Promise<aboutInfo> => {
   formData.append("title", data.documents.title);
 
   if (data.image instanceof File) {
-    formData.append("image", data.image);
+    formData.append("aboutImage", data.image);
   }
 
   if (data.documents.file instanceof File) {

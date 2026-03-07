@@ -2,11 +2,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiErrors.js";
 import { prisma } from "../../lib/prisma.js";
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-  getPublicIdFromUrl,
-} from "../utils/cloudinary.js";
+import { deleteFromS3 } from "../utils/s3Client.js";
+
 import redis from "../../lib/redis.js";
 
 export const createOrUpdateInfo = asyncHandler(async (req, res) => {
@@ -19,19 +16,12 @@ export const createOrUpdateInfo = asyncHandler(async (req, res) => {
   let profileImageUrl = existingInfo?.profileImage || "";
 
   if (req.file) {
+
     if (existingInfo?.profileImage) {
-      const oldPublicId = getPublicIdFromUrl(existingInfo.profileImage);
-      if (oldPublicId) {
-        await deleteFromCloudinary(oldPublicId);
-      }
+      await deleteFromS3(existingInfo.profileImage);
     }
 
-    const cloudinaryResult = await uploadToCloudinary(
-      req.file.buffer,
-      "profile",
-    );
-
-    profileImageUrl = cloudinaryResult.secure_url;
+    profileImageUrl = req.file.location;
   }
 
   const info = await prisma.portfolioInfo.upsert({
@@ -52,6 +42,8 @@ export const createOrUpdateInfo = asyncHandler(async (req, res) => {
       profileImage: profileImageUrl,
     },
   });
+
+  await redis.del("portfolio:info");
 
   return res
     .status(200)

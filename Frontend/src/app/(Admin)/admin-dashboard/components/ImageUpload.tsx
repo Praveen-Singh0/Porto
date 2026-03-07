@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 interface ImageUploadProps {
-  value: string | File; // Can be URL string or File object
+  value: string | File;
   onChange: (file: File | string) => void;
   label?: string;
   required?: boolean;

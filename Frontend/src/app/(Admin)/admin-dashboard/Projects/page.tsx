@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import GlassCard from "../components/GlassCard";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Filter } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
 import { useConfirmModal } from "../components/useConfirmModal";
@@ -48,7 +48,6 @@ export default function AdminDashboard() {
   const [modalMode, setModalMode] = useState<"create" | "edit">("create");
   const [formData, setFormData] = useState<any>(INITIAL_MINOR);
   const [isLoading, setIsLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
@@ -56,7 +55,6 @@ export default function AdminDashboard() {
   }, []);
 
   const loadAllProjects = async () => {
-    setInitialLoading(true);
     try {
       // ✅ Fetch both APIs in parallel
       const [minorData, majorData] = await Promise.all([
@@ -69,7 +67,6 @@ export default function AdminDashboard() {
     } catch (error: any) {
       console.error("Error loading projects:", error);
     } finally {
-      setInitialLoading(false);
     }
   };
 

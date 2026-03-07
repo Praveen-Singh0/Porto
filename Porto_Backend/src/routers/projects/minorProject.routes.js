@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.post(
   "/create",
-  upload.single("image"),
+  upload.single("minorProject"),
   handleMulterError,
   validate(minorProjectSchema),
   createMinorProject

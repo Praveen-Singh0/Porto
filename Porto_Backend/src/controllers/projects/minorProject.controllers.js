@@ -2,28 +2,20 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { ApiError } from "../../utils/ApiErrors.js";
 import { prisma } from "../../../lib/prisma.js";
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-  getPublicIdFromUrl,
-} from "../../utils/cloudinary.js";
+import { deleteFromS3 } from "../../utils/s3Client.js";
 
-export const createMinorProject = asyncHandler(async (req, res) => {  
+export const createMinorProject = asyncHandler(async (req, res) => {
   const { header, html_url, content } = req.body;
 
   if (!req.file) {
     throw new ApiError(400, "Project image is required");
   }
-  const cloudinaryResult = await uploadToCloudinary(
-    req.file.buffer,
-    "minor-projects"
-  );
 
   const project = await prisma.minorProject.create({
     data: {
       header,
       html_url,
-      image: cloudinaryResult.secure_url,
+      image: req.file.location,
       content,
       type: "minor",
     },
@@ -89,16 +81,11 @@ export const updateMinorProject = asyncHandler(async (req, res) => {
   };
 
   if (req.file) {
-    const oldPublicId = getPublicIdFromUrl(existingProject.image);
-    if (oldPublicId) {
-      await deleteFromCloudinary(oldPublicId);
+    if (existingProject.image) {
+      await deleteFromS3(existingProject.image);
     }
 
-    const cloudinaryResult = await uploadToCloudinary(
-      req.file.buffer,
-      "minor-projects"
-    );
-    updateData.image = cloudinaryResult.secure_url;
+    updateData.image = req.file.location;
   }
 
   const updatedProject = await prisma.minorProject.update({
@@ -124,9 +111,8 @@ export const deleteMinorProject = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Minor project not found");
   }
 
-  const publicId = getPublicIdFromUrl(existingProject.image);
-  if (publicId) {
-    await deleteFromCloudinary(publicId);
+  if (existingProject.image) {
+    await deleteFromS3(existingProject.image);
   }
 
   await prisma.minorProject.delete({

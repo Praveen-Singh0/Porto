@@ -2,11 +2,7 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { ApiError } from "../../utils/ApiErrors.js";
 import { prisma } from "../../../lib/prisma.js";
-import {
-  uploadToCloudinary,
-  deleteFromCloudinary,
-  getPublicIdFromUrl,
-} from "../../utils/cloudinary.js";
+import { deleteFromS3 } from "../../utils/s3Client.js";
 
 const createAbout = asyncHandler(async (req, res) => {
   const { bio, specialization, education } = req.body;
@@ -21,17 +17,10 @@ const createAbout = asyncHandler(async (req, res) => {
     const imageFile = req.files.image[0];
 
     if (existing?.imageUrl) {
-      const oldPublicId = getPublicIdFromUrl(existing.imageUrl);
-      if (oldPublicId) await deleteFromCloudinary(oldPublicId);
+      await deleteFromS3(existing.imageUrl);
     }
 
-    const uploadedImg = await uploadToCloudinary(
-      imageFile.buffer,
-      "image",
-      imageFile.mimetype,
-    );
-
-    imageUrl = uploadedImg.secure_url;
+    imageUrl = imageFile.location;
   }
 
   let documentObj = existing?.documents || null;
@@ -40,19 +29,12 @@ const createAbout = asyncHandler(async (req, res) => {
     const pdfFile = req.files.document[0];
 
     if (existing?.documents?.fileUrl) {
-      const oldPublicId = getPublicIdFromUrl(existing.documents.fileUrl);
-      if (oldPublicId) await deleteFromCloudinary(oldPublicId);
+      await deleteFromS3(existing.documents.fileUrl);
     }
-
-    const uploadedPDF = await uploadToCloudinary(
-      pdfFile.buffer,
-      "documents",
-      pdfFile.mimetype,
-    );
 
     documentObj = {
       title: req.body.title || existing?.documents?.title || "",
-      fileUrl: uploadedPDF.secure_url,
+      fileUrl: pdfFile.location,
     };
   }
 

@@ -14,10 +14,9 @@ import {
 
 const router = express.Router();
 
-// ✅ CORRECT ORDER: Multer → Error Handler → Validation → Controller
 router.post(
   "/create",
-  upload.single("image"),
+  upload.single("majorProject"),
   handleMulterError,
   validate(createMajorProjectSchema),
   createMajorProject

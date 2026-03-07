@@ -61,7 +61,7 @@ export const minorProjectService = {
       formData.append("header", data.header);
       formData.append("html_url", data.html_url);
       formData.append("content", data.content);
-      formData.append("image", data.image);
+      formData.append("minorProject", data.image);
 
       const res = await api.post("/minorProjects/create", formData, {
         headers: {
@@ -86,7 +86,7 @@ export const minorProjectService = {
       if (data.header) formData.append("header", data.header);
       if (data.html_url) formData.append("html_url", data.html_url);
       if (data.content) formData.append("content", data.content);
-      if (data.image) formData.append("image", data.image); // New image file
+      if (data.image) formData.append("minorProject", data.image);
 
       const res = await api.put(`/minorProjects/${id}`, formData, {
         headers: {
@@ -142,7 +142,7 @@ export const majorProjectService = {
         formData.append("githubUrl", data.githubUrl);
       }
       formData.append("technologies", JSON.stringify(data.technologies));
-      formData.append("image", data.image);
+      formData.append("majorProject", data.image);
 
       const res = await api.post("/majorProjects/create", formData, {
         headers: {
@@ -174,7 +174,7 @@ export const majorProjectService = {
       if (data.technologies) {
         formData.append("technologies", JSON.stringify(data.technologies));
       }
-      if (data.image) formData.append("image", data.image);
+      if (data.image) formData.append("majorProject", data.image);
 
       const res = await api.put(`/majorProjects/${id}`, formData, {
         headers: {

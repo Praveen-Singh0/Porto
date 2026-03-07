@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
   "/create",
   upload.fields([
-    { name: "image", },
+    { name: "aboutImage", },
     { name: "document",  }
   ]),
   handleMulterError,
