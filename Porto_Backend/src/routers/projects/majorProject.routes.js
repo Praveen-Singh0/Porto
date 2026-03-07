@@ -26,7 +26,7 @@ router.get("/", getAllMajorProjects);
 
 router.put(
   "/:id",
-  upload.single("image"),
+  upload.single("majorProject"),
   handleMulterError,
   validate(updateMajorProjectSchema),
   updateMajorProject
