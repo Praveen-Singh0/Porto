@@ -1,7 +1,7 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
 import path from "path";
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { ApiError } from "../utils/ApiErrors.js";
 
 import dotenv from "dotenv";
@@ -27,7 +27,7 @@ const FIELDNAME_FOLDER_MAP = {
 const fileFilter = (req, file, cb) => {
   const ext = path.extname(file.originalname).toLowerCase();
 
-  if (file.fieldname === "image") {
+   if (file.mimetype.startsWith("image/")) {
     const allowedImageTypes = [
       "image/jpeg",
       "image/png",
@@ -63,6 +63,25 @@ export const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter,
 });
+
+export const deleteFromS3 = async (fileUrl) => {
+  if (!fileUrl) return;
+
+  try {
+    const url = new URL(fileUrl);
+
+    const key = decodeURIComponent(url.pathname.substring(1));
+
+    const command = new DeleteObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: key,
+    });
+
+    await s3.send(command);
+  } catch (error) {
+    console.error("S3 delete error:", error);
+  }
+};
 
 export const handleMulterError = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {

@@ -2,7 +2,7 @@ import { asyncHandler } from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { ApiError } from "../../utils/ApiErrors.js";
 import { prisma } from "../../../lib/prisma.js";
-import { deleteFromS3 } from "../../utils/s3Client.js";
+import { deleteFromS3 } from "../../middlewares/upload.js";
 
 const createEducation = asyncHandler(async (req, res) => {
   const { link, collageName, course, duration, subjects } = req.body;
