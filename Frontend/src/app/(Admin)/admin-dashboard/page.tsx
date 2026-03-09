@@ -32,7 +32,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome to the Control Center V2
+              Welcome to the Control Center V3
             </h1>
             <p className="text-lg opacity-90 max-w-2xl">
               Real-time systems powered by AI, live data, and modern
