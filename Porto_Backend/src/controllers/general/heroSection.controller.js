@@ -19,7 +19,7 @@ const createHero = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(201, "Hero section created", hero));
+    .json(new ApiResponse(201, "Hero section created vesion 3.0", hero));
 });
 
 
