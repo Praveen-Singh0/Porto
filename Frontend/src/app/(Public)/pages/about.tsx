@@ -141,7 +141,7 @@ const myBio = aboutData;
               <span className="text-pink-500">Praveen Singh</span>
               <span className="text-gray-700 dark:text-gray-100">
                 {" "}
-                / {myBio?.specialization || "Full-Stack AI Developer"}
+                / {myBio?.specialization || "Full Stack AI Developer"}
               </span>
             </motion.h2>
 
