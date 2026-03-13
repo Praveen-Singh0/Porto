@@ -327,7 +327,7 @@ export default function EducationPage() {
             </div>
           </div>
         </GlassCard>
-      )}
+      )} 
 
       <div className="grid gap-6">
         {educations ? (
