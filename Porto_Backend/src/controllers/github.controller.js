@@ -7,7 +7,6 @@ const headers = {
   Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
 };
 
-// ── GraphQL query for real contribution calendar ──
 const CONTRIBUTIONS_QUERY = `
   query ($login: String!) {
     user(login: $login) {

@@ -127,7 +127,7 @@ const myBio = aboutData;
             className="relative sm:w-64 w-full h-64 rounded-xl overflow-hidden border-4 border-transparent bg-gradient-to-br from-pink-400 to-pink-600 p-1"
           >
               <Image
-                src={myBio?.imageUrl}
+                src={"/assets/img/about.webp"}
                 alt="Praveen Singh"
                 layout="fill"
                 objectFit="cover"
