@@ -1,24 +1,36 @@
 import GitHubPageClient from "./GitHubPageClient";
 
+export const dynamic = "force-dynamic"; //
 export const revalidate = 3600;
 
 async function getGithubData() {
-  const API = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const API = process.env.NEXT_PUBLIC_API_URL;
 
-  const res = await fetch(`${API}/github/overview`, {
-    next: { revalidate: 3600 },
-  });
+    if (!API) {
+      throw new Error("API URL not defined");
+    }
 
-  if (!res.ok) {
-    const text = await res.text();
-    console.error("GitHub API error:", text);
-    throw new Error("Failed to fetch GitHub data");
+    const res = await fetch(`${API}/github/overview`, {
+      next: { revalidate: 3600 },
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("GitHub API error:", text);
+
+      return null;
+    }
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.error("GitHub fetch failed:", error);
+
+    // 🔥 fallback
+    return null;
   }
-
-  const data = await res.json();
-  console.log("GitHub API response:", data);
-
-  return data;
 }
 
 export default async function Page() {
@@ -26,10 +38,10 @@ export default async function Page() {
 
   return (
     <GitHubPageClient
-      initialUser={data.user}
-      initialRepos={data.repos}
-      initialCommits={data.commits}
-      initialContributionCalendar={data.contributionCalendar}
+      initialUser={data?.user || null}
+      initialRepos={data?.repos || []}
+      initialCommits={data?.commits || []}
+      initialContributionCalendar={data?.contributionCalendar || []}
     />
   );
 }
