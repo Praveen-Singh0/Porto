@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "../../utils/ThemeToggle";
@@ -10,7 +9,11 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/services/auth.service";
 import AuthModalController from "./ui/AuthModalController";
 
-const Header = () => {
+type HeaderProps = {
+  hiddenNav?: boolean;
+};
+
+const Header = ({ hiddenNav }: HeaderProps) => {
   const router = useRouter();
   const { verify_Its_Me } = authService;
 
@@ -30,18 +33,18 @@ const Header = () => {
     { name: "Home", link: "/" },
     { name: "About", link: "#about" },
     { name: "Github", link: "/github" },
-    { name: "Payment", link: "#payment" },
-    { name: "Chat", link: "#chat" },
+    { name: "Payment", link: "/payment" },
+    { name: "Chat", link: "/chat" },
     { name: "Projects", link: "#projects" },
     { name: "Contact", link: "#contact" },
   ];
+  const forceHomeLinks = ["Home", "About", "Projects", "Contact"];
 
   return (
     <header className="p-1 transition-all duration-500 ease-in-out z-50 top-0 bg-transparent">
       <div>
         <nav className="border-gray-200 px-3 md:px-6 lg:px-6 py-2.5">
           <div className="flex flex-wrap justify-between mx-auto max-w-screen-xl items-center">
-
             {/* LOGO */}
             <Link href="/" className="flex items-center flex-shrink-0">
               <Image
@@ -59,22 +62,26 @@ const Header = () => {
             {/* Desktop Menu */}
             <div className="hidden justify-center lg:flex lg:flex-1 lg:order-1 lg:mx-4 lg:overflow-x-auto no-scrollbar">
               <ul className="flex font-medium lg:space-x-8 whitespace-nowrap">
-                {navItems.map((item, index) => (
-                  <li key={index}>
-                    <Link
-                      href={item.link}
-                      className="block py-2 px-3 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
+                {navItems.map((item, index) => {
+                  const shouldForceHome =
+                    hiddenNav && forceHomeLinks.includes(item.name);
+
+                  return (
+                    <li key={index}>
+                      <Link
+                        href={shouldForceHome ? "/" : item.link}
+                        className="block py-2 px-3 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
             {/* RIGHT SIDE */}
             <div className="flex items-center lg:order-2 gap-2 sm:gap-3 flex-shrink-0">
-
               <ThemeToggle />
 
               <Button
@@ -115,7 +122,6 @@ const Header = () => {
                   />
                 </svg>
               </Button>
-
             </div>
           </div>
 

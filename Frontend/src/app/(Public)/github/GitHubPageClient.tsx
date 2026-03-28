@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Header from "../components/Header";
 import Image from "next/image";
 import GitHubContributionGraph from "./ContributionGraph";
@@ -320,6 +320,15 @@ export default function GitHubPageClient({
   const [commits] = useState(initialCommits);
   const [contributionCalendar] = useState(initialContributionCalendar);
   const [showAllRepos, setShowAllRepos] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const [showMoreActivity, setShowMoreActivity] = useState(false);
 
@@ -333,342 +342,421 @@ export default function GitHubPageClient({
   );
   const visibleRepos = showAllRepos ? sorted : sorted.slice(0, 6);
 
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 25, scale: 0.98 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
   return (
-    <div className="relative min-h-screen   text-gray-900 dark:text-[#e6edf3]">
-      <div
-        className=" fixed inset-x-0 blur-2xl -top-90 -z-10 transform-gpu overflow-hidden sm:-top-90 opacity-40"
-        aria-hidden="true"
-      >
+    <AnimatePresence mode="wait">
+      <div className="relative min-h-screen   text-gray-900 dark:text-[#e6edf3]">
         <div
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678]
+          className=" fixed inset-x-0 blur-2xl -top-90 -z-10 transform-gpu overflow-hidden sm:-top-90 opacity-40"
+          aria-hidden="true"
+        >
+          <div
+            className="relative left-[calc(50%-11rem)] aspect-[1155/678]
           w-[36.125rem] -translate-x-1/2 rotate-[30deg]
           bg-gradient-to-tr from-[#ff80b5] to-[#9089fc]
           sm:left-[calc(100%-50rem)] sm:w-[82.1875rem]"
-          style={{
-            clipPath:
-              "polygon(49.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        ></div>
-      </div>{" "}
-      <Header />
-      <div className="relative max-w-[1280px] mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
-    
-        <aside className="w-full lg:w-[296px] lg:shrink-0 lg:sticky lg:top-8 lg:self-start space-y-4">
-          {" "}
-          <Image
-            src={user.avatar_url}
-            alt={user.login}
-            width={150}
-            height={150}
-            className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-full lg:h-full rounded-full border border-gray-300 dark:border-[#30363d] object-cover"
-          />
-          {/* Name + login */}
-          <div className="mt-1">
-            <h1 className="text-[26px] font-semibold leading-tight dark:text-[#e6edf3]">
-              {user.name || user.login}
-            </h1>
-            <p className="text-xl font-light text-[#848d97]">{user.login}</p>
-          </div>
-          {/* Bio */}
-          {user.bio && (
-            <p className="text-sm  dark:text-[#e6edf3] leading-relaxed">
-              {user.bio}
-            </p>
-          )}
-          {/* Edit profile */}
-          <button className="w-full py-[5px] px-3 text-sm font-medium bg-[#21262d] border border-[#363b42] rounded-md text-[#e6edf3] hover:bg-[#30363d] transition-colors">
-            Edit profile
-          </button>
-          {/* Follow stats */}
-          <div className="flex items-center gap-1.5 text-sm text-[#848d97]">
-            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
-              <path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z" />
-            </svg>
-            <a
-              href="#"
-              className="font-semibold dark:text-[#e6edf3] text-gray-500 hover:text-[#388bfd]"
-            >
-              {user.followers.toLocaleString()}
-            </a>
-            <span>followers</span>
-            <span>·</span>
-            <a
-              href="#"
-              className="font-semibold dark:text-[#e6edf3] text-gray-500 hover:text-[#388bfd]"
-            >
-              {user.following.toLocaleString()}
-            </a>
-            <span>following</span>
-          </div>
-          {/* Meta info */}
-          <div className="space-y-1.5 text-sm text-[#848d97]">
-            {user.location && (
-              <div className="flex items-center gap-2">
-                <MapPin size={15} className="shrink-0" />
-                <span>{user.location}</span>
-              </div>
-            )}
-            {user.blog && (
-              <div className="flex items-center gap-2">
-                <Globe size={15} className="shrink-0" />
-                <a
-                  href={user.blog}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-[#388bfd] truncate"
-                >
-                  {user.blog}
-                </a>
-              </div>
-            )}
-            {user.company && (
-              <div className="flex items-center gap-2">
-                <Building2 size={15} className="shrink-0" />
-                <span>{user.company}</span>
-              </div>
-            )}
-            {user.twitter_username && (
-              <div className="flex items-center gap-2">
-                <Twitter size={15} className="shrink-0" />
-                <a
-                  href={`https://twitter.com/${user.twitter_username}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className=" text-base hover:text-[#388bfd]"
-                >
-                  @{user.twitter_username}
-                </a>
-              </div>
-            )}
-          </div>
-          {/* Achievements */}
-          <div>
-            <h2 className="text-sm text-base font-semibold mb-2">
-              Achievements
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              <Image
-                src="/assets/img/Pull-Shark.png"
-                width={50}
-                height={50}
-                alt="Achievement badge"
-                title="Achievement"
-                className="w-12 h-12 rounded-full border border-gray-300 dark:border-[#30363d]"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
+            style={{
+              clipPath:
+                "polygon(49.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+          ></div>
+        </div>{" "}
+        <Header hiddenNav={true} />
+        {loading ? (
+          <motion.div
+            key="loader"
+            className="absolute inset-0 z-50 flex items-center justify-center bg-white/70 dark:bg-[#0d1117]/80 backdrop-blur-sm"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="text-center text-gray-700 dark:text-[#c9d1d9]">
+              <div
+                className="
+    w-10 h-10 border-4 
+    border-gray-300 dark:border-gray-600 
+    border-t-blue-500 dark:border-t-white 
+    rounded-full animate-spin mx-auto mb-4
+  "
               />
+              <p className="text-sm font-medium animate-pulse">
+                Fetching data from GitHub API
+              </p>
             </div>
-          </div>
-        </aside>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="content"
+            className="relative max-w-[1280px] mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <motion.aside
+              variants={itemVariants}
+              className="w-full lg:w-[296px] lg:shrink-0 lg:sticky lg:top-8 lg:self-start space-y-4"
+            >
+              {" "}
+              <Image
+                src={user.avatar_url}
+                alt={user.login}
+                width={150}
+                height={150}
+                className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-full lg:h-full rounded-full border border-gray-300 dark:border-[#30363d] object-cover"
+              />
+              {/* Name + login */}
+              <div className="mt-1">
+                <h1 className="text-[26px] font-semibold leading-tight dark:text-[#e6edf3]">
+                  {user.name || user.login}
+                </h1>
+                <p className="text-xl font-light text-[#848d97]">
+                  {user.login}
+                </p>
+              </div>
+              {/* Bio */}
+              {user.bio && (
+                <p className="text-sm  dark:text-[#e6edf3] leading-relaxed">
+                  {user.bio}
+                </p>
+              )}
+              {/* Edit profile */}
+              <button className="w-full py-[5px] px-3 text-sm font-medium bg-[#21262d] border border-[#363b42] rounded-md text-[#e6edf3] hover:bg-[#30363d] transition-colors">
+                Edit profile
+              </button>
+              {/* Follow stats */}
+              <div className="flex items-center gap-1.5 text-sm text-[#848d97]">
+                <svg
+                  viewBox="0 0 16 16"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                >
+                  <path d="M2 5.5a3.5 3.5 0 1 1 5.898 2.549 5.508 5.508 0 0 1 3.034 4.084.75.75 0 1 1-1.482.235 4 4 0 0 0-7.9 0 .75.75 0 0 1-1.482-.236A5.507 5.507 0 0 1 3.102 8.05 3.493 3.493 0 0 1 2 5.5ZM11 4a3.001 3.001 0 0 1 2.22 5.018 5.01 5.01 0 0 1 2.56 3.012.749.749 0 0 1-.885.954.752.752 0 0 1-.549-.514 3.507 3.507 0 0 0-2.522-2.372.75.75 0 0 1-.574-.73v-.352a.75.75 0 0 1 .416-.672A1.5 1.5 0 0 0 11 5.5.75.75 0 0 1 11 4Zm-5.5-.5a2 2 0 1 0-.001 3.999A2 2 0 0 0 5.5 3.5Z" />
+                </svg>
+                <a
+                  href="#"
+                  className="font-semibold dark:text-[#e6edf3] text-gray-500 hover:text-[#388bfd]"
+                >
+                  {user.followers.toLocaleString()}
+                </a>
+                <span>followers</span>
+                <span>·</span>
+                <a
+                  href="#"
+                  className="font-semibold dark:text-[#e6edf3] text-gray-500 hover:text-[#388bfd]"
+                >
+                  {user.following.toLocaleString()}
+                </a>
+                <span>following</span>
+              </div>
+              {/* Meta info */}
+              <div className="space-y-1.5 text-sm text-[#848d97]">
+                {user.location && (
+                  <div className="flex items-center gap-2">
+                    <MapPin size={15} className="shrink-0" />
+                    <span>{user.location}</span>
+                  </div>
+                )}
+                {user.blog && (
+                  <div className="flex items-center gap-2">
+                    <Globe size={15} className="shrink-0" />
+                    <a
+                      href={user.blog}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hover:text-[#388bfd] truncate"
+                    >
+                      {user.blog}
+                    </a>
+                  </div>
+                )}
+                {user.company && (
+                  <div className="flex items-center gap-2">
+                    <Building2 size={15} className="shrink-0" />
+                    <span>{user.company}</span>
+                  </div>
+                )}
+                {user.twitter_username && (
+                  <div className="flex items-center gap-2">
+                    <Twitter size={15} className="shrink-0" />
+                    <a
+                      href={`https://twitter.com/${user.twitter_username}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className=" text-base hover:text-[#388bfd]"
+                    >
+                      @{user.twitter_username}
+                    </a>
+                  </div>
+                )}
+              </div>
+              {/* Achievements */}
+              <div>
+                <h2 className="text-sm text-base font-semibold mb-2">
+                  Achievements
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  <Image
+                    src="/assets/img/Pull-Shark.png"
+                    width={50}
+                    height={50}
+                    alt="Achievement badge"
+                    title="Achievement"
+                    className="w-12 h-12 rounded-full border border-gray-300 dark:border-[#30363d]"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.aside>
 
-        {/* ══════════════════════════════
+            {/* ══════════════════════════════
             MAIN CONTENT
         ══════════════════════════════ */}
-        <main className="flex-1 min-w-0 space-y-6">
-          {/* ── Popular Repositories ── */}
-          <section>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base font-semibold">Popular repositories</h2>
-              <a
-                href={`${user.html_url}?tab=repositories`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-xs text-[#388bfd] hover:underline"
-              >
-                Customize your pins
-              </a>
-            </div>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="flex-1 min-w-0 space-y-6"
+            >
+              {/* ── Popular Repositories ── */}
+              <motion.section variants={itemVariants}>
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-base font-semibold">
+                    Popular repositories
+                  </h2>
+                  <a
+                    href={`${user.html_url}?tab=repositories`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-[#388bfd] hover:underline"
+                  >
+                    Customize your pins
+                  </a>
+                </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <AnimatePresence initial={false}>
-                {visibleRepos.map((r, i) => (
-                  <RepoCard key={r.id} repo={r} delay={i * 0.04} />
-                ))}
-              </AnimatePresence>
-            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <AnimatePresence initial={false}>
+                    {visibleRepos.map((r, i) => (
+                      <RepoCard key={r.id} repo={r} delay={i * 0.04} />
+                    ))}
+                  </AnimatePresence>
+                </div>
 
-            {sorted.length > 6 && (
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowAllRepos((p) => !p)}
-                className="mt-3 w-full flex items-center justify-center gap-1.5
+                {sorted.length > 6 && (
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowAllRepos((p) => !p)}
+                    className="mt-3 w-full flex items-center justify-center gap-1.5
                   py-2 text-sm dark:text-[#848d97]
                   dark:bg-gray-900/10
                   border border-gray-400 dark:border-[#30363d] rounded-md
                   hover:border-[#388bfd] hover:text-[#388bfd]
                   transition-colors"
-              >
-                {showAllRepos ? (
-                  <>
-                    <ChevronUp size={14} /> Show less
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown size={14} /> Show all {sorted.length}{" "}
-                    repositories
-                  </>
-                )}
-              </motion.button>
-            )}
-          </section>
-
-          {/* ── Contribution Graph ── */}
-          <section>
-            <GitHubContributionGraph calendar={contributionCalendar} />
-          </section>
-
-          {/* ── Contribution Activity ── */}
-          <section>
-            <h2 className="text-base font-semibold mb-4">
-              Contribution activity
-            </h2>
-
-            {/* Month divider */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-sm font-semibold">
-                {new Date().toLocaleString("default", {
-                  month: "long",
-                  year: "numeric",
-                })}
-              </span>
-              <div className="flex-1 h-px bg-gray-400 dark:bg-gray-500" />
-            </div>
-
-            {/* Commits activity */}
-            {commits.length > 0 && <CommitActivity commits={commits} />}
-
-            {/* Always-visible: first created repo */}
-            {repos.slice(0, 1).map((r) => (
-              <RepoActivityItem key={r.id} repo={r} userLogin={user.login} />
-            ))}
-
-            {/* Extra items revealed by "Show more activity" */}
-            <AnimatePresence initial={false}>
-              {showMoreActivity && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="overflow-hidden"
-                >
-                  {/* Starred repos — one entry per extra repo */}
-                  {repos.slice(1, 3).map((r) => (
-                    <RepoActivityItem
-                      key={r.id}
-                      repo={r}
-                      userLogin={user.login}
-                    />
-                  ))}
-
-                  {/* Extra commits batch if we have more than one repo worth */}
-                  {commits.length > 3 && (
-                    <ActivityItem
-                      icon={<GitCommit size={14} />}
-                      title={`${commits.length - 3} more commit${commits.length - 3 !== 1 ? "s" : ""} across repositories`}
-                    >
-                      <div className="space-y-1.5">
-                        {commits.slice(3, 6).map((c) => (
-                          <a
-                            key={c.sha}
-                            href={c.html_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-2 text-xs text-[#848d97] hover:text-[#e6edf3] transition-colors"
-                          >
-                            <GitCommit
-                              size={11}
-                              className="dark:ext-[#3fb950] shrink-0"
-                            />
-                            <span className="truncate">{c.commit.message}</span>
-                            <span className="shrink-0 font-mono text-[10px]">
-                              {c.sha.slice(0, 7)}
-                            </span>
-                            <span className="shrink-0">
-                              {timeAgo(c.commit.author.date)}
-                            </span>
-                          </a>
-                        ))}
-                      </div>
-                    </ActivityItem>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Show more / Show less toggle */}
-            <button
-              onClick={toggleShowMoreActivity}
-              className="w-full mt-2 py-2 text-sm dark:bg-gray-900/20 text-[#388bfd] border border-gray-300 dark:border-[#30363d] rounded-md  transition-colors dark:hover:bg-gray-900/50 transform hover:scale-[1.02] transition-transform duration-200"
-            >
-              {showMoreActivity ? "Show less activity" : "Show more activity"}
-            </button>
-          </section>
-
-          {/* ── Latest Commits ── */}
-          {commits.length > 0 && (
-            <section>
-              <h2 className="text-base font-semibold mb-3">Latest Commits</h2>
-
-              <div className="border border-gray-300 dark:border-[#30363d] rounded-md overflow-hidden divide-y divide-gray-200 dark:divide-[#21262d]">
-                {commits.map((c, i) => (
-                  <motion.a
-                    key={c.sha}
-                    href={c.html_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: i * 0.03 }}
-                    className="flex items-start gap-3 px-4 py-3 dark:hover:bg-gray-900/40  hover:bg-gray-600/10 transform hover:scale-[1.02] transition-transform duration-200 transition-colors group"
                   >
-                    <GitCommit
-                      size={14}
-                      className="text-[#3fb950] shrink-0 mt-0.5"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm dark:text-[#e6edf3] truncate">
-                        {c.commit.message}
-                      </p>
-                      <p className="text-xs text-[#848d97] mt-0.5 flex items-center gap-1.5 flex-wrap">
-                        <span className="font-medium text-[#adbac7]">
-                          {c.repoName}
-                        </span>
-                        <span>·</span>
-                        <code className="font-mono text-[11px]">
-                          {c.sha.slice(0, 7)}
-                        </code>
-                        <span>·</span>
-                        <span>{timeAgo(c.commit.author.date)}</span>
-                      </p>
-                    </div>
-                    <ExternalLink
-                      size={12}
-                      className="shrink-0 text-[#848d97] opacity-0 group-hover:opacity-100 transition-opacity mt-1"
-                    />
-                  </motion.a>
-                ))}
-              </div>
-            </section>
-          )}
+                    {showAllRepos ? (
+                      <>
+                        <ChevronUp size={14} /> Show less
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown size={14} /> Show all {sorted.length}{" "}
+                        repositories
+                      </>
+                    )}
+                  </motion.button>
+                )}
+              </motion.section>
 
-          {/* Footer */}
-          <p className="text-xs text-[#848d97] border-t border-[#21262d] pt-4 pb-8">
-            Seeing something unexpected?{" "}
-            <a
-              href="https://docs.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile"
-              target="_blank"
-              rel="noreferrer"
-              className="text-[#388bfd] hover:underline"
-            >
-              Take a look at the GitHub profile guide
-            </a>
-            .
-          </p>
-        </main>
+              <motion.section variants={itemVariants}>
+                <GitHubContributionGraph calendar={contributionCalendar} />
+              </motion.section>
+
+              {/* ── Contribution Activity ── */}
+              <motion.section variants={itemVariants}>
+                <h2 className="text-base font-semibold mb-4">
+                  Contribution activity
+                </h2>
+
+                {/* Month divider */}
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-sm font-semibold">
+                    {new Date().toLocaleString("default", {
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <div className="flex-1 h-px bg-gray-400 dark:bg-gray-500" />
+                </div>
+
+                {/* Commits activity */}
+                {commits.length > 0 && <CommitActivity commits={commits} />}
+
+                {/* Always-visible: first created repo */}
+                {repos.slice(0, 1).map((r) => (
+                  <RepoActivityItem
+                    key={r.id}
+                    repo={r}
+                    userLogin={user.login}
+                  />
+                ))}
+
+                {/* Extra items revealed by "Show more activity" */}
+                <AnimatePresence initial={false}>
+                  {showMoreActivity && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden"
+                    >
+                      {/* Starred repos — one entry per extra repo */}
+                      {repos.slice(1, 3).map((r) => (
+                        <RepoActivityItem
+                          key={r.id}
+                          repo={r}
+                          userLogin={user.login}
+                        />
+                      ))}
+
+                      {/* Extra commits batch if we have more than one repo worth */}
+                      {commits.length > 3 && (
+                        <ActivityItem
+                          icon={<GitCommit size={14} />}
+                          title={`${commits.length - 3} more commit${commits.length - 3 !== 1 ? "s" : ""} across repositories`}
+                        >
+                          <div className="space-y-1.5">
+                            {commits.slice(3, 6).map((c) => (
+                              <a
+                                key={c.sha}
+                                href={c.html_url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="flex items-center gap-2 text-xs text-[#848d97] hover:text-[#e6edf3] transition-colors"
+                              >
+                                <GitCommit
+                                  size={11}
+                                  className="dark:ext-[#3fb950] shrink-0"
+                                />
+                                <span className="truncate">
+                                  {c.commit.message}
+                                </span>
+                                <span className="shrink-0 font-mono text-[10px]">
+                                  {c.sha.slice(0, 7)}
+                                </span>
+                                <span className="shrink-0">
+                                  {timeAgo(c.commit.author.date)}
+                                </span>
+                              </a>
+                            ))}
+                          </div>
+                        </ActivityItem>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Show more / Show less toggle */}
+                <button
+                  onClick={toggleShowMoreActivity}
+                  className="w-full mt-2 py-2 text-sm dark:bg-gray-900/20 text-[#388bfd] border border-gray-300 dark:border-[#30363d] rounded-md  transition-colors dark:hover:bg-gray-900/50 transform hover:scale-[1.02] transition-transform duration-200"
+                >
+                  {showMoreActivity
+                    ? "Show less activity"
+                    : "Show more activity"}
+                </button>
+              </motion.section>
+
+              {/* ── Latest Commits ── */}
+              {commits.length > 0 && (
+                <motion.section variants={itemVariants}>
+                  <h2 className="text-base font-semibold mb-3">
+                    Latest Commits
+                  </h2>
+
+                  <div className="border border-gray-300 dark:border-[#30363d] rounded-md overflow-hidden divide-y divide-gray-200 dark:divide-[#21262d]">
+                    {commits.map((c, i) => (
+                      <motion.a
+                        key={c.sha}
+                        href={c.html_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.03 }}
+                        className="flex items-start gap-3 px-4 py-3 dark:hover:bg-gray-900/40  hover:bg-gray-600/10 transform hover:scale-[1.02] transition-transform duration-200 transition-colors group"
+                      >
+                        <GitCommit
+                          size={14}
+                          className="text-[#3fb950] shrink-0 mt-0.5"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm dark:text-[#e6edf3] truncate">
+                            {c.commit.message}
+                          </p>
+                          <p className="text-xs text-[#848d97] mt-0.5 flex items-center gap-1.5 flex-wrap">
+                            <span className="font-medium text-[#adbac7]">
+                              {c.repoName}
+                            </span>
+                            <span>·</span>
+                            <code className="font-mono text-[11px]">
+                              {c.sha.slice(0, 7)}
+                            </code>
+                            <span>·</span>
+                            <span>{timeAgo(c.commit.author.date)}</span>
+                          </p>
+                        </div>
+                        <ExternalLink
+                          size={12}
+                          className="shrink-0 text-[#848d97] opacity-0 group-hover:opacity-100 transition-opacity mt-1"
+                        />
+                      </motion.a>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+
+              {/* Footer */}
+              <p className="text-xs text-[#848d97] border-t border-[#21262d] pt-4 pb-8">
+                Seeing something unexpected?{" "}
+                <a
+                  href="https://docs.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[#388bfd] hover:underline"
+                >
+                  Take a look at the GitHub profile guide
+                </a>
+                .
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
       </div>
-    </div>
+    </AnimatePresence>
   );
 }

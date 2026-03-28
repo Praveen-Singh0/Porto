@@ -80,13 +80,12 @@ const predefinedServices = [
 export default function SettingsPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
-  const { modalState, openConfirm, closeConfirm } = useConfirmModal();
+  const { openConfirm, closeConfirm } = useConfirmModal();
 
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [visibleKeys, setVisibleKeys] = useState<Set<string>>(new Set());
-  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const [formData, setFormData] = useState<Partial<ApiKey>>({
     name: "",
@@ -183,7 +182,6 @@ export default function SettingsPage() {
       message: `Are you sure you want to delete "${settingName}"? This action cannot be undone.`,
       variant: "danger",
       onConfirm: async () => {
-        setDeleteLoading(true);
 
         try {
           setApiKeys(apiKeys.filter((key) => key.id !== id));
@@ -198,8 +196,6 @@ export default function SettingsPage() {
             message: "Failed to delete API key",
             type: "error",
           });
-        } finally {
-          setDeleteLoading(false);
         }
       },
     });
