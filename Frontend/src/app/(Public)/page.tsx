@@ -14,7 +14,6 @@ import DockClient from "./components/DockClient";
 import ScrollSectionClient from "./components/ScrollSectionClient";
 import Footer from "./components/Footer";
 
- import Chatbot from "./components/Chatbot";
 import { heroService } from "@/services/heroSection.service";
 import { aboutService } from "@/services/aboutSection.service";
 import { portfolioInfoService } from "@/services/portfolio.service";
@@ -37,7 +36,6 @@ export default async function Home() {
   return (
     <>
       <GradientBackground />
-      <Chatbot />
 
       <ScrollSectionClient id="hero">
         <TopPage heroData={heroData} portfolioInfo={portfolioInfo} />

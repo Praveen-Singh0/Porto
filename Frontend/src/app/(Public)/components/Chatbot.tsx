@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
@@ -16,7 +16,7 @@ export interface Message {
 }
 
 const WELCOME_TEXT =
-  "Hey there 👋 I'm **Aryan's AI assistant**. Ask me anything — his skills, experience, projects, or how to work with him. I've got you covered!";
+  "Hey there 👋 I'm **Praveen's AI assistant**. Ask me anything — his skills, experience, projects, or how to work with him. I've got you covered!";
 
 const WELCOME_MSG: Message = {
   id: "welcome",
@@ -60,6 +60,15 @@ export default function Chatbot() {
   const [loading, setLoading] = useState<boolean>(false);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(true);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const chatRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const close = (e: MouseEvent) =>
+      !chatRef.current?.contains(e.target as Node) && setOpen(false);
+
+    open && document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, [open]);
 
   useAutoScroll(bottomRef, messages);
 
@@ -157,11 +166,12 @@ export default function Chatbot() {
         {open && (
           <motion.div
             key="chatwindow"
+            ref={chatRef}
             initial={{ opacity: 0, y: 40, scale: 0.93 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.93 }}
             transition={{ type: "spring", damping: 26, stiffness: 300 }}
-            className="fixed sm:bottom-6 bottom-0 sm:right-6 z-50 sm:w-[370px] sm:max-w-[95vw] flex flex-col rounded-3xl overflow-hidden shadow-2xl
+            className="fixed sm:bottom-6 bottom-0 sm:right-6 z-50 sm:w-[370px] sm:max-w-[95vw] flex flex-col rounded overflow-hidden shadow-2xl
               border border-white/10
               bg-white/80 dark:bg-zinc-900/85
               backdrop-blur-2xl"

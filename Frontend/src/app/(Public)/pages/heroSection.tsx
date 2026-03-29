@@ -64,7 +64,7 @@ const TopPage = ({ heroData, portfolioInfo }: TopPageProps) => {
       <div className="mt-12 p-0 md:p-12">
         <div className="relative isolate px-4 sm:px-5 lg:px-8">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-8 mx-auto max-w-7xl">
-            <div className="sm:w-8/12">
+            <div className="w-full lg:w-8/12">
               <motion.div {...fadeUp(0.1)} className="flex justify-center">
                 <div className="relative rounded-full px-3 py-1 text-sm text-gray-700 dark:text-gray-100 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                   Connect me on LinkedIn.{" "}

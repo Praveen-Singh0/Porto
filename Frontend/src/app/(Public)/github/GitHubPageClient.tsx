@@ -113,7 +113,7 @@ function RepoCard({ repo, delay = 0 }: { repo: GHRepo; delay?: number }) {
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.25, delay }}
-      className="flex flex-col gap-2 p-4 rounded-md dark:bg-gray-900/30 border border-gray-400 dark:border-[#30363d] hover:border-[#388bfd] transition-colors duration-60"
+      className="flex flex-col gap-2 p-4 rounded-md dark:bg-gray-900/70 border border-gray-400 dark:border-[#30363d] hover:border-[#388bfd] transition-colors duration-60"
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 min-w-0">
@@ -572,7 +572,7 @@ const itemVariants = {
                     onClick={() => setShowAllRepos((p) => !p)}
                     className="mt-3 w-full flex items-center justify-center gap-1.5
                   py-2 text-sm dark:text-[#848d97]
-                  dark:bg-gray-900/10
+                  dark:bg-gray-900/30
                   border border-gray-400 dark:border-[#30363d] rounded-md
                   hover:border-[#388bfd] hover:text-[#388bfd]
                   transition-colors"
@@ -683,7 +683,7 @@ const itemVariants = {
                 {/* Show more / Show less toggle */}
                 <button
                   onClick={toggleShowMoreActivity}
-                  className="w-full mt-2 py-2 text-sm dark:bg-gray-900/20 text-[#388bfd] border border-gray-300 dark:border-[#30363d] rounded-md  transition-colors dark:hover:bg-gray-900/50 transform hover:scale-[1.02] transition-transform duration-200"
+                  className="w-full mt-2 py-2 text-sm dark:bg-gray-900/40 text-[#388bfd] border border-gray-300 dark:border-[#30363d] rounded-md  transition-colors dark:hover:bg-gray-900/50 transform hover:scale-[1.02] transition-transform duration-200"
                 >
                   {showMoreActivity
                     ? "Show less activity"
@@ -698,7 +698,7 @@ const itemVariants = {
                     Latest Commits
                   </h2>
 
-                  <div className="border border-gray-300 dark:border-[#30363d] rounded-md overflow-hidden divide-y divide-gray-200 dark:divide-[#21262d]">
+                  <div className="border border-gray-300 bg-gray-900/70 dark:border-[#30363d] rounded-md overflow-hidden divide-y divide-gray-200 dark:divide-[#21262d]">
                     {commits.map((c, i) => (
                       <motion.a
                         key={c.sha}
@@ -744,12 +744,12 @@ const itemVariants = {
               <p className="text-xs text-[#848d97] border-t border-[#21262d] pt-4 pb-8">
                 Seeing something unexpected?{" "}
                 <a
-                  href="https://docs.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile"
+                  href="https://github.com/Praveen-Singh0"
                   target="_blank"
                   rel="noreferrer"
                   className="text-[#388bfd] hover:underline"
                 >
-                  Take a look at the GitHub profile guide
+                  Take a look at the GitHub profile
                 </a>
                 .
               </p>

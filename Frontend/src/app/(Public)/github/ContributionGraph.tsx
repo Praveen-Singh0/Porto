@@ -70,7 +70,7 @@ export default function GitHubContributionGraph({
   }
 
   return (
-    <div className="border border-[#30363d] dark:bg-gray-900/20 rounded-md p-4">
+    <div className="border border-[#30363d] dark:bg-gray-900/70 rounded-md p-4">
       <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <span className="text-sm dark:text-[#e6edf3]">
           {total.toLocaleString()} contributions in the last year
