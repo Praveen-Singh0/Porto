@@ -29,10 +29,10 @@ jobs:
             npm ci
             npx prisma generate
             npx prisma migrate deploy
-            pm2 restart 28
+            pm2 restart backend
 
             echo "Frontend setup"
             cd ../Frontend
             npm ci
             npm run build
-            pm2 restart 29
+            pm2 restart test
