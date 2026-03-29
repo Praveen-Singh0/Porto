@@ -290,7 +290,7 @@ export default function ChatPage() {
 
       {!isMobileView && <Header hiddenNav = {true} />}
 
-      <div className="flex m-9 h-full border border-gray-200 dark:border-gray-700 rounded-lg">
+      <div className="flex sm:m-9 h-full border border-gray-200 dark:border-gray-700 sm:rounded-lg">
 
          <div
           className=" fixed inset-x-0 blur-2xl -top-90 -z-10 transform-gpu overflow-hidden sm:-top-90 opacity-40"
@@ -313,7 +313,7 @@ export default function ChatPage() {
         <div
           className={`${
             isMobileView
-              ? "absolute inset-0 z-20 m-9"
+              ? "absolute inset-0 z-20"
               : "w-full md:w-1/3 border-r border-gray-200 dark:border-gray-700"
           } ${showChatList ? "flex" : "hidden"} flex-col  `}
         >
@@ -438,7 +438,7 @@ export default function ChatPage() {
         {/* Chat Area */}
         <div
           className={`${
-            isMobileView ? "absolute inset-0 z-30 m-6" : "flex-1"
+            isMobileView ? "absolute inset-0 z-30" : "flex-1"
           } ${showChatArea ? "flex" : "hidden"} flex-col `}
         >
           {selectedUser ? (

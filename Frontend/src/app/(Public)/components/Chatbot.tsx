@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
+
+import { motion } from "framer-motion";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
 import Image from "next/image";
@@ -55,6 +57,9 @@ function generateMockReply(input: string): string {
 }
 
 export default function Chatbot() {
+  const pathname = usePathname();
+  if (pathname === "/chat") return null;
+
   const [open, setOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([WELCOME_MSG]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -86,9 +91,7 @@ export default function Chatbot() {
     setLoading(true);
 
     // Simulate streaming delay — replace with real API call
-    await new Promise<void>((resolve) =>
-      setTimeout(resolve, 1100 + Math.random() * 700),
-    );
+    await new Promise<void>((resolve) => setTimeout(resolve, 800));
 
     const reply: Message = {
       id: `bot-${Date.now()}`,
@@ -116,105 +119,81 @@ export default function Chatbot() {
   return (
     <>
       {/* Floating Action Button */}
-      <AnimatePresence>
-        {!open && (
-          <motion.button
-            key="fab"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleOpen}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center
+      {!open && (
+        <button
+          key="fab"
+          onClick={handleOpen}
+          className="hover:scale-110 transition-transform fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center
         bg-gradient-to-br from-indigo-500 to-violet-600
         cursor-pointer"
-            aria-label="Open AI assistant"
-          >
-            {/* Ripple rings */}
-            {[0].map((i) => (
-              <span
-                key={i}
-                className="absolute inset-1 rounded-full border-2 
+          aria-label="Open AI assistant"
+        >
+          <span
+            className="absolute inset-1 rounded-full border-2 
              border-indigo-400 
-             dark:border-indigo-300
-             animate-ripple"
-                style={{
-                  animation: `ripplePulse 2.4s ease-out infinite`,
-                  animationDelay: `${i * 0.8}s`,
-                }}
-              />
-            ))}
+             dark:border-indigo-300"
+          />
 
-            <Image
-              className="w-9 h-9 rounded-full border-2 border-gray-200 dark:border-gray-700 relative z-10"
-              src="/assets/img/avatar.jpg"
-              alt="Avatar"
-              width={50}
-              height={50}
-            />
+          <Image
+            className="w-9 h-9 rounded-full border-2 border-gray-200 dark:border-gray-700 relative z-10"
+            src="/assets/img/avatar.jpg"
+            alt="Avatar"
+            width={50}
+            height={50}
+            priority={false}
+            loading="lazy"
+          />
 
-            <span className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
-              1
-            </span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+          <span className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
+            1
+          </span>
+        </button>
+      )}
 
       {/* Chat Window */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="chatwindow"
-            ref={chatRef}
-            initial={{ opacity: 0, y: 40, scale: 0.93 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.93 }}
-            transition={{ type: "spring", damping: 26, stiffness: 300 }}
-            className="fixed sm:bottom-6 bottom-0 sm:right-6 z-50 sm:w-[370px] sm:max-w-[95vw] flex flex-col rounded overflow-hidden shadow-2xl
-              border border-white/10
-              bg-white/80 dark:bg-zinc-900/85
-              backdrop-blur-2xl"
-            style={{ height: "600px", margin: "0rem 1rem" }}
-          >
-            <ChatHeader onClose={() => setOpen(false)} />
+      {open && (
+        <motion.div
+          key="chatwindow"
+          ref={chatRef}
+          initial={{ opacity: 0, y: 50, scale: 0.85 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          className="fixed sm:bottom-6 bottom-0 sm:right-6 z-50 sm:w-[370px] sm:max-w-[95vw] flex flex-col rounded-2xl overflow-hidden shadow-2xl
+              border border-white/40
+              sm:bg-white/80 sm:dark:bg-zinc-900/10
+              bg-white dark:bg-zinc-900/85
+              sm:backdrop-blur-xl"
+          style={{ height: "550px", margin: "0rem 1rem" }}
+        >
+          <ChatHeader onClose={() => setOpen(false)} />
 
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-indigo-200 dark:scrollbar-thumb-zinc-700">
-              <ChatMessages messages={messages} loading={loading} />
+          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-thin scrollbar-thumb-indigo-200 dark:scrollbar-thumb-zinc-700">
+            <ChatMessages messages={messages} loading={loading} />
 
-              <AnimatePresence>
-                {showSuggestions && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    className="flex flex-wrap gap-2 pt-1"
-                  >
-                    {SUGGESTIONS.map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => sendMessage(s)}
-                        className="text-[11px] font-medium px-3 py-1.5 rounded-full
+            {showSuggestions && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {SUGGESTIONS.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => sendMessage(s)}
+                    className="text-[11px] font-medium px-3 py-1.5 rounded-full
                           border border-indigo-200 dark:border-indigo-800
                           text-indigo-600 dark:text-indigo-400
                           bg-indigo-50 dark:bg-indigo-950/50
                           hover:bg-indigo-100 dark:hover:bg-indigo-900/60
                           transition-colors cursor-pointer"
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
 
-              <div ref={bottomRef} />
-            </div>
+            <div ref={bottomRef} />
+          </div>
 
-            <ChatInput onSend={sendMessage} disabled={loading} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <ChatInput onSend={sendMessage} disabled={loading} />
+        </motion.div>
+      )}
     </>
   );
 }
@@ -237,6 +216,8 @@ function ChatHeader({ onClose }: ChatHeaderProps) {
             alt="Avatar"
             width={50}
             height={50}
+            priority={false}
+            loading="lazy"
           />{" "}
         </div>
         <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white dark:border-zinc-900 shadow" />

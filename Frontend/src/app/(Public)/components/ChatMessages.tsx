@@ -56,12 +56,14 @@ function MessageBubble({ msg }: MessageBubbleProps) {
       {!isUser && (
         <div className=" flex-shrink-0 flex items-center justify-center shadow-sm mb-0.5">
           <Image
-          className="w-6 h-6 sm:w-6 sm:h-6 md:w-6 md:h-6 rounded-full border-2 border-gray-200 dark:border-gray-700"
-          src="/assets/img/avatar.jpg"
-          alt="Avatar"
-          width={50}
-          height={50}
-        />
+            className="w-6 h-6 sm:w-6 sm:h-6 md:w-6 md:h-6 rounded-full border-2 border-gray-200 dark:border-gray-700"
+            src="/assets/img/avatar.jpg"
+            alt="Avatar"
+            width={50}
+            height={50}
+            priority={false}
+            loading="lazy"
+          />
         </div>
       )}
 
@@ -79,7 +81,7 @@ function MessageBubble({ msg }: MessageBubbleProps) {
         >
           {renderText(msg.text)}
         </div>
-        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 px-1">
+        <span className="text-[10px] text-zinc-900 dark:text-zinc-100 px-1">
           {formatTime(msg.time)}
         </span>
       </div>
@@ -102,6 +104,8 @@ function TypingIndicator() {
           alt="Avatar"
           width={50}
           height={50}
+          priority={false}
+          loading="lazy"
         />
       </div>
       <div className="px-4 py-3 rounded-2xl rounded-bl-sm bg-white dark:bg-zinc-800 border border-black/5 dark:border-white/5 shadow-sm">
