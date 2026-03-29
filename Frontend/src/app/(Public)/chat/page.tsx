@@ -286,8 +286,6 @@ export default function ChatPage() {
   return (
     <div className="h-screen relative flex flex-col">
 
-        
-
       {!isMobileView && <Header hiddenNav = {true} />}
 
       <div className="flex sm:m-9 h-full border border-gray-200 dark:border-gray-700 sm:rounded-lg">

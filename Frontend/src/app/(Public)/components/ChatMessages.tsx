@@ -113,7 +113,7 @@ function TypingIndicator() {
           {[0, 1, 2].map((i) => (
             <motion.span
               key={i}
-              className="w-1.5 h-1.5 rounded-full bg-indigo-400"
+              className="w-1.5 h-1.5 rounded-full bg-gray-900 dark:bg-gray-200"
               animate={{ y: [0, -4, 0] }}
               transition={{
                 duration: 0.7,

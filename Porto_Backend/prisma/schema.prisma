@@ -137,6 +137,11 @@ model MajorProject {
   @@map("major_projects")
 }
 
+model Chat {
+  id        String   @id @default(uuid())
+  query     String
+  createdAt DateTime @default(now())
+}
 
 
 

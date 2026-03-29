@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { chatService } from "@/services/aiChatbot";
 
 import { motion } from "framer-motion";
 import ChatMessages from "./ChatMessages";
@@ -17,6 +18,33 @@ export interface Message {
   time: Date;
 }
 
+export function getMockReply(input: string): string | null {
+  const q = input.toLowerCase();
+
+  if (q.includes("skill") || q.includes("tech")) {
+    return "I’m a **Full-Stack Developer**. I work with JavaScript, TypeScript, and Node.js, Express.js building scalable web apps with PostgreSQL and MongoDB. I also have hands-on experience with **AWS**, Docker, CI/CD, REST APIs, and performance optimization.";
+  }
+
+  if (q.includes("experience") || q.includes("work")) {
+    return "I have over 2+ years of experience as a **Full-Stack Developer**, mainly working with the Backend stack and Next.js. I’ve built scalable web applications, admin dashboards, and CRM systems and Travel related websites. I’ve also improved performance, implemented secure authentication, and worked on real-world production deployments and APIs.";
+  }
+
+  if (q.includes("project")) {
+    return "I’ve built multiple real-world projects, including a **SaaS platform**, **Airline booking systems** with payment integration, and a **CRM System** from scratch. I also developed an **AI-powered portfolio** with chatbot features, focusing on scalable architecture, secure authentication, and production-ready deployments.";
+  }
+
+  if (q.includes("contact") || q.includes("hire")) {
+    return "You can contact me via Phone Call **+91-6396371902** or you can reach out through my email at **praveensingh@example.com**. I am open to freelance and full-time opportunities.";
+  }
+
+  if (q.includes("who are you") || q.includes("yourself")) {
+    return `I’m a **Full-Stack Developer** working in a travel-based company, handling **frontend**, **backend**, and **deployments**. I build scalable applications, manage servers, and implement CI/CD pipelines. I also work on automation and **AI-based solutions** to improve efficiency and streamline business processes.`;
+
+  }
+
+  return null;
+}
+
 const WELCOME_TEXT =
   "Hey there 👋 I'm **Praveen's AI assistant**. Ask me anything — his skills, experience, projects, or how to work with him. I've got you covered!";
 
@@ -28,33 +56,11 @@ const WELCOME_MSG: Message = {
 };
 
 const SUGGESTIONS: string[] = [
-  "What are his top skills?",
-  "Tell me about his experience",
-  "What projects has he built?",
-  "How can I hire him?",
+  "What are Your top skills?",
+  "Your Experience ?",
+  "What projects have you built?",
+  "How can I hire you?",
 ];
-
-function generateMockReply(input: string): string {
-  const q = input.toLowerCase();
-  if (q.includes("skill") || q.includes("tech") || q.includes("stack"))
-    return "Praveen specializes in **React, Next.js, Node.js & TypeScript**. He's also experienced with Tailwind CSS, MongoDB, PostgreSQL, and REST/GraphQL APIs — full-stack through and through! 💻";
-  if (
-    q.includes("experience") ||
-    q.includes("work") ||
-    q.includes("background")
-  )
-    return "Praveen has **2+ years of experience** building production-grade web applications. He's worked on SaaS products, portfolio systems, and e-commerce platforms with international teams.";
-  if (q.includes("project") || q.includes("built") || q.includes("portfolio"))
-    return "Some of his notable projects include an **AI-powered portfolio chatbot** (yes, like me! 😄), a real-time SaaS dashboard, and a freelance marketplace. Each crafted with performance and UX in mind.";
-  if (
-    q.includes("hire") ||
-    q.includes("contact") ||
-    q.includes("work with") ||
-    q.includes("reach")
-  )
-    return "Great news — Praveen is **open to freelance and full-time opportunities**! You can reach him via the contact form on this site or on LinkedIn. He typically responds within 24 hours. 🚀";
-  return "That's a great question! Praveen is a passionate full-stack developer who loves building elegant, user-first products. Want to know about his **skills**, **projects**, or how to **get in touch**?";
-}
 
 export default function Chatbot() {
   const pathname = usePathname();
@@ -77,6 +83,9 @@ export default function Chatbot() {
 
   useAutoScroll(bottomRef, messages);
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   const sendMessage = async (text: string): Promise<void> => {
     if (!text.trim()) return;
 
@@ -90,20 +99,49 @@ export default function Chatbot() {
     setMessages((prev) => [...prev, userMsg]);
     setLoading(true);
 
-    // Simulate streaming delay — replace with real API call
-    await new Promise<void>((resolve) => setTimeout(resolve, 800));
+    try {
+      const mock = getMockReply(text);
 
-    const reply: Message = {
-      id: `bot-${Date.now()}`,
-      role: "assistant",
-      text: generateMockReply(text),
-      time: new Date(),
-    };
+      if (mock) {
+        // ⏳ simulate AI delay
+        await delay(800 + Math.random() * 1600); // 600–1200ms
 
-    setMessages((prev) => [...prev, reply]);
-    setLoading(false);
+        const botMsg: Message = {
+          id: `bot-${Date.now()}`,
+          role: "assistant",
+          text: mock,
+          time: new Date(),
+        };
+
+        setMessages((prev) => [...prev, botMsg]);
+        return;
+      }
+
+      // 🔥 real API
+      const replyText = await chatService.sendMessage(text, "normal");
+
+      const botMsg: Message = {
+        id: `bot-${Date.now()}`,
+        role: "assistant",
+        text: replyText,
+        time: new Date(),
+      };
+
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (error : any) {
+      console.log("AI Error:", error.message);
+      const errorMsg: Message = {
+        id: `error-${Date.now()}`,
+        role: "assistant",
+        text: "⚠️ AI is busy right now. Please try again in a moment.",
+        time: new Date(),
+      };
+
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
+      setLoading(false);
+    }
   };
-
   const handleOpen = (): void => {
     setOpen(true);
     setMessages([
@@ -114,6 +152,7 @@ export default function Chatbot() {
         time: new Date(),
       },
     ]);
+    setShowSuggestions(true);
   };
 
   return (
@@ -160,7 +199,7 @@ export default function Chatbot() {
           className="fixed sm:bottom-6 bottom-0 sm:right-6 z-50 sm:w-[370px] sm:max-w-[95vw] flex flex-col rounded-2xl overflow-hidden shadow-2xl
               border border-white/40
               sm:bg-white/80 sm:dark:bg-zinc-900/10
-              bg-white dark:bg-zinc-900/85
+              bg-white dark:bg-zinc-900
               sm:backdrop-blur-xl"
           style={{ height: "550px", margin: "0rem 1rem" }}
         >

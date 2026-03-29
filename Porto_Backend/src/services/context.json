@@ -1,0 +1,107 @@
+{
+  "name": "Praveen Singh",
+  "role": "Full Stack Developer",
+  "summary": "Passionate developer with 2+ years of hands-on experience in backend and full-stack development. Skilled in building scalable web applications, REST APIs, and responsive UIs with modern technologies.",
+  "contact": {
+    "location": "Dehradun, Uttarakhand",
+    "phone": "+91-6396371902",
+    "email": "parnbartwal@gmail.com",
+    "portfolio": "https://praveenio.space/",
+    "linkedin": "https://www.linkedin.com/in/praveen-singh-ba5656172/"
+  },
+  "skills": {
+    "frontend": [
+      "React.js",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "Tailwind CSS",
+      "Redux",
+      "UI/UX",
+      "Accessibility"
+    ],
+    "backend": [
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "Zod",
+      "JWT",
+      "OAuth"
+    ],
+    "databases": [
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "SQL",
+      "Prisma ORM"
+    ],
+    "devops": [
+      "Docker",
+      "CI/CD",
+      "GitHub Actions",
+      "VPS",
+      "NGINX",
+      "SSL"
+    ],
+    "tools": ["AWS S3", "Git", "GitHub", "Postman", "Vite", "VS Code"]
+  },
+  "experience": [
+    {
+      "role": "Full Stack Developer",
+      "company": "Farebulk Travels Pvt Ltd",
+      "duration": "Dec 2024 - Present",
+      "work": [
+        "Built scalable REST APIs for flight booking and payments",
+        "Optimized DB using Prisma & MongoDB",
+        "Used Redis for caching",
+        "Dockerized apps and CI/CD pipelines",
+        "Managed VPS, NGINX, SSL deployment"
+      ]
+    },
+    {
+      "role": "Junior Software Developer",
+      "company": "Tech Matys",
+      "duration": "Feb 2023 - Nov 2024",
+      "work": [
+        "Developed APIs for LMS",
+        "Worked with Moodle system",
+        "Created modules for courses, grades, classrooms",
+        "Handled API data flow between frontend & backend"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "CRM Portal",
+      "description": "Customer, booking, and agent management system with dashboards and role-based access",
+      "tech": ["Next.js", "Node.js", "MongoDB"]
+    },
+    {
+      "name": "AuthForm",
+      "description": "Authentication system with JWT and secure access control",
+      "tech": ["Next.js", "Node.js"]
+    },
+    {
+      "name": "SaaS Platform",
+      "description": "Multi-tenant booking system with dashboards and custom branding",
+      "tech": ["Next.js", "Prisma", "Node.js"]
+    },
+    {
+      "name": "Airline Websites",
+      "description": "Flight booking and payment systems with SSR optimization",
+      "tech": ["Next.js", "Node.js"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "MCA",
+      "college": "Tula’s Institute",
+      "year": "2021-2023"
+    },
+    {
+      "degree": "BCA",
+      "college": "Swami Darshananad Institute",
+      "year": "2019-2021"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ import majorProjectsRoutes from './routers/projects/majorProject.routes.js'
 import minorProjectsRoutes from './routers/projects/minorProject.routes.js'
 import googleRoutes from "./routers/auth/google.route.js";
 import githubRoutes from "./routers/github.routes.js";
-
+import chatRoutes from "./routers/chat.routes.js";
 
 
 dotenv.config();
@@ -69,6 +69,7 @@ app.use("/api/auth", googleRoutes);
 app.use("/api/majorProjects", majorProjectsRoutes);
 app.use("/api/minorProjects", minorProjectsRoutes);
 app.use("/api/github", githubRoutes);
+app.use("/api/chatbot", chatRoutes);
 
 app.use(errorHandler);
 export { app };
