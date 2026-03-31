@@ -7,7 +7,9 @@
     "phone": "+91-6396371902",
     "email": "parnbartwal@gmail.com",
     "portfolio": "https://praveenio.space/",
-    "linkedin": "https://www.linkedin.com/in/praveen-singh-ba5656172/"
+    "linkedin": "https://www.linkedin.com/in/praveen-singh-ba5656172/",
+    "instagram": "https://www.instagram.com/pra_veen5487/",
+    "github": "https://github.com/Praveen-Singh0"
   },
   "skills": {
     "frontend": [
@@ -94,13 +96,13 @@
   ],
   "education": [
     {
-      "degree": "MCA",
-      "college": "Tula’s Institute",
+      "degree": "Master of Computer Applications",
+      "college": "Tula’s Institute, Dehradun",
       "year": "2021-2023"
     },
     {
-      "degree": "BCA",
-      "college": "Swami Darshananad Institute",
+      "degree": "Bachelor of Computer Applications",
+      "college": "Swami Darshananad Institute, Haridwar",
       "year": "2019-2021"
     }
   ]

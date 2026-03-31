@@ -18,33 +18,6 @@ export interface Message {
   time: Date;
 }
 
-export function getMockReply(input: string): string | null {
-  const q = input.toLowerCase();
-
-  if (q.includes("skill") || q.includes("tech")) {
-    return "I’m a **Full-Stack Developer**. I work with JavaScript, TypeScript, and Node.js, Express.js building scalable web apps with PostgreSQL and MongoDB. I also have hands-on experience with **AWS**, Docker, CI/CD, REST APIs, and performance optimization.";
-  }
-
-  if (q.includes("experience") || q.includes("work")) {
-    return "I have over 2+ years of experience as a **Full-Stack Developer**, mainly working with the Backend stack and Next.js. I’ve built scalable web applications, admin dashboards, and CRM systems and Travel related websites. I’ve also improved performance, implemented secure authentication, and worked on real-world production deployments and APIs.";
-  }
-
-  if (q.includes("project")) {
-    return "I’ve built multiple real-world projects, including a **SaaS platform**, **Airline booking systems** with payment integration, and a **CRM System** from scratch. I also developed an **AI-powered portfolio** with chatbot features, focusing on scalable architecture, secure authentication, and production-ready deployments.";
-  }
-
-  if (q.includes("contact") || q.includes("hire")) {
-    return "You can contact me via Phone Call **+91-6396371902** or you can reach out through my email at **praveensingh@example.com**. I am open to freelance and full-time opportunities.";
-  }
-
-  if (q.includes("who are you") || q.includes("yourself")) {
-    return `I’m a **Full-Stack Developer** working in a travel-based company, handling **frontend**, **backend**, and **deployments**. I build scalable applications, manage servers, and implement CI/CD pipelines. I also work on automation and **AI-based solutions** to improve efficiency and streamline business processes.`;
-
-  }
-
-  return null;
-}
-
 const WELCOME_TEXT =
   "Hey there 👋 I'm **Praveen's AI assistant**. Ask me anything — his skills, experience, projects, or how to work with him. I've got you covered!";
 
@@ -100,24 +73,6 @@ export default function Chatbot() {
     setLoading(true);
 
     try {
-      const mock = getMockReply(text);
-
-      if (mock) {
-        // ⏳ simulate AI delay
-        await delay(800 + Math.random() * 1600); // 600–1200ms
-
-        const botMsg: Message = {
-          id: `bot-${Date.now()}`,
-          role: "assistant",
-          text: mock,
-          time: new Date(),
-        };
-
-        setMessages((prev) => [...prev, botMsg]);
-        return;
-      }
-
-      // 🔥 real API
       const replyText = await chatService.sendMessage(text, "normal");
 
       const botMsg: Message = {
@@ -128,7 +83,7 @@ export default function Chatbot() {
       };
 
       setMessages((prev) => [...prev, botMsg]);
-    } catch (error : any) {
+    } catch (error: any) {
       console.log("AI Error:", error.message);
       const errorMsg: Message = {
         id: `error-${Date.now()}`,
@@ -162,20 +117,12 @@ export default function Chatbot() {
         <button
           key="fab"
           onClick={handleOpen}
-          className="hover:scale-110 transition-transform fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center
-        bg-gradient-to-br from-indigo-500 to-violet-600
-        cursor-pointer"
+          className="hover:scale-110 transition-transform fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center bg-gradient-to-br from-gray-500 dark:from-gray-100 cursor-pointer"
           aria-label="Open AI assistant"
         >
-          <span
-            className="absolute inset-1 rounded-full border-2 
-             border-indigo-400 
-             dark:border-indigo-300"
-          />
-
           <Image
-            className="w-9 h-9 rounded-full border-2 border-gray-200 dark:border-gray-700 relative z-10"
-            src="/assets/img/avatar.jpg"
+            className="w-10 h-10 rounded-full relative z-10"
+            src="/assets/img/ChatGPT-Logo.svg"
             alt="Avatar"
             width={50}
             height={50}
@@ -183,7 +130,7 @@ export default function Chatbot() {
             loading="lazy"
           />
 
-          <span className="absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
+          <span className="badge absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
             1
           </span>
         </button>

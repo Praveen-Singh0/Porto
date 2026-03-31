@@ -16,7 +16,7 @@ import majorProjectsRoutes from './routers/projects/majorProject.routes.js'
 import minorProjectsRoutes from './routers/projects/minorProject.routes.js'
 import googleRoutes from "./routers/auth/google.route.js";
 import githubRoutes from "./routers/github.routes.js";
-import chatRoutes from "./routers/chat.routes.js";
+import chatRoutes from "./routers/aiChatbot.routes.js";
 
 
 dotenv.config();

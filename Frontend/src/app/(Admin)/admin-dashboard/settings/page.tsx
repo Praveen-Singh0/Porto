@@ -46,7 +46,7 @@ const predefinedServices = [
     color: "#24292E",
   },
   {
-    name: "OpenAI",
+    name: "aiChatbot",
     description: "AI and machine learning API for intelligent features",
     icon: "🤖",
     color: "#10A37F",

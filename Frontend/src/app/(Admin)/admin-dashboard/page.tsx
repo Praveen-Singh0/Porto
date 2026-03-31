@@ -125,7 +125,7 @@ function AIAssistantWidget() {
   ];
 
   const handleOpenConsole = () => {
-    router.push("/admin-dashboard/services/openai");
+    router.push("/admin-dashboard/services/aiChatbot");
   };
 
   return (

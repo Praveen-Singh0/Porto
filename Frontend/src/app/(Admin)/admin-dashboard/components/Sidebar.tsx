@@ -110,8 +110,8 @@ const MENU_ITEMS: MenuItem[] = [
   },
   {
     icon: Bot,
-    label: "OpenAI",
-    href: "/admin-dashboard/services/openai",
+    label: "AI Chatbot",
+    href: "/admin-dashboard/services/aiChatbot",
     roles: ["ADMIN"],
     color: "#10A37F",
     category: "service",
