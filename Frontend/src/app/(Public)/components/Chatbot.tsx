@@ -121,13 +121,14 @@ export default function Chatbot() {
           aria-label="Open AI assistant"
         >
           <Image
-            className="w-10 h-10 rounded-full relative z-10"
             src="/assets/img/ChatGPT-Logo.svg"
             alt="Avatar"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
+            priority
+            quality={100}
+            className="rounded-full"
           />
-
           <span className="badge absolute -top-1 -right-1 z-20 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow">
             1
           </span>
