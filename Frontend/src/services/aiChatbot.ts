@@ -21,7 +21,7 @@ export type GetChatsResponse = {
 export const chatService = {
   sendMessage: async (message: string, mode: "normal" | "max") => {
     try {
-      const res = await api.post<ChatResponse>("/api_gateway/chatbot", {
+      const res = await api.post<ChatResponse>("/v1/api_gateway/chatbot", {
         message,
         mode,
       });
@@ -36,7 +36,7 @@ export const chatService = {
 
   getAll: async (page = 1, limit = 10): Promise<GetChatsResponse> => {
     try {
-      const res = await api.get(`/api_gateway/chatbot/getAll?page=${page}&limit=${limit}`);
+      const res = await api.get(`/v1/api_gateway/chatbot/getAll?page=${page}&limit=${limit}`);
       return res.data;
     } catch (error: any) {
       throw new Error(
