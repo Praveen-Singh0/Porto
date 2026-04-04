@@ -69,7 +69,7 @@ app.use("/api/auth", googleRoutes);
 app.use("/api/majorProjects", majorProjectsRoutes);
 app.use("/api/minorProjects", minorProjectsRoutes);
 app.use("/api/github", githubRoutes);
-app.use("/api/api_gateway", api_gateway);
+app.use("/api/v1/api_gateway", api_gateway);
 
 app.use(errorHandler);
 export { app };
