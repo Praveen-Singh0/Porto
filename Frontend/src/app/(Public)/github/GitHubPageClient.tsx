@@ -666,7 +666,7 @@ const itemVariants = {
                     Latest Commits
                   </h2>
 
-                  <div className="border border-gray-300 bg-gray-900/70 dark:border-[#30363d] rounded-md overflow-hidden divide-y divide-gray-200 dark:divide-[#21262d]">
+                  <div className="border border-gray-300 dark:bg-gray-900/70  dark:border-[#30363d] rounded-md overflow-hidden divide-y divide-gray-200 dark:divide-[#21262d]">
                     {commits.map((c, i) => (
                       <motion.a
                         key={c.sha}
