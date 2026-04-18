@@ -16,28 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export default function RootLayout({
-  children,
+  children, 
 }: {
   children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-      (function() {
-        try {
-          const theme = localStorage.getItem("theme");
-          const system = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-          const finalTheme = theme || system;
-          document.documentElement.classList.add(finalTheme);
-        } catch (e) {}
-      })();
-    `,
-          }}
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
       >
