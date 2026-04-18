@@ -16,7 +16,7 @@ import { PortfolioInfo } from "@/types/portfolio";
 
 interface TopPageProps {
   heroData: heroInfo;
-  portfolioInfo: PortfolioInfo;
+  // portfolioInfo: PortfolioInfo;
 }
 
 const fadeUp = (delay: number) => ({
@@ -25,8 +25,19 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay },
 });
 
-const TopPage = ({ heroData, portfolioInfo }: TopPageProps) => {
-  const info = portfolioInfo;
+const TopPage = ({ heroData }: TopPageProps) => {
+  const info = {
+    email: "john.doe@example.com",
+    phone: "+1234567890",
+    location: "New York, USA",
+    profileImage: "/images/profile.jpg",
+    socialLinks: {
+      github: "https://github.com/johndoe",
+      linkedin: "https://linkedin.com/in/johndoe",
+      twitter: "https://twitter.com/johndoe",
+      instagram: "https://instagram.com/johndoe",
+    },
+  };
   const bioContent = heroData;
 
   const imageCardRef = useRef<HTMLDivElement>(null);

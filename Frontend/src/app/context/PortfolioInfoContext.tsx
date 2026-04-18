@@ -8,7 +8,7 @@ import {
   useEffect,
 } from "react";
 import { PortfolioInfo } from "@/types/portfolio";
-import { portfolioInfoService } from "../../services/portfolio.service";
+// import { portfolioInfoService } from "../../services/portfolio.service";
 
 interface PortfolioInfoContextType {
   info: PortfolioInfo | null;
@@ -34,7 +34,19 @@ export const PortfolioInfoProvider = ({
 
     const fetchInfo = async () => {
       try {
-        const data = await portfolioInfoService.getInfo();
+        // const data = await portfolioInfoService.getInfo();
+        const data = {
+          email: "john.doe@example.com",
+          phone: "+1234567890",
+          location: "New York, USA",
+          profileImage: "/images/profile.jpg",
+          socialLinks: {
+            github: "https://github.com/johndoe",
+            linkedin: "https://linkedin.com/in/johndoe",
+            twitter: "https://twitter.com/johndoe",
+            instagram: "https://instagram.com/johndoe",
+          },
+        };
         setInfo(data);
       } catch (error) {
         console.error("Failed to fetch portfolio info:", error);

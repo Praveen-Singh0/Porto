@@ -28,7 +28,7 @@ import { PortfolioInfo } from "@/types/portfolio";
 
 interface aboutProps {
   aboutData: aboutInfo;
-  portfolioInfo: PortfolioInfo;
+  // portfolioInfo: PortfolioInfo;
 }
 
 import { PDFModal } from "../components/ui/PDFModal";
@@ -78,9 +78,20 @@ export const techLogos = [
   },
 ];
 
-const About = ({ aboutData, portfolioInfo } : aboutProps) => {
+const About = ({ aboutData } : aboutProps) => {
 
-const info = portfolioInfo;
+const info = {
+  email: "john.doe@example.com",
+  phone: "+1234567890",
+  location: "New York, USA",
+  profileImage: "/images/profile.jpg",
+  socialLinks: {
+    github: "https://github.com/johndoe",
+    linkedin: "https://linkedin.com/in/johndoe",
+    twitter: "https://twitter.com/johndoe",
+    instagram: "https://instagram.com/johndoe",
+  },
+};
 
 const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPDF, setSelectedPDF] = useState({ url: "", title: "" });

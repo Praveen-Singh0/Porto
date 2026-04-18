@@ -13,7 +13,7 @@ import GlassCard from "../components/GlassCard";
 import FormInput from "../components/FormInput";
 import ImageUpload from "../components/ImageUpload";
 import { useToast } from "@/app/context/ToastContext";
-import { portfolioInfoService } from "../../../../services/portfolio.service";
+// import { portfolioInfoService } from "../../../../services/portfolio.service";
 import Image from "next/image";
 import { PortfolioInfo } from "@/types/portfolio";
 
@@ -35,7 +35,18 @@ export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
   useEffect(() => {
     const loadInfo = async () => {
       try {
-        const data = await portfolioInfoService.getInfo();
+        const data = {
+          email: "john.doe@example.com",
+          phone: "+1234567890",
+          location: "New York, USA",
+          profileImage: "/images/profile.jpg",
+          socialLinks: {
+            github: "https://github.com/johndoe",
+            linkedin: "https://linkedin.com/in/johndoe",
+            twitter: "https://twitter.com/johndoe",
+            instagram: "https://instagram.com/johndoe",
+          },
+        };
         setFormData({
           email: data.email || "",
           phone: data.phone || "",
@@ -54,7 +65,7 @@ export default function PortfolioInfoPage({ user }: PortfolioPageProps) {
   const handleSave = async () => {
     try {
       setLoading(true);
-      await portfolioInfoService.save(formData);
+      // await portfolioInfoService.save(formData);
       setIsEditing(false);
       setSnapshot(null);
 

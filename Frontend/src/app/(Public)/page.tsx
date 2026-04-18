@@ -16,7 +16,7 @@ import Footer from "./components/Footer";
 
 import { heroService } from "@/services/heroSection.service";
 import { aboutService } from "@/services/aboutSection.service";
-import { portfolioInfoService } from "@/services/portfolio.service";
+// import { portfolioInfoService } from "@/services/portfolio.service";
 import { experienceService } from "@/services/experience.service";
 import { educationService } from "@/services/education.service";
 import { skillsService } from "@/services/skillSection.service";
@@ -26,7 +26,7 @@ import { minorProjectService } from "@/services/projectService";
 export default async function Home() {
   const aboutData = await aboutService.getInfo();
   const heroData = await heroService.getInfo();
-  const portfolioInfo = await portfolioInfoService.getInfo();
+  // const portfolioInfo = await portfolioInfoService.getInfo();
   const experienceData = await experienceService.getInfo();
   const educationData = await educationService.getInfo();
   const skillsData = await skillsService.getInfo();
@@ -38,11 +38,11 @@ export default async function Home() {
       <GradientBackground />
 
       <ScrollSectionClient id="hero">
-        <TopPage heroData={heroData} portfolioInfo={portfolioInfo} />
+        <TopPage heroData={heroData}  />
       </ScrollSectionClient>
 
       <ScrollSectionClient id="about">
-        <About aboutData={aboutData} portfolioInfo={portfolioInfo} />
+        <About aboutData={aboutData} />
       </ScrollSectionClient>
 
       <ScrollSectionClient id="experience">
